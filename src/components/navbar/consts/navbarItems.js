@@ -9,7 +9,7 @@ export const mainNavbarItems = [
     id: 0,
     icon: <DashboardIcon />,
     label: "Dashboard",
-    route: "dashboard",
+    route: "",
   },
   {
     id: 1,

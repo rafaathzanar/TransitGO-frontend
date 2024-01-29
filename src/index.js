@@ -13,18 +13,18 @@ import AnnouncementandDelayReports from "./pages/AnnouncementandDelayReports/Ann
 
 import { ThemeProvider } from "@mui/material/styles";
 import { dashboardTheme } from "./dashboardTheme";
-import Navbar from "./components/navbar/Navbar";
-import CornerProfileButton from "./components/CornerProfileButton/CornerProfileButton";
+import LayoutAdmin from "./LayoutAdmin";
+import { Switch } from "@mui/material";
+import HomePage from "./pages/HomePage/HomePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={dashboardTheme}>
     <BrowserRouter>
-      <Navbar />
-      <CornerProfileButton />
       <Routes>
-        <Route path="/" element={<App />}>
-          <Route path="dashboard" element={<Dashboard />} />
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="dashboard/" element={<LayoutAdmin />}>
+          <Route index element={<Dashboard />} />
           <Route path="routeschedule" element={<RouteandSchedule />} />
           <Route path="packagetransfer" element={<Package />} />
           <Route

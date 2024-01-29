@@ -25,9 +25,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const drawerWidth = 220;
 
-  const handleItemClick = (text) => {
-    setSelectedItem(text.id);
-    navigate(text.route);
+  const handleItemClick = (item) => {
+    setSelectedItem(item.id);
+    navigate(item.route);
   };
 
   return (
@@ -48,12 +48,12 @@ const Navbar = () => {
       <Toolbar />
 
       <List>
-        {mainNavbarItems.map((text) => (
+        {mainNavbarItems.map((item) => (
           <ListItem
-            key={text.id}
+            key={item.id}
             disablePadding
-            selected={selectedItem === text.id}
-            onClick={() => handleItemClick(text)}
+            selected={selectedItem === item.id}
+            onClick={() => handleItemClick(item)}
             sx={{
               "&:hover": {
                 border: "1px solid #132968",
@@ -63,11 +63,11 @@ const Navbar = () => {
             <ListItemButton
               sx={{
                 backgroundColor:
-                  selectedItem === text.id ? "#132968" : "inherit",
+                  selectedItem === item.id ? "#132968" : "inherit",
               }}
             >
-              <ListItemIcon sx={{ color: "#FFFFFF" }}>{text.icon}</ListItemIcon>
-              <ListItemText primary={text.label} />
+              <ListItemIcon sx={{ color: "#FFFFFF" }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
         ))}

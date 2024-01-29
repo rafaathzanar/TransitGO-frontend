@@ -7,8 +7,6 @@ import Typography from "@mui/material/Typography";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import HomeIcon from "@mui/icons-material/Home";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import Stack from "@mui/material/Stack";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const CornerProfileButton = () => {
   const [anchorEl, setAnchorEl] = useState(null);

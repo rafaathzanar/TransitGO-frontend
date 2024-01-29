@@ -2,7 +2,8 @@ import React from "react";
 import Navbar from "./components/navbar/Navbar";
 import CornerProfileButton from "./components/CornerProfileButton/CornerProfileButton";
 
-const Layout = ({ children }) => {
+const LayoutAdmin = ({ children }) => {
+  console.log("Rendering LayoutAdmin");
   return (
     <div>
       <Navbar />
@@ -12,4 +13,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default LayoutAdmin;
