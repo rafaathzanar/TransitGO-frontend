@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import LayoutAdmin from "../../LayoutAdmin";
-const AnnouncementandDelayReports = () => {
+const AnnouncementandDelayReportsAdmin = () => {
   return (
     <Grid item xs={8}>
       This is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page.This is
@@ -15,4 +15,4 @@ const AnnouncementandDelayReports = () => {
   );
 };
 
-export default AnnouncementandDelayReports;
+export default AnnouncementandDelayReportsAdmin;

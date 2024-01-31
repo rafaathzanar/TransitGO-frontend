@@ -9,29 +9,33 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import RouteandSchedule from "./pages/RouteandSchedule/RouteandSchedule";
 import Package from "./pages/Package/Package";
 import Employees from "./pages/Employees/Employees";
-import AnnouncementandDelayReports from "./pages/AnnouncementandDelayReports/AnnouncementandDelayReports";
+import AnnouncementandDelayReportsAdmin from "./pages/AnnouncementandDelayReportsAdmin/AnnouncementandDelayReportsAdmin";
 
 import { ThemeProvider } from "@mui/material/styles";
 import { dashboardTheme } from "./dashboardTheme";
-import LayoutAdmin from "./LayoutAdmin";
-import { Switch } from "@mui/material";
+import Navbar from "./components/navbar/Navbar";
+import CornerProfileButton from "./components/CornerProfileButton/CornerProfileButton";
 import HomePage from "./pages/HomePage/HomePage";
-
+import RouteManagement from "./pages/RouteManagement/RouteManagement";
+import RouteEditPage from "./pages/RouteEditPage/RouteEditPage";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={dashboardTheme}>
     <BrowserRouter>
       <Routes>
         <Route path="/homepage" element={<HomePage />} />
-        <Route path="dashboard/" element={<LayoutAdmin />}>
+        <Route path="/" element={<App />}>
+          <Route path="dashboard" element={<Dashboard />} />
           <Route index element={<Dashboard />} />
-          <Route path="routeschedule" element={<RouteandSchedule />} />
-          <Route path="packagetransfer" element={<Package />} />
+          <Route path="/routeschedule" element={<RouteandSchedule />} />
           <Route
-            path="announcementdelayreports"
-            element={<AnnouncementandDelayReports />}
+            path="announcementanddelayreportsadmin"
+            element={<AnnouncementandDelayReportsAdmin />}
           />
           <Route path="employees" element={<Employees />} />
+          <Route path="packagetransfer" element={<Package />} />
+          <Route path="routemanagement" element={<RouteManagement />} />
+          <Route path="RouteEditPage" element={<RouteEditPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

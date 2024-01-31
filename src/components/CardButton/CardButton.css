@@ -1,24 +1,45 @@
+/* CardButton.css */
+
 .card-button {
-  /* Basic button styling */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
+  position: relative;
+  background: url("../../logo/Rectangle\ 3.png");
+  background-size: cover;
+  background-position: center;
+  margin: 20px;
   border: none;
-  border-radius: 5px;
-  background-color: #f0f0f0; /* Adjust as needed */
+  padding: 15px;
   cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  width: 400px; /* Set the desired width */
+  height: 250px; /* Set the desired height */
 }
 
-.card-button-icon {
-  /* Styling for icons */
-  width: 300px;
-  height: 240px;
-  margin-right: 10px;
+.card-button-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-button-typography {
-  /* Styling for typography */
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 20px;
+  color: #132968;
+  margin-right: 10px;
+}
+
+.card-button-icon {
+  width: 100%; /* Set the icon size as a percentage of the card button size */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.card-button {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-button:hover {
+  transform: scale(1.05);
 }

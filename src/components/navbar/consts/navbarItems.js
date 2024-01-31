@@ -27,12 +27,12 @@ export const mainNavbarItems = [
     id: 3,
     icon: <CampaignIcon />,
     label: "Announcement & Delay Report",
-    route: "announcementdelayreports",
+    route: "announcementanddelayreportsadmin",
   },
   {
     id: 4,
     icon: <LocalShippingIcon />,
     label: "Package",
-    route: "packageTransfer",
+    route: "packagetransfer",
   },
 ];

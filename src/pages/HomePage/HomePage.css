@@ -1,0 +1,17 @@
+.home-page-container {
+  position: relative;
+}
+
+.cover-pic {
+  width: 100%;
+  height: auto;
+}
+
+/* Position HeaderBar absolutely on top of CoverPic */
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; /* Ensure HeaderBar is on top of the CoverPic */
+}

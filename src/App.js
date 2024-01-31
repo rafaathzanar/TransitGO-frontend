@@ -6,7 +6,11 @@ import Grid from "@mui/material/Grid";
 function App() {
   return (
     <Grid container>
+      <Navbar />
       <Outlet />
+      <div>
+        <CornerProfileButton />
+      </div>
     </Grid>
   );
 }
