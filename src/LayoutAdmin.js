@@ -1,15 +1,16 @@
+//LayoutAdmin.js
 import React from "react";
 import Navbar from "./components/navbar/Navbar";
 import CornerProfileButton from "./components/CornerProfileButton/CornerProfileButton";
-
-const LayoutAdmin = ({ children }) => {
+import { Outlet } from "react-router";
+const LayoutAdmin = () => {
   console.log("Rendering LayoutAdmin");
   return (
-    <div>
+    <>
       <Navbar />
-      {children}
       <CornerProfileButton />
-    </div>
+      <Outlet></Outlet>
+    </>
   );
 };
 

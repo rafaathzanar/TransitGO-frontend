@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Logo from "../../logo/logoblack.png";
+import Logo from "../../logo/logo.png";
 
 const pages = ["Home", "News", "About Us"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -36,26 +36,14 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" style={{ zIndex: 99, top: 0 }} width="100%">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img src={Logo} sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            TransitGO
-          </Typography>
+          <img
+            src={Logo}
+            width="216px"
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton

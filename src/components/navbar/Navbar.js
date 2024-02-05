@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
-import Logo from "../../logo/logoblack.png";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -21,9 +21,10 @@ const Navbar = () => {
   };
 
   const [selectedItem, setSelectedItem] = useState(null);
-
   const navigate = useNavigate();
-  const drawerWidth = 220;
+  const isSmallScreen = useMediaQuery("(max-width:1400px)");
+
+  const drawerWidth = isSmallScreen ? 60 : "14%"; // Adjust the width based on the screen size
 
   const handleItemClick = (item) => {
     setSelectedItem(item.id);
@@ -67,15 +68,11 @@ const Navbar = () => {
               }}
             >
               <ListItemIcon sx={{ color: "#FFFFFF" }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
+              {!isSmallScreen && <ListItemText primary={item.label} />}
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <div className="logoADMIN" style={logoADMINStyle}>
-        <img src={Logo} alt="AppLogo" width="180" height="64"></img>
-        <span style={AdminfontspanStyle}> Admin Portal</span>
-      </div>
     </Drawer>
   );
 };

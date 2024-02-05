@@ -9,104 +9,30 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CommonButton from "../common/CommonButton/CommonButton";
 
-export default function CRUDtableRoute() {
+export default function CRUDtableBus() {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [rows, setRows] = useState([
-    {
-      id: 1,
-      routeno: "123",
-      route: "Route A",
-      listofbuses: "Bus1, Bus2",
-      actions: "Delete",
-    },
-    {
-      id: 2,
-      routeno: "456",
-      route: "Route B",
-      listofbuses: "Bus3, Bus4",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 3,
-      routeno: "789",
-      route: "Route C",
-      listofbuses: "Bus5, Bus6",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 4,
-      routeno: "101",
-      route: "Route D",
-      listofbuses: "Bus7, Bus8",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 5,
-      routeno: "112",
-      route: "Route E",
-      listofbuses: "Bus9, Bus10",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 6,
-      routeno: "131",
-      route: "Route F",
-      listofbuses: "Bus11, Bus12",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 7,
-      routeno: "145",
-      route: "Route G",
-      listofbuses: "Bus13, Bus14",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 8,
-      routeno: "157",
-      route: "Route H",
-      listofbuses: "Bus15, Bus16",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 9,
-      routeno: "169",
-      route: "Route I",
-      listofbuses: "Bus17, Bus18",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 10,
-      routeno: "171",
-      route: "Route J",
-      listofbuses: "Bus19, Bus20",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 11,
-      routeno: "183",
-      route: "Route K",
-      listofbuses: "Bus21, Bus22",
-      "update/delete": "Update",
-      actions: "Delete",
-    },
-    {
-      id: 12,
-      routeno: "194",
-      route: "Route L",
-      listofbuses: "Bus23, Bus24",
-      actions: "Delete",
-    },
+    { id: 1, busid: 1, busRegNo: "ABC123", busRoutes: "Route A" },
+    { id: 2, busid: 2, busRegNo: "XYZ789", busRoutes: "Route B" },
+    { id: 3, busid: 3, busRegNo: "DEF456", busRoutes: "Route C" },
+    { id: 4, busid: 4, busRegNo: "GHI789", busRoutes: "Route D" },
+    { id: 5, busid: 5, busRegNo: "JKL012", busRoutes: "Route E" },
+    { id: 6, busid: 6, busRegNo: "MNO345", busRoutes: "Route F" },
+    { id: 7, busid: 7, busRegNo: "PQR678", busRoutes: "Route G" },
+    { id: 8, busid: 8, busRegNo: "STU901", busRoutes: "Route H" },
+    { id: 9, busid: 9, busRegNo: "VWX234", busRoutes: "Route I" },
+    { id: 10, busid: 10, busRegNo: "YZA567", busRoutes: "Route J" },
+    { id: 11, busid: 11, busRegNo: "BCD890", busRoutes: "Route K" },
+    { id: 12, busid: 12, busRegNo: "EFG123", busRoutes: "Route L" },
+    { id: 13, busid: 13, busRegNo: "HIJ456", busRoutes: "Route M" },
+    { id: 14, busid: 14, busRegNo: "KLM789", busRoutes: "Route N" },
+    { id: 15, busid: 15, busRegNo: "NOP012", busRoutes: "Route O" },
+    { id: 16, busid: 16, busRegNo: "PQR345", busRoutes: "Route P" },
+    { id: 17, busid: 17, busRegNo: "STU678", busRoutes: "Route Q" },
+    { id: 18, busid: 18, busRegNo: "VWX901", busRoutes: "Route R" },
+    { id: 19, busid: 19, busRegNo: "YZA234", busRoutes: "Route S" },
+    { id: 20, busid: 20, busRegNo: "BCD567", busRoutes: "Route T" },
   ]);
 
   const handleClickOpen = (id) => {
@@ -134,12 +60,12 @@ export default function CRUDtableRoute() {
   };
 
   const columns = [
-    { field: "routeno", headerName: "Route No.", width: 200 },
-    { field: "route", headerName: "Route", width: 200 },
-    { field: "listofbuses", headerName: "List Of Buses", width: 200 },
+    { field: "busid", headerName: "Bus Id", width: 200 },
+    { field: "busRegNo", headerName: "Bus RegNo", width: 200 },
+    { field: "busRoutes", headerName: "Bus Routes", width: 200 },
     {
       field: "actions",
-      headerName: "Actions",
+      headerName: "",
       width: 200,
       renderCell: (params) => (
         <div>
@@ -169,7 +95,7 @@ export default function CRUDtableRoute() {
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
+        pageSize={10}
         pageSizeOptions={[5, 10]}
       />
 

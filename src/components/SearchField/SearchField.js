@@ -33,14 +33,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-function SearchField() {
+function SearchField({ placeholderText }) {
   return (
     <Search>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="Search Route"
+        placeholder={placeholderText}
         inputProps={{ "aria-label": "search" }}
       />
     </Search>
