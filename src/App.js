@@ -14,10 +14,9 @@ function App() {
     <ThemeProvider theme={dashboardTheme}>
       <BrowserRouter>
         <Routes>
-          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
-          <Route path="/busschedule" element={<BusSchedule />} />
-          <Route path="/sample" element={<ScheduleCard />} />
+          <Route path="busschedule" element={<BusSchedule />} />
           <Route path="/routeeditpage" element={<RouteEditPage />} />
         </Routes>
       </BrowserRouter>

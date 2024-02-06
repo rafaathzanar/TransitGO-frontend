@@ -7,8 +7,10 @@ import Icon2 from "../../logo/lostimg.png";
 import Icon3 from "../../logo/packimg.png";
 import Icon4 from "../../logo/announceimg.png";
 import { Grid } from "@mui/material";
+import { useNavigate } from "react-router";
 
 function HomePage() {
+  const navigate = useNavigate();
   return (
     <div style={{ backgroundColor: "D4D7DB" }}>
       <HeaderBar></HeaderBar>
@@ -25,7 +27,7 @@ function HomePage() {
             <CardButton
               typography="Bus Schedules"
               icon={Icon1}
-              onClick={() => console.log("Button clicked!")}
+              onClick={() => navigate("busschedule")}
             />
           </Grid>
           <Grid xs={12} sm={6} md={6}>
