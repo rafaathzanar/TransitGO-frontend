@@ -48,7 +48,7 @@ function HomePage() {
             <CardButton
               typography="Delay Reports Announcements"
               icon={Icon4}
-              onClick={() => console.log("Button clicked!")}
+              onClick={() => navigate("announcementanddelay")}
             />
           </Grid>
         </Grid>

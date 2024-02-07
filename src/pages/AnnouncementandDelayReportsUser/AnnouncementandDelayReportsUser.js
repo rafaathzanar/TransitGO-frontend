@@ -28,7 +28,7 @@ function AnnouncementandDelayReportsUser() {
   // };
 
   let content = (
-    <p style={{ textAlign: "center" }}>No Announcemet found. Maybe add one?</p>
+    <p style={{ textAlign: "center" }}>No Announcement found. Maybe add one?</p>
   );
 
   // if (Delay.length > 0) {
@@ -41,11 +41,19 @@ function AnnouncementandDelayReportsUser() {
     // <Grid item xs={12} className="grid">
 
     <>
-
-    
       <Grid container spacing={5}>
-        
-        <Grid item xl={5} lg={10} md={10} sm={12} xs={12} ml={10} mb={10} mr={5} className="grid">
+        <Grid
+          item
+          xl={5}
+          lg={10}
+          md={10}
+          sm={12}
+          xs={12}
+          ml={10}
+          mb={10}
+          mr={5}
+          className="grid"
+        >
           <div className="ann">
             <div>
               <section id="goal-form">
@@ -65,13 +73,24 @@ function AnnouncementandDelayReportsUser() {
           </div>
         </Grid>
 
-        <Grid item xl={5} lg={10} md={10} sm={12} xs={12} 	ml={10} mr={5} mb={10} className="grid">
+        <Grid
+          item
+          xl={5}
+          lg={10}
+          md={10}
+          sm={12}
+          xs={12}
+          ml={10}
+          mr={5}
+          mb={10}
+          className="grid"
+        >
           <div className="rep">
             <div className="head">DELAY REPORT</div>
             <div>
               <div className="lab">
                 <label className="lab">Select Bus</label>
-                <Select sx={{ width: 600}}></Select>
+                <Select sx={{ width: 600 }}></Select>
               </div>
               <div className="lab">
                 <label>Delay Time</label>

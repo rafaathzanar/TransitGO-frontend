@@ -2,13 +2,12 @@ import React, { useState } from "react";
 
 import Button from "../../UI/Button/Button";
 import "./DelayInput.css";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const DelayInputCon = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [isValid, setIsValid] = useState(true);
-  const navigate =useNavigate()
-  
+  const navigate = useNavigate();
 
   const delayInputChangeHandler = (event) => {
     if (event.target.value.trim().length > 0) {
@@ -26,19 +25,16 @@ const DelayInputCon = (props) => {
     props.onAddGoal(enteredValue);
   };
 
-    const [showRules, setShowRules] = useState(false);
-  
-    const toggleRules = () => {
-      setShowRules(!showRules);
-    };
+  const [showRules, setShowRules] = useState(false);
+
+  const toggleRules = () => {
+    setShowRules(!showRules);
+  };
 
   return (
-    <div >
-      
+    <div>
       <div className="on">
-      <Button  onClick={() => navigate('announcementanddelayreportsUser')} >
-        + Announcement/Delay
-      </Button>
+        <Button onClick={() => navigate("report")}>+ Announcement/Delay</Button>
       </div>
     </div>
   );

@@ -8,7 +8,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminRoutes from "./AdminRoutes";
 import BusSchedule from "./pages/BusSchedule/BusSchedule";
 import ScheduleCard from "./components/ScheduleCard/ScheduleCard";
-
+import AnnouncementandDelayReportsConductor from "./pages/AnnouncementandDelayReportsConductor/AnnouncementandDelayReportsConductor";
+import AnnouncementandDelayReportsUser from "./pages/AnnouncementandDelayReportsUser/AnnouncementandDelayReportsUser";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -18,6 +19,13 @@ function App() {
           <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path="busschedule" element={<BusSchedule />} />
           <Route path="/routeeditpage" element={<RouteEditPage />} />
+          <Route path="announcementanddelay">
+            <Route index element={<AnnouncementandDelayReportsConductor />} />
+            <Route
+              path="report"
+              element={<AnnouncementandDelayReportsUser />}
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
