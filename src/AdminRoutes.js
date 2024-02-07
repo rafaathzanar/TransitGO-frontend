@@ -5,7 +5,7 @@ import RouteandSchedule from "./pages/RouteandSchedule/RouteandSchedule";
 import AnnouncementandDelayReportsAdmin from "./pages/AnnouncementandDelayReportsAdmin/AnnouncementandDelayReportsAdmin";
 import Employees from "./pages/Employees/Employees";
 import Package from "./pages/Package/Package";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import DashboardElement from "./pages/Dashboard/Dashboard";
 import LayoutAdmin from "./LayoutAdmin";
 import RouteManagement from "./pages/RouteManagement/RouteManagement";
 import BusManagement from "./pages/BusManagement/BusManagement";
@@ -18,7 +18,7 @@ function AdminRoutes() {
       <LayoutAdmin></LayoutAdmin>
       <div style={{ marginLeft: "16%", marginTop: "6%" }}>
         <Routes>
-          <Route index element={<Dashboard />} />
+          <Route index element={<DashboardElement />} />
           <Route path="routeschedule">
             <Route index element={<RouteandSchedule />} />
             <Route path="routemanagement">

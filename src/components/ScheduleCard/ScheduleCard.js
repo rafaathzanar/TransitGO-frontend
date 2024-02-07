@@ -8,7 +8,10 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
   const headbarStyle = {
     display: "flex",
     justifyContent: "space-between",
-    backgroundColor: "#FA6B6B",
+    backgroundColor: "#071E60",
+    height: "32px",
+    color: "white",
+    borderRadius: 6,
   };
   const middlePartStyle = {
     display: "flex",
@@ -20,15 +23,17 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#FA6B6B",
+    backgroundColor: "#071E60",
+    borderRadius: 6,
   };
 
   return (
     <>
       <Card
         style={{
-          width: "70%",
-          marginLeft: "15%",
+          width: "60%",
+          marginLeft: "20%",
+
           marginTop: "40px",
           boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.5)",
         }}
@@ -39,10 +44,10 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
           }}
         >
           <div style={headbarStyle}>
-            <div style={{ padding: 10, fontSize: "20px" }}>
+            <div style={{ fontSize: "15px", paddingLeft: 15 }}>
               <p>Bus ID: {busID}</p>
             </div>
-            <div style={{ padding: 10, fontSize: "20px" }}>
+            <div style={{ fontSize: "15px", paddingRight: 15 }}>
               <p>Route No: {routeNo}</p>
             </div>
           </div>
@@ -81,6 +86,7 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
                     backgroundColor: "#90EE90",
                     padding: 2,
                     fontSize: "14px",
+                    borderRadius: 6,
                   }}
                 >
                   Got off from "Pettah" at 8.55 PM
@@ -107,9 +113,10 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
               <Typography>
                 <p
                   style={{
-                    backgroundColor: "red",
+                    backgroundColor: "#f44336",
                     padding: 2,
                     fontSize: "14px",
+                    borderRadius: 15,
                   }}
                 >
                   Delay 10 Minutes
