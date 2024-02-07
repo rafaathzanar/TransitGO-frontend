@@ -1,0 +1,71 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.signup-page{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+    "left-image  right-form" ;
+    height: 100vh;
+}
+
+.left-image{
+    grid-area: left-image;
+    background-color:#FA6B6B;
+    display: grid;
+    grid-template-rows: 1fr 8fr;
+    grid-template-areas: 
+    "logo"
+    "main-image";
+    padding: 20px;
+}
+
+.logo{
+    grid-area: logo;
+}
+
+.main-image{
+    grid-area: main-image;
+    padding: 0 30px 0 30px;
+}
+
+.right-form{
+    grid-area: right-form;
+    background-color: white;
+}
+
+.right-form{
+    display: grid;
+    grid-template-rows: 1fr 8fr 1fr 1fr;
+    grid-template-areas: 
+    "signup-form-heading"
+    "signup-form"
+    "option"
+    "signup-button";
+ }
+
+ .signup-form-heading{
+    grid-area: signup-form-heading;
+    padding:20px ;
+ }
+
+ .signup-form{
+    width: 100%;
+    grid-area: signup-form;
+    padding: 0 50px 0 50px; 
+    justify-content: space-around;
+ }
+
+ .option{
+    grid-area: option;
+ }
+
+ .signup-button{
+    grid-area: signup-button;
+    width: 70%;
+    display: flex;
+    justify-self: center;
+ }
+
+

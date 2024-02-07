@@ -1,0 +1,8 @@
+.send-otp-button button{
+background-color: #FA6B6B;
+color: white;
+padding: 10px;
+border: #FA6B6B;
+border-radius: 5px;
+width: 100%;
+}
