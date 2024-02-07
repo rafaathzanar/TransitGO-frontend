@@ -1,12 +1,12 @@
 import React from "react";
 import "./CardBox.css";
 
-function CardBox({  icon,typography, onClick }) {
+function CardBox({ icon, typography, onClick }) {
   return (
-    <button className="card-button" onClick={onClick}>
-      <div className="card-button-content">
-        <span className="card-button-typography">{typography}</span>
-        <img src={icon} alt={icon} className="card-button-icon" />
+    <button className="card-box" onClick={onClick}>
+      <div className="card-box-content">
+        <img src={icon} alt={icon} className="card-box-icon" />
+        <span className="card-box-typography">{typography}</span>
       </div>
     </button>
   );

@@ -34,7 +34,7 @@ function HomePage() {
             <CardButton
               typography="Lost/Found"
               icon={Icon2}
-              onClick={() => console.log("Button clicked!")}
+              onClick={() => navigate("lostandfound")}
             />
           </Grid>
           <Grid xs={12} sm={6} md={6}>

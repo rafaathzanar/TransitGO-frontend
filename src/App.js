@@ -10,6 +10,11 @@ import BusSchedule from "./pages/BusSchedule/BusSchedule";
 import ScheduleCard from "./components/ScheduleCard/ScheduleCard";
 import AnnouncementandDelayReportsConductor from "./pages/AnnouncementandDelayReportsConductor/AnnouncementandDelayReportsConductor";
 import AnnouncementandDelayReportsUser from "./pages/AnnouncementandDelayReportsUser/AnnouncementandDelayReportsUser";
+import LostFound from "./pages/LostFound/LostFound";
+import LostItem from "./pages/LostFound/LostItem";
+import FoundItemPage from "./pages/LostFound/FoundItem";
+import FoundForm from "./pages/LostFound/FoundForm";
+import LostForm from "./pages/LostFound/LostForm";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -25,6 +30,13 @@ function App() {
               path="report"
               element={<AnnouncementandDelayReportsUser />}
             />
+          </Route>
+          <Route path="lostandfound">
+            <Route index element={<LostFound />} />
+            <Route path="lostitem" element={<LostItem />} />
+            <Route path="founditem" element={<FoundItemPage />} />
+            <Route path="lostfoundreport" element={<FoundForm />} />
+            <Route path="lostfoundreport2" element={<LostForm />} />
           </Route>
         </Routes>
       </BrowserRouter>
