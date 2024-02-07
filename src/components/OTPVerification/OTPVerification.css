@@ -1,0 +1,19 @@
+.email-verification--form .form-control{
+    background-color: #ffffff;
+    border: 1px solid #FA6B6B;
+    padding: 15px;
+}
+
+.form-lable{
+    color: #FA6B6B;
+}
+
+.resent-otp ,.email-verification-heading{
+    color:#1E2772 ;
+}
+
+.email-verification--form{
+    display: flex;
+    column-gap: 40px;
+    justify-content: center;
+}
