@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Grid from "@mui/material/Grid";
-import DelayInput from "../../components/Delay/DelayInput/DelayInput"
+import DelayInput from "../../components/Delay/DelayInput/DelayInputCon"
 import DelayList from '../../components/Delay/DelayList/DelayList'
-import './AnnouncementDelayReports.css'
+import './AnnouncementDelayConductor.css'
+import DelayInputCon from '../../components/Delay/DelayInput/DelayInputCon';
 
-function AnnouncementandDelayReportsAdmin() {
+function AnnouncementandDelayReportsConductor() {
+
 
   const [Delay, setNewDelay] = useState([
     { text: '"We are sorry to announce that all bus services from Pettah are currently delayed by 20 minutes. This is due to an unexpected incident on the route. We are working to resolve the issue as quickly as possible and will keep you updated. Thank you for your understanding."', id: 'g1' },
@@ -40,7 +42,7 @@ function AnnouncementandDelayReportsAdmin() {
     <Grid item xs={10}>
       <div>
       <section id="goal-form1">
-        <DelayInput onAddGoal={addDelayHandler}  />
+        <DelayInputCon onAddGoal={addDelayHandler}  />
       </section>
       </div>
       <section id="goals1">
@@ -57,4 +59,4 @@ function AnnouncementandDelayReportsAdmin() {
   );
 }
 
-export default AnnouncementandDelayReportsAdmin;
+export default AnnouncementandDelayReportsConductor;
