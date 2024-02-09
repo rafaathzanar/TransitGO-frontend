@@ -1,6 +1,5 @@
 import { CardContent } from '@mui/material'
 import React from 'react'
-import RadioButton from './Reviews'
 import SelectComp from './SelectComp'
 import Card from '@mui/material/Card';
 import Reviews from './Reviews';
