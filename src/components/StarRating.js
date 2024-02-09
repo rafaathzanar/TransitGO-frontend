@@ -1,9 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import Typography from '@mui/material/Typography';
-
 
 const labels = {
   0.5: 'Useless',
@@ -22,8 +21,7 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]};`;
 }
 
-export default function StarRating() {
-  const [value, setValue] = React.useState(0);
+const StarRating = ({ value, onChange }) => {
   const [hover, setHover] = React.useState(-1);
 
   return (
@@ -44,7 +42,9 @@ export default function StarRating() {
         precision={0.5}
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
-          setValue(newValue);
+          if (onChange) {
+            onChange(newValue);
+          }
         }}
         onChangeActive={(event, newHover) => {
           setHover(newHover);
@@ -56,4 +56,8 @@ export default function StarRating() {
       )}
     </Box>
   );
-}
+};
+
+export default StarRating;
+
+
