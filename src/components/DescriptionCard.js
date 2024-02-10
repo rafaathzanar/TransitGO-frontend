@@ -9,18 +9,18 @@ const DescriptionCard = ({ Uname,numb,bus,desc }) => {
     <Card style={{width:'100%'}}>
       <CardContent>
         <Typography variant="body2" component="div">
-          {Uname}
+          Name: {Uname}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {numb}
-        </Typography>
-
-        <Typography variant="body2" color="textSecondary">
-          {bus}
+          Contact Number:{numb}
         </Typography>
 
         <Typography variant="body2" color="textSecondary">
-          {desc}
+          Bus Details:{bus}
+        </Typography>
+
+        <Typography variant="body2" component="div">
+          Item Description:{desc}
         </Typography>
 
       </CardContent>

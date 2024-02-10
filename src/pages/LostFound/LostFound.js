@@ -17,11 +17,12 @@ export default function LostFound() {
         Get Your Things Back with
       </Typography>
 
-      <Typography variant="h2" align="center" fontWeight="bold" fontFamily="OpenSans">
+      <Typography variant="h2" align="center" fontWeight="bold" fontFamily="OpenSans" marginBottom='80px'>
         Lost&Found
       </Typography>
 
-      <Grid container spacing={3} justifyContent="center" alignItems="center">
+      <Grid container spacing={6} justifyContent="center" alignItems="center">
+
         <CardBox icon={img1} typography={"Lost Announcement"} onClick={() => navigate("lostitem")} />
         <CardBox icon={img2} typography={"Found Announcement"} onClick={() => navigate("founditem")} />
         <CardBox icon={img3} typography={"Report Lost/Found"} onClick={() => navigate("lostfoundreport")} />

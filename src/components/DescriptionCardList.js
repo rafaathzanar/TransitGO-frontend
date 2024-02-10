@@ -1,14 +1,18 @@
 // DescriptionCardList.js
 import React from 'react';
 import DescriptionCard from './DescriptionCard';
+import {  Grid } from '@mui/material';
 
 const DescriptionCardList = ({ data }) => {
   return (
-    <div style={{ display: 'flex', gap: '20px' }}>
-      {data.map((item) => (
-        <DescriptionCard key={item.id} Uname={item.Uname} numb={item.numb} bus={item.bus} desc={item.desc} />
-      ))}
-    </div>
+    <Grid container spacing={2}>
+  {data.map((item) => (
+    <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+      <DescriptionCard {...item} />
+    </Grid>
+  ))}
+</Grid>
+
   );
 };
 
