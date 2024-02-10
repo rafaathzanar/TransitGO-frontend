@@ -13,24 +13,25 @@ const SearchFilter = ({ onSearch }) => {
 
   return (
     <TextField
-    placeholder="Search..."
-    variant="outlined"
-    style={{
-      width: '150px', // Adjust the width as needed
-      borderRadius: '4px', // Add border-radius for a rectangular shape
-     padding:'1px',
-       // Optional: Add some margin for spacing
-      height:'30px',
-    }}
-    value={searchTerm}
-    onChange={handleSearch}
-    InputProps={{
-      startAdornment: (
-        <SearchIcon style={{ color: '#6d7070' }} />
-      ),
-    }}
-  />
-
+      placeholder="Search..."
+      style={{
+     
+        width: '100%', // Adjust the width as needed
+        borderRadius: '4px',
+        padding: '0px', // Adjust padding for the inner content
+        height: '55px',
+        backgroundColor: '#020552',
+      }}
+      value={searchTerm}
+      onChange={handleSearch}
+      InputProps={{
+        startAdornment: (
+          <SearchIcon style={{ color: '#edebe6', marginRight: '0' }} />
+        ),
+        style: { padding: '0', margin: '0' }, // Adjust padding and margin for the input field
+        inputProps: { style: { color: '#edebe6' } }, // Set color for the input text
+      }}
+    />
   );
 };
 
