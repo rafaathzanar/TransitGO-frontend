@@ -8,9 +8,8 @@ const Search = styled("div")(({ theme }) => ({
   color: "#9E9E9E",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: "#132968",
-  top: "10px",
   marginRight: "31.25rem",
-  width: "38%",
+  width: "15rem",
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -33,7 +32,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-function SearchField({ placeholderText }) {
+function SearchField({ placeholderText, value, onChange }) {
   return (
     <Search>
       <SearchIconWrapper>
@@ -41,7 +40,8 @@ function SearchField({ placeholderText }) {
       </SearchIconWrapper>
       <StyledInputBase
         placeholder={placeholderText}
-        inputProps={{ "aria-label": "search" }}
+        value={value}
+        onChange={onChange}
       />
     </Search>
   );

@@ -1,8 +1,8 @@
 import React from "react";
 import busImg from "../../logo/image 1.png";
-import { Typography, Card, CardContent } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import { Card, CardContent } from "@mui/material";
+
+import "./ScheduleCard.css";
 
 function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
   const headbarStyle = {
@@ -29,21 +29,9 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
 
   return (
     <>
-      <Card
-        style={{
-          width: "60%",
-          marginLeft: "20%",
-
-          marginTop: "40px",
-          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.5)",
-        }}
-      >
-        <CardContent
-          style={{
-            background: "linear-gradient(to right, lightblue, white)",
-          }}
-        >
-          <div style={headbarStyle}>
+      <Card className="schedule-card">
+        <CardContent className="schedule-card-content">
+          <div className="header-bar" style={headbarStyle}>
             <div style={{ fontSize: "15px", paddingLeft: 15 }}>
               <p>Bus ID: {busID}</p>
             </div>
@@ -51,77 +39,66 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
               <p>Route No: {routeNo}</p>
             </div>
           </div>
-          <div style={middlePartStyle}>
+          <div className="middle-bar" style={middlePartStyle}>
             <div>
-              <img src={busImg} />
+              <img src={busImg} style={{ position: "relative" }} />
             </div>
             <div>
-              <Typography variant="h5">
-                <p>Colombo</p>
-                <p>9.00AM</p>
-              </Typography>
+              <p style={{ marginBottom: -10, fontSize: 15 }}>From:</p>
+              <p>Colombo</p>
+              <p>9.00AM</p>
             </div>
-            <div style={{ alignItems: "center" }}>
-              <p style={{ textAlign: "center" }}>
-                •••••••••••••••••••••••••••••••••••••••••••••••••••
-              </p>
-              <Typography variant="h6">
-                {" "}
-                <p style={{ textAlign: "center" }}>4 Hours and 30 Minutes</p>
-              </Typography>
-            </div>
+
+            <p className="duration" style={{ textAlign: "center", margin: 20 }}>
+              4 Hours and 30 Minutes
+            </p>
+
             <div>
-              <Typography variant="h5">
-                <p>Colombo</p>
-                <p>9.00AM</p>
-              </Typography>
+              <p style={{ marginBottom: -10, fontSize: 15 }}>To:</p>
+              <p>Galle</p>
+              <p>11.00AM</p>
             </div>
             <a href="#">Review & Ratings</a>
           </div>
-          <div style={footerbarStyle}>
-            <div style={{ padding: 5, fontSize: "12px", fontWeight: "bold" }}>
-              <Typography>
-                <p
-                  style={{
-                    backgroundColor: "#90EE90",
-                    padding: 2,
-                    fontSize: "14px",
-                    borderRadius: 6,
-                  }}
-                >
-                  Got off from "Pettah" at 8.55 PM
-                </p>
-              </Typography>
+          <div className="footer-bar" style={footerbarStyle}>
+            <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
+              <p
+                style={{
+                  backgroundColor: "#90EE90",
+                  padding: 2,
+                  borderRadius: 6,
+                }}
+              >
+                Got off from "Pettah" at 8.55 PM
+              </p>
             </div>
             <div>
-              <Select
+              <select
+                className="select-option"
                 defaultValue=""
                 displayEmpty
                 style={{
-                  width: "400px",
-                  height: "35px",
+                  width: "250px",
+                  height: "20px",
                   backgroundColor: "white",
                 }}
               >
-                <MenuItem>Arrival at Colombo 9.00 PM</MenuItem>
-                <MenuItem>Arrival at Kollupitiya 9.15 PM</MenuItem>
-                <MenuItem>Arrival at Bambalapitiya 9.20 PM</MenuItem>
-                <MenuItem>Arrival at Wellawatta 9.30 PM</MenuItem>
-              </Select>
+                <option>Arrival at Colombo 9.00 PM</option>
+                <option>Arrival at Kollupitiya 9.15 PM</option>
+                <option>Arrival at Bambalapitiya 9.20 PM</option>
+                <option>Arrival at Wellawatta 9.30 PM</option>
+              </select>
             </div>
-            <div style={{ padding: 5, fontSize: "12px", fontWeight: "bold" }}>
-              <Typography>
-                <p
-                  style={{
-                    backgroundColor: "#f44336",
-                    padding: 2,
-                    fontSize: "14px",
-                    borderRadius: 15,
-                  }}
-                >
-                  Delay 10 Minutes
-                </p>
-              </Typography>
+            <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
+              <p
+                style={{
+                  backgroundColor: "red",
+                  padding: 6,
+                  borderRadius: 15,
+                }}
+              >
+                Delay: 10 min
+              </p>
             </div>
           </div>
         </CardContent>

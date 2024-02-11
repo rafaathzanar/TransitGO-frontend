@@ -1,0 +1,183 @@
+.schedule-card {
+  width: 60%;
+  margin-left: 20%;
+  margin-top: 40px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.schedule-card-content {
+  background: linear-gradient(to right, lightblue, white);
+  padding: 20px;
+}
+
+.header-bar {
+  font-size: 20px;
+}
+.middle-bar {
+  font-size: 20px;
+}
+.middle-bar a {
+  font-size: 10px;
+  margin-left: 10px;
+}
+.duration {
+  color: brown;
+  font-weight: 300;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.schedule-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 1440px) {
+  .schedule-card {
+    width: 70%;
+    margin-left: 15%;
+  }
+
+  .schedule-card-content {
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .schedule-card {
+    width: 80%;
+    margin-left: 10%;
+  }
+
+  .schedule-card-content {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .schedule-card {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .schedule-card-content {
+    padding: 8px;
+  }
+}
+@media screen and (max-width: 920px) {
+  .schedule-card {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .schedule-card-content {
+    padding: 8px;
+  }
+
+  .schedule-card img {
+    max-width: 80%;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 888px) {
+  .schedule-card {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .schedule-card-content {
+    padding: 8px;
+  }
+
+  .schedule-card-content a {
+    font-size: 10px;
+  }
+  .schedule-card img {
+    max-width: 70%;
+    height: auto;
+  }
+}
+@media screen and (max-width: 785px) {
+  .schedule-card {
+    width: 95%;
+    margin-left: 2.5%;
+  }
+
+  .schedule-card-content {
+    padding: 5px;
+  }
+  .schedule-card-content a {
+    font-size: 10px;
+    margin-left: 10px;
+  }
+}
+@media screen and (max-width: 650px) {
+  .schedule-card {
+    width: 95%;
+    margin-left: 2.5%;
+  }
+
+  .schedule-card-content {
+    padding: 5px;
+  }
+  .middle-bar a {
+    font-size: 10px;
+    margin-left: 10px;
+  }
+  .middle-bar p {
+    font-size: 20px;
+  }
+  .schedule-card img {
+    display: none;
+  }
+  .duration {
+    color: brown;
+    font-weight: 300;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  }
+  .cringe p {
+    font-size: 10px;
+  }
+  .header-bar {
+    color: brown;
+  }
+  .footer-bar {
+    font-size: 5px;
+  }
+}
+@media screen and (max-width: 425px) {
+  .schedule-card {
+    width: 95%;
+    margin-left: 2.5%;
+  }
+
+  .schedule-card-content {
+    padding: 5px;
+  }
+  .middle-bar a {
+    font-size: 10px;
+    margin-left: 10px;
+  }
+  .middle-bar p {
+    font-size: 14px;
+  }
+  .schedule-card img {
+    display: none;
+  }
+
+  .cringe p {
+    font-size: 10px;
+  }
+  .header-bar {
+    color: brown;
+  }
+  .footer-bar {
+    font-size: 5px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-bar > * {
+    margin: -6px;
+  }
+}

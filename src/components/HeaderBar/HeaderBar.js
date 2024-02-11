@@ -36,7 +36,7 @@ function HeaderBar() {
   };
 
   return (
-    <AppBar position="fixed" style={{ zIndex: 99, top: 0 }} width="100%">
+    <AppBar position="fixed" style={{ zIndex: 100000, top: 0 }} width="100%">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img
