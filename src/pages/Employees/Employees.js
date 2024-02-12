@@ -1,23 +1,28 @@
 import React from "react";
-import Navbar from "../../components/navbar/Navbar";
 import Grid from "@mui/material/Grid";
-
-const Employees = () => {
+import CommonButton from "../../components/common/CommonButton/CommonButton";
+import { useNavigate } from "react-router";
+import CRUDtableEmployee from "../../components/CRUDtableEmployee/CRUDtableEmployee";
+function Employees() {
+  const navigate = useNavigate();
   return (
-    <Grid item xs={8}>
-      This is Employee page. This is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement
-      page. This is Employee page. This is
-      Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page. This is Employee page. This
-      is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page. This is Employee page.
-      This is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page. This is Employee
-      page. This is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page. This is
-      Employee page. This is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page. This
-      is Employee page. This is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page.
-      This is Employee page. This is Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement
-      page. This is Employee page. This is
-      Annvxcvcxvxcvxcvcxvcxvcxvcxvcxouncement page.
+    <Grid container item xs={10}>
+      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "10rem" }}>
+        <div>
+          <CommonButton
+            sx={{ marginTop: "20px" }}
+            variant="contained"
+            size="small"
+            onClick={() => navigate("addroute")}
+          >
+            Add Employee
+          </CommonButton>
+        </div>
+
+        <CRUDtableEmployee style={{ margin: "10rem" }}></CRUDtableEmployee>
+      </Grid>
     </Grid>
   );
-};
+}
 
 export default Employees;

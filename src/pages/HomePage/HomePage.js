@@ -22,29 +22,29 @@ function HomePage() {
           height: "100vh",
         }}
       >
-        <Grid container>
-          <Grid xs={12} sm={6} md={6}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12} md={6}>
             <CardButton
               typography="Bus Schedules"
               icon={Icon1}
               onClick={() => navigate("busschedule")}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CardButton
               typography="Lost/Found"
               icon={Icon2}
               onClick={() => navigate("lostandfound")}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CardButton
               typography="Package Transfer"
               icon={Icon3}
               onClick={() => console.log("Button clicked!")}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CardButton
               typography="Delay Reports Announcements"
               icon={Icon4}

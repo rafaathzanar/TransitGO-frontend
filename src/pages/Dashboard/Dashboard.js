@@ -1,12 +1,7 @@
 import { Dashboard } from "@mui/icons-material";
 import "./Dashboard.css";
 import React from "react";
-import {
-  BsFillArchiveFill,
-  BsFillGrid3X3GapFill,
-  BsPeopleFill,
-  BsFillBellFill,
-} from "react-icons/bs";
+import { BsPeopleFill } from "react-icons/bs";
 
 import BasicPie from "../../components/PieChart/PieChart";
 import { Typography } from "@mui/material";
@@ -66,7 +61,7 @@ function DashboardElement() {
         <div className="main-cards">
           <div className="card">
             <div className="card-inner">
-              <Typography>
+              <Typography variant="inherit">
                 <h3>TOTAL USERS</h3>
               </Typography>
               <PeopleAltIcon className="card_icon" />
@@ -75,9 +70,8 @@ function DashboardElement() {
           </div>
           <div className="card">
             <div className="card-inner">
-              <Typography>
-                <h3>TOTAL ROUTES</h3>
-              </Typography>
+              <h3>TOTAL ROUTES</h3>
+
               <RampRightIcon className="card_icon" />
             </div>
             <h1>12</h1>
