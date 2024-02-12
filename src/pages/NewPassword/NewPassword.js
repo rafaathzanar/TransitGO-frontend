@@ -2,6 +2,7 @@ import './NewPassword.css';
 import Logo from '../../components/Logo/Logo';
 import SubHeading from '../../components/SubHeading/SubHeading';
 import NewPasswordForm from '../../components/NewPasswordForm/NewPasswordForm';
+import LoginButton from '../../components/LoginButton/LoginButton';
 
 
 function NewPassword(){
@@ -18,7 +19,7 @@ function NewPassword(){
                <NewPasswordForm></NewPasswordForm>
            </div>
            <div className="save-button">
-              
+               <LoginButton buttonTitle='Save and Login'></LoginButton>
         </div>
       </div>
         </div>

@@ -17,9 +17,14 @@ function LoginForm({userNameTitle, userNamePlaceholder, loginAs}){
                <input type="password" class="form-control" placeholder='Enter Your Password'/>
             </div>
             <div className='other-option'>
+               {loginAs === 'Login as Customer?' ? ( 
                <div className='option'>
                  <Link to='/LoginGeneralUser'>{loginAs}</Link>
+               </div>):(
+               <div className='option'>
+                  <Link to='/LoginBusEmployee'>{loginAs}</Link>
                </div>
+               )}
                <div className='option'>
                   <Link to='/ForgotPassword'>Forgot Password</Link>
                </div>

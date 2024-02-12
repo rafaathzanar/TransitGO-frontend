@@ -22,8 +22,7 @@
     display: grid;
     grid-template-rows: 1fr 6fr;
     grid-template-areas:
-    "main-header"
-    "main-subject";
+    "main-header main-subject";
 }
 
 .main-header{

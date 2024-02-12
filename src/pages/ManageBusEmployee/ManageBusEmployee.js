@@ -1,3 +1,4 @@
+import CRUDtableBus from '../../components/CRUDtableBus/CRUDtableBus';
 import Navbar from '../../components/navbar/Navbar';
 import './ManageBusEmployee.css';
 
@@ -22,11 +23,9 @@ function ManageBusEmployee(){
                  </div>
               </div>
               <div className='main-subject'>
-
+                    <CRUDtableBus></CRUDtableBus>
               </div>
           </div>
-          
-        
         </div>
     );
 }

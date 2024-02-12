@@ -29,7 +29,7 @@ function LoginGeneralUser() {
             ></LoginForm>
           </div>
           <div className="btn">
-            <LoginButton></LoginButton>
+            <LoginButton buttonTitle='Login Now'></LoginButton>
           </div>
           <div className="signup">
             <Link to="/SignUp">

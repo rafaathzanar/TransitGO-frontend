@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import CommonButton from "../common/CommonButton/CommonButton";
+import SearchField from "../../components/SearchField/SearchField";
 
-export default function CRUDtableRoute() {
+export default function CRUDtableRoute({ searchData }) {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [rows, setRows] = useState([
@@ -18,119 +17,113 @@ export default function CRUDtableRoute() {
       routeno: "123",
       route: "Route A",
       listofbuses: "Bus1, Bus2",
-      actions: "Delete",
     },
     {
       id: 2,
       routeno: "456",
       route: "Route B",
       listofbuses: "Bus3, Bus4",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 3,
       routeno: "789",
       route: "Route C",
       listofbuses: "Bus5, Bus6",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 4,
       routeno: "101",
       route: "Route D",
       listofbuses: "Bus7, Bus8",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 5,
       routeno: "112",
       route: "Route E",
       listofbuses: "Bus9, Bus10",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 6,
       routeno: "131",
       route: "Route F",
       listofbuses: "Bus11, Bus12",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 7,
       routeno: "145",
       route: "Route G",
       listofbuses: "Bus13, Bus14",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 8,
       routeno: "157",
       route: "Route H",
       listofbuses: "Bus15, Bus16",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 9,
       routeno: "169",
       route: "Route I",
       listofbuses: "Bus17, Bus18",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 10,
       routeno: "171",
       route: "Route J",
       listofbuses: "Bus19, Bus20",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 11,
       routeno: "183",
       route: "Route K",
       listofbuses: "Bus21, Bus22",
-      "update/delete": "Update",
-      actions: "Delete",
     },
     {
       id: 12,
       routeno: "194",
       route: "Route L",
       listofbuses: "Bus23, Bus24",
-      actions: "Delete",
     },
   ]);
 
-  const handleClickOpen = (id) => {
-    setOpen(true);
+  const [filteredRows, setFilteredRows] = useState(rows); // New state for filtered rows
+  const [searchValue, setSearchValue] = useState(""); // New state for search input value
+
+  // Function to handle row deletion
+  const handleDelete = (id = null) => {
     setSelectedRowId(id);
+    setOpen(true);
   };
 
+  // Function to confirm row deletion
+  const handleConfirmDelete = () => {
+    const updatedRows = rows.filter((row) => row.id !== selectedRowId);
+    setRows(updatedRows);
+    setFilteredRows(updatedRows); // Update filteredRows
+    handleClose();
+  };
+
+  // Function to close delete confirmation dialog
   const handleClose = () => {
     setOpen(false);
     setSelectedRowId(null);
   };
 
-  const handleDelete = (id) => {
-    handleClickOpen(id);
-  };
-
-  const handleConfirmDelete = () => {
-    const updatedRows = rows.filter((row) => row.id !== selectedRowId);
-    setRows(updatedRows);
-
-    handleClose();
-  };
+  // Function to handle row edit
   const handleEdit = (id) => {
     console.log(`Editing row with id ${id}`);
+  };
+
+  // Function to handle search input change
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+    const filtered = rows.filter(
+      (row) =>
+        row.routeno.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        row.route.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        row.listofbuses.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredRows(filtered);
   };
 
   const columns = [
@@ -150,15 +143,13 @@ export default function CRUDtableRoute() {
           >
             Delete
           </Button>
-          <Link to={`/edit/${params.row.id}`}>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => handleEdit(params.row.id)}
-            >
-              Edit
-            </Button>
-          </Link>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => handleEdit(params.row.id)}
+          >
+            Edit
+          </Button>
         </div>
       ),
     },
@@ -166,12 +157,12 @@ export default function CRUDtableRoute() {
 
   return (
     <div style={{ height: "40rem", width: "60rem", marginTop: "30px" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        pageSizeOptions={[5, 10]}
+      <SearchField
+        placeholderText="Search Route"
+        value={searchValue}
+        onChange={handleSearchChange}
       />
+      <DataGrid rows={filteredRows} columns={columns} hideFooter={true} />
 
       <Dialog
         open={open}
