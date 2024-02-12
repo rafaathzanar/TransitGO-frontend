@@ -13,7 +13,7 @@
 .Left-Form{
     grid-area: Left-Form;
     background-color: white;
-    padding: 15px;
+    padding: 5%;
 }
 
 .Right-Image{
@@ -30,7 +30,7 @@
     "login-form"
     "btn";
     gap: 4em;
-    padding: 20px;
+    padding: 10%;
  }
  
  .logo{

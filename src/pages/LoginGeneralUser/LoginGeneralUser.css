@@ -13,12 +13,14 @@
 .Left-Form{
     grid-area: Left-Form;
     background-color: white;
-    padding: 15px;
+    padding: 4%;
 }
 
 .Right-Image{
     grid-area: Right-Image;
     background-color: #F1F3F6;
+    max-width: 100%;
+    height: auto;
 }
 
 .LoginBusEmployee{
@@ -31,7 +33,7 @@
     "btn"
     "signup";
     gap: 0.3em;
-    padding: 20px;
+    padding: 5%;
  }
  
  .logo{
@@ -49,6 +51,7 @@
  .signup{
     grid-area: signup;
     width: 100%;
+    height: auto;
  }
  
  .btn{
@@ -56,4 +59,11 @@
      width: 100%;
  }
 
- 
+ @media only screen and (max-width: 1024px){
+    .App {
+        grid-template-columns: 1fr; /* Change layout to single column */
+    }
+    .Right-Image {
+        display: none;
+    }
+}
