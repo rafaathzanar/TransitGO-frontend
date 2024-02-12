@@ -18,7 +18,7 @@
     grid-template-areas: 
     "logo"
     "main-image";
-    padding: 20px;
+    padding: 2%;
 }
 
 .logo{
@@ -27,7 +27,7 @@
 
 .main-image{
     grid-area: main-image;
-    padding: 0 30px 0 30px;
+    padding: 0 2% 0 2%;
 }
 
 .right-form{
@@ -47,13 +47,13 @@
 
  .signup-form-heading{
     grid-area: signup-form-heading;
-    padding:20px ;
+    padding:2% ;
  }
 
  .signup-form{
     width: 100%;
     grid-area: signup-form;
-    padding: 0 50px 0 50px; 
+    padding: 0 2% 0 2%; 
     justify-content: space-around;
  }
 
@@ -67,5 +67,15 @@
     display: flex;
     justify-self: center;
  }
+
+ @media only screen and (max-width: 1024px){
+    .signup-page {
+        grid-template-columns: 1fr; /* Change layout to single column */
+        display: block;
+    }
+    .left-image {
+        display: none;
+    }
+}
 
 

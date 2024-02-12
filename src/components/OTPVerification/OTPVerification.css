@@ -1,4 +1,4 @@
-.email-verification--form .form-control{
+.email-verification-form .form-control{
     background-color: #ffffff;
     border: 1px solid #FA6B6B;
     padding: 15px;
@@ -8,12 +8,34 @@
     color: #FA6B6B;
 }
 
-.resent-otp ,.email-verification-heading{
+.resent-otp h5 ,.email-verification-heading h5{
     color:#1E2772 ;
+    text-align: center;
+    padding: 0 0 20px 0;
+    font-size: 15px;
 }
 
-.email-verification--form{
+
+
+.email-verification-form {
     display: flex;
-    column-gap: 40px;
     justify-content: center;
+    align-items: center;
 }
+ 
+.digit {
+    justify-content: space-around;
+    width: auto;
+    padding-right: 30px;
+    width: 100px;
+}
+
+.digit input{
+    font-size: 20px;
+    color:#1E2772 ;
+    font-weight: bold;
+}
+
+
+
+

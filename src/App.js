@@ -15,6 +15,16 @@ import LostItem from "./pages/LostFound/LostItem";
 import FoundItemPage from "./pages/LostFound/FoundItem";
 import FoundForm from "./pages/LostFound/FoundForm";
 import LostForm from "./pages/LostFound/LostForm";
+
+import LoginBusEmployee from "./pages/LoginBusEmployee/LoginBusEmployee";
+import LoginGeneralUser from "./pages/LoginGeneralUser/LoginGeneralUser";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import EmailVerification from './pages/EmailVerification/EmailVerification';
+import SignUp from './pages/SignUp/SignUp';
+import ManageBusEmployee from "./pages/ManageBusEmployee/ManageBusEmployee";
+import NewPassword from "./pages/NewPassword/NewPassword";
+
+
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -37,6 +47,16 @@ function App() {
             <Route path="founditem" element={<FoundItemPage />} />
             <Route path="lostfoundreport" element={<FoundForm />} />
             <Route path="lostfoundreport2" element={<LostForm />} />
+          </Route>
+
+          <Route>
+            <Route path="/LoginBusEmployee" element={<LoginBusEmployee/>}/>
+            <Route path="/LoginGeneralUser" element={<LoginGeneralUser/>}/>
+            <Route path="/ForgotPassword" element={<ForgotPassword/>}/>
+            <Route path="/EmailVerification" element={<EmailVerification/>}/>
+            <Route path="/SignUp" element={<SignUp/>}/>
+            <Route path="/ManageBusEmployee" element={<ManageBusEmployee/>}/>
+            <Route path="/NewPassword" element={<NewPassword/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
