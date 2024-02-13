@@ -41,7 +41,7 @@ function HomePage() {
             <CardButton
               typography="Package Transfer"
               icon={Icon3}
-              onClick={() => console.log("Button clicked!")}
+              onClick={() => navigate("packagetransfer")}
             />
           </Grid>
           <Grid item xs={12} md={6}>
