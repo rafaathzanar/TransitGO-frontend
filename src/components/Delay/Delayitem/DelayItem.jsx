@@ -16,11 +16,11 @@ const DelayItem = (props) => {
     <table className="tab">
       <td className="goal-item">
         {props.children}
-        <div className="containerdelay">
+        <div className="container">
           <div className="deleteicon">
             <DeleteIcon onClick={deleteHandler}></DeleteIcon>
           </div>
-          <div className="authordelay">
+          <div className="author">
             <div>Posted by :</div>
           </div>
         </div>
