@@ -1,0 +1,16 @@
+
+
+.form-control{
+    background-color: #F1F3F6;
+    border: #F1F3F6;
+    padding: 15px;
+}
+
+.other-option{
+    display: flex;
+    justify-content: space-between;
+}
+
+.option a{
+    color: #1E2772;
+}

@@ -1,0 +1,51 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.App{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas: 
+    "Left-Form  Right-Image" ;
+    height: 100vh;
+}
+
+.Left-Form{
+    grid-area: Left-Form;
+    background-color: white;
+    padding: 5%;
+}
+
+.Right-Image{
+    grid-area: Right-Image;
+    background-color: #F1F3F6;
+}
+
+.LoginBusEmployee{
+    display: grid;
+    grid-template-rows: 1fr 1fr 3fr 1fr;
+    grid-template-areas: 
+    "logo"
+    "login-form-heading"
+    "login-form"
+    "btn";
+    gap: 4em;
+    padding: 10%;
+ }
+ 
+ .logo{
+     grid-area: logo;
+ }
+ 
+ .form-heading{
+    grid-area: form-heading;
+ }
+
+ .login-form{
+     grid-area: login-form;
+ }
+ 
+ .btn{
+     grid-area: btn;
+     width: 100%;
+ }

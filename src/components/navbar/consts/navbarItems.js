@@ -26,7 +26,7 @@ export const mainNavbarItems = [
   {
     id: 3,
     icon: <CampaignIcon />,
-    label: "Announcement & Delay Report",
+    label: "Announcement and Delay Report",
     route: "announcementanddelayreports",
   },
   {

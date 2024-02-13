@@ -1,0 +1,50 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.Email-Verification{
+    display: grid;
+    grid-template-rows: 1fr 9fr;
+    grid-template-areas: 
+    "logo" 
+    "email-verification-main" ;
+    height: 100vh;
+    background-color:#F1F3F6 ;
+    padding: 2%;
+}
+
+.logo{
+    grid-area: logo;
+}
+
+.email-verification-main{
+    grid-area:email-verification-main;
+    display: grid;
+    grid-template-rows: 1fr 6fr 1fr 1fr;
+    grid-template-areas: 
+    "email-verification-heading"
+    "email-verification-form"
+    "otp-verify-button"
+    "otp-timer";
+    background-color: white;
+    padding: 3%;
+    justify-content: center;
+    margin: 5%;
+}
+
+.email-verification-heading{
+    grid-area:email-verification-heading;
+}
+
+.email-verification-form{
+    grid-area: email-verification-form;
+}
+
+.otp-verify-button{
+    grid-area: otp-verify-button;
+}
+
+.otp-timer{
+    grid-area: otp-timer;
+
+}
