@@ -6,20 +6,20 @@ import Typography from '@mui/material/Typography';
 
 const DescriptionCard = ({ Uname,numb,bus,desc }) => {
   return (
-    <Card style={{width:'100%'}}>
+    <Card style={{width:"25rem",height:"15rem"}}>
       <CardContent>
-        <Typography variant="body2" component="div">
+        <Typography variant="h5" component="div" >
           Name: {Uname}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant="h5" color="textSecondary">
           Contact Number:{numb}
         </Typography>
 
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant="h5" color="textSecondary">
           Bus Details:{bus}
         </Typography>
 
-        <Typography variant="body2" component="div">
+        <Typography variant="h5" component="div">
           Item Description:{desc}
         </Typography>
 
