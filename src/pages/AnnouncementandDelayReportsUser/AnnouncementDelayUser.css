@@ -6,7 +6,7 @@
   
   #goal-form {
     
-    height: 27rem;
+    height: 34rem;
     margin: 4rem auto;
     padding: 2rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
@@ -20,7 +20,7 @@
  
   .rep{
     /* width:50%;*/
-    height: 27rem; 
+    height: 34rem; 
     margin: 4rem auto;
     padding: 2rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
@@ -29,7 +29,7 @@
   }
 
  .grid{
-    height: 27rem;
+    height: rem;
     /* display: grid; 
     grid-template-columns: 1fr 1fr; 
     grid-gap: 20px; 

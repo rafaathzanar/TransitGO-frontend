@@ -5,7 +5,7 @@ import './DelayList.css';
 
 const DelayList = props => {
   return (
-    <ul className="goal-list">
+    <ul className="goal-listxs">
       {props.items.map(delay => (
         <DelayItem
           key={delay.id}
