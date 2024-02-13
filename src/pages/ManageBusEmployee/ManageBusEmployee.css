@@ -1,0 +1,43 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.ManageBusEmploye{
+    display: grid;
+    grid-template-columns:1fr 4fr;
+    grid-template-areas: 
+    "nav-bar"
+    "main";
+    height: 100vh;
+    max-width: 100%;
+}
+
+.nav-bar{
+    grid-area: nav-bar;
+}
+
+.main{
+    grid-area: main;
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    grid-template-areas:
+    "main-header main-subject";
+}
+
+.main-header{
+    grid-area: main-header;
+    display: grid;
+    grid-template-columns:2fr 1fr ;
+    grid-template-areas:
+    "main-left" 
+    "main-right";
+}
+
+.main-left{
+    grid-area: main-left;
+}
+
+.main-right{
+    grid-area: main-right;
+}

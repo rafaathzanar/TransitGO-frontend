@@ -9,7 +9,7 @@ function EmailVerification() {
   return (
     <div className="Email-Verification">
       <div className="logo">
-        c<Logo></Logo>
+         <Logo></Logo>
       </div>
       <div className="email-verification-main">
         <div className="email-verification-heading">
@@ -22,7 +22,7 @@ function EmailVerification() {
           <OTPButton title="Verify"></OTPButton>
         </div>
         <div className="otp-timer">
-          <OTPTimer></OTPTimer>
+          <OTPTimer><h2>time</h2></OTPTimer>
         </div>
       </div>
     </div>

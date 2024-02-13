@@ -1,59 +1,71 @@
-*{
-    padding: 0;
-    margin: 0;
+* {
+  padding: 0;
+  margin: 0;
 }
-.App{
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-areas: 
-    "Left-Form  Right-Image" ;
-    height: 100vh;
-}
-
-.Left-Form{
-    grid-area: Left-Form;
-    background-color: white;
-    padding: 15px;
+.App {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas: "Left-Form  Right-Image";
+  height: 100vh;
 }
 
-.Right-Image{
-    grid-area: Right-Image;
-    background-color: #F1F3F6;
+.Left-Form {
+  grid-area: Left-Form;
+  background-color: white;
+  padding: 4%;
 }
 
-.LoginBusEmployee{
-    display: grid;
-    grid-template-rows: 1fr 1fr 2fr 1fr 1fr;
-    grid-template-areas: 
+.Right-Image {
+  grid-area: Right-Image;
+  background-color: #f1f3f6;
+  max-width: 100%;
+  height: auto;
+}
+
+.LoginBusEmployee {
+  display: grid;
+  grid-template-rows: 1fr 1fr 2fr 1fr 1fr;
+  grid-template-areas:
     "logo"
     "form-heading"
     "login-form"
     "btn"
     "signup";
-    gap: 0.3em;
-    padding: 20px;
- }
- 
- .logo{
-     grid-area: logo;
- }
- 
- .form-heading{
-    grid-area: form-heading;
- }
+  gap: 0.3em;
+  padding: 5%;
+}
 
- .login-form{
-     grid-area: login-form;
- }
+.logo {
+  grid-area: logo;
+}
 
- .signup{
-    grid-area: signup;
-    width: 100%;
- }
- 
- .btn{
-     grid-area: btn;
-     width: 100%;
- }
+.form-heading {
+  grid-area: form-heading;
+}
 
- 
+.login-form {
+  grid-area: login-form;
+}
+
+.signup {
+  grid-area: signup;
+  width: 100%;
+  height: auto;
+}
+
+.btn {
+  grid-area: btn;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .App {
+    grid-template-columns: 1fr; /* Change layout to single column */
+  }
+  .Right-Image {
+    display: none;
+  }
+  .Left-Form {
+    width: 100vw;
+  }
+}

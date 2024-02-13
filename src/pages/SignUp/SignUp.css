@@ -1,71 +1,78 @@
-*{
-    padding: 0;
-    margin: 0;
+* {
+  padding: 0;
+  margin: 0;
 }
-.signup-page{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: 
-    "left-image  right-form" ;
-    height: 100vh;
+.signup-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "left-image  right-form";
+  height: 100vh;
 }
 
-.left-image{
-    grid-area: left-image;
-    background-color:#FA6B6B;
-    display: grid;
-    grid-template-rows: 1fr 8fr;
-    grid-template-areas: 
+.left-image {
+  grid-area: left-image;
+  background-color: #fa6b6b;
+  display: grid;
+  grid-template-rows: 1fr 8fr;
+  grid-template-areas:
     "logo"
     "main-image";
-    padding: 20px;
+  padding: 2%;
 }
 
-.logo{
-    grid-area: logo;
+.logo {
+  grid-area: logo;
 }
 
-.main-image{
-    grid-area: main-image;
-    padding: 0 30px 0 30px;
+.main-image {
+  grid-area: main-image;
+  padding: 0 2% 0 2%;
 }
 
-.right-form{
-    grid-area: right-form;
-    background-color: white;
+.right-form {
+  grid-area: right-form;
+  background-color: white;
 }
 
-.right-form{
-    display: grid;
-    grid-template-rows: 1fr 8fr 1fr 1fr;
-    grid-template-areas: 
+.right-form {
+  display: grid;
+  grid-template-rows: 1fr 8fr 1fr 1fr;
+  grid-template-areas:
     "signup-form-heading"
     "signup-form"
     "option"
     "signup-button";
- }
+}
 
- .signup-form-heading{
-    grid-area: signup-form-heading;
-    padding:20px ;
- }
+.signup-form-heading {
+  grid-area: signup-form-heading;
+  padding: 2%;
+}
 
- .signup-form{
-    width: 100%;
-    grid-area: signup-form;
-    padding: 0 50px 0 50px; 
-    justify-content: space-around;
- }
+.signup-form {
+  width: 100%;
+  grid-area: signup-form;
+  padding: 0 2% 0 2%;
+  justify-content: space-around;
+}
 
- .option{
-    grid-area: option;
- }
+.option {
+  grid-area: option;
+}
 
- .signup-button{
-    grid-area: signup-button;
-    width: 70%;
-    display: flex;
-    justify-self: center;
- }
+.signup-button {
+  grid-area: signup-button;
+  width: 70%;
+  display: flex;
+  justify-self: center;
+}
 
-
+@media only screen and (max-width: 1024px) {
+  .signup-page {
+    grid-template-columns: 1fr; /* Change layout to single column */
+    display: block;
+  }
+  .left-image {
+    display: none;
+  }
+}

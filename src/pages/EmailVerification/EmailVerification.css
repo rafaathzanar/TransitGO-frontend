@@ -10,7 +10,7 @@
     "email-verification-main" ;
     height: 100vh;
     background-color:#F1F3F6 ;
-    padding: 20px;
+    padding: 2%;
 }
 
 .logo{
@@ -24,11 +24,12 @@
     grid-template-areas: 
     "email-verification-heading"
     "email-verification-form"
-    "send-otp-button";
+    "otp-verify-button"
+    "otp-timer";
     background-color: white;
-    padding: 40px;
+    padding: 3%;
     justify-content: center;
-    margin: 50px;
+    margin: 5%;
 }
 
 .email-verification-heading{
@@ -41,10 +42,9 @@
 
 .otp-verify-button{
     grid-area: otp-verify-button;
-    
-    width: 100%;
 }
 
 .otp-timer{
     grid-area: otp-timer;
+
 }

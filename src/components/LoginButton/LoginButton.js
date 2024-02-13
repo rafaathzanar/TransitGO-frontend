@@ -1,9 +1,9 @@
 import './LoginButton.css';
 
-function LoginButton(){
+function LoginButton({buttonTitle}){
     return(
          <div className='login'>
-            <button type="submit">Login Now</button>
+            <button type="submit">{buttonTitle}</button>
          </div>
     );
 }

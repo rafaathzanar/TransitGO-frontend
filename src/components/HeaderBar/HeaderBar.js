@@ -44,7 +44,7 @@ function HeaderBar() {
             sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
           />
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -70,7 +70,7 @@ function HeaderBar() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: { xs: "block", md: "block", lg: "none" },
               }}
             >
               {pages.map((page) => (
@@ -87,7 +87,12 @@ function HeaderBar() {
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "none", lg: "flex" },
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page.displayName}

@@ -27,7 +27,7 @@ function LoginBusEmployee() {
             ></LoginForm>
           </div>
           <div className="btn">
-            <LoginButton></LoginButton>
+            <LoginButton buttonTitle='Login Now'></LoginButton>
           </div>
         </div>
       </div>
