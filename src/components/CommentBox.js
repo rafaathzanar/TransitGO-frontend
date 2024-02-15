@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import StarRating from './StarRating';
 import Card from '@mui/material/Card';
 import FeedbackCards from './FeedbackCards';
+import { Typography } from '@mui/material';
 
 const CommentBox = ({ onSubmit }) => {
   const [comment, setComment] = useState('');
@@ -54,15 +55,22 @@ const CommentBox = ({ onSubmit }) => {
 
   return (
     <div style={{margin:'50px'}}>
-      <h3>Review & Rating</h3>
+
+      <Typography 
+      variant='h4'sx={{display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center', 
+      justifyContent: 'center'}}>
+      Review & Rating
+      </Typography>
 
       <StarRating value={rating} onChange={handleRatingChange} />
-
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
       <form onSubmit={handleSubmit}>
         <TextField
           label="Comments"
           multiline
-          rows={4}
+          rows={8}
           placeholder="Leave a Comment here!"
           id="comment"
           name="comment"
@@ -74,18 +82,23 @@ const CommentBox = ({ onSubmit }) => {
 
         <br />
         <br />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
         <Button
           variant="contained"
-          sx={{ backgroundColor: "black", color: "white" }}
+          sx={{ backgroundColor: "black", color: "white",
+         
+          justifyContent: 'center', }}
           type="submit"
           disabled={commentError || comment.length === 0 || rating === 0} // All conditions
         >
           Submit
         </Button>
+       </div>
       </form>
+      </div>
+</div>
+   
 
-     
-    </div>
   );
 };
 

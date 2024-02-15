@@ -18,10 +18,9 @@ const CardOne = () => {
       <Card  sx={{marginBottom:'225px',marginLeft:'50px',marginRight:'50px',marginTop:'75px',borderRadius:'25px',}}>
         <CardContent sx={{ backgroundColor: 'white' ,}}>
 
-
             <CommentBox onSubmit={handleFeedbackSubmission} />
             
-         
+    
         </CardContent>
       </Card>
 

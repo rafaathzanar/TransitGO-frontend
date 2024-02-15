@@ -11,9 +11,9 @@ function CardTwo() {
     <div >
     
             
-            <Typography variant="h1" 
+            <Typography variant="h3" 
             fontFamily='Sans serif'
-            style={{marginTop:'20px'}}>
+            style={{marginTop:'10px'}}>
                      Reviews
             </Typography>  <br/> 
             <div style={{display:'flex'}}>

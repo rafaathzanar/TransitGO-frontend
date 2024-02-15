@@ -27,17 +27,20 @@ const StarRating = React.forwardRef((props, ref) => {
 
   return (
     <Box
-      sx={{
-      
-        height:'30rem',
-        flexDirection: 'column',
-        
-     
-        
-      }}
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center', // Center vertically
+      justifyContent: 'center', // Center horizontally
+      height: '6rem',
+    }}
     >
       <Typography 
-      component="legend">Ratings</Typography>
+      component="legend"
+      sx={{display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center', // Center vertically
+      justifyContent: 'center',}}>Ratings</Typography>
 
       <Rating
         name="hover-feedback"

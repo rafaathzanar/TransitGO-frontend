@@ -25,7 +25,7 @@ export default function MyLayout() {
   return (
    <div style={{display:'flex'}}>
         
-   <div style={{flexBasis:'35%' ,backgroundColor:'#f07a7a',borderTopRightRadius:'50px',height:'73rem',flexGrow:'1',marginRight:'60px'}}>
+   <div style={{flexBasis:'35%' ,backgroundColor:'#f07a7a',borderTopRightRadius:'50px',height:'45rem',flexGrow:'1',marginRight:'60px'}}>
        <  CardOne />
        </div>
       

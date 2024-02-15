@@ -26,43 +26,43 @@ export default function Reviews(props) {
       >
         <FormLabel id="demo-controlled-radio-buttons-group">
           <Typography
-          variant='h3'>{props.heading}</Typography>
+          variant='h4'>{props.heading}</Typography>
         </FormLabel>  <br/> 
 
-        <Card sx={{ border: 1, borderRadius: '25px', borderColor: '#f2a2a2', marginRight: 5, width: '25rem', height: '25rem' }}>
+        <Card sx={{ border: 1, borderRadius: '25px', borderColor: '#f2a2a2', width: '15rem', height: '14rem' }}>
           <CardContent sx={{ backgroundColor: '#e6f2f5' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
 
               <FormControlLabel
                 value="veryHigh"
                 control={<Radio checked={value === 'veryHigh'} onChange={handleChange} />}
-                label={<Typography variant="h4">Very High</Typography>}
+                label={<Typography variant="h5">Very High</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === 'veryHigh' ? 100 : 0} />  <br/> 
+              <LinearProgress variant="determinate" value={value === 'veryHigh' ? 100 : 0} /> 
 
               <FormControlLabel
                 value="High"
                 control={<Radio checked={value === 'High'} onChange={handleChange} />}
-                label={<Typography variant="h4">High</Typography>}
+                label={<Typography variant="h5">High</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === 'High' ? 100 : 0} /> <br/> 
+              <LinearProgress variant="determinate" value={value === 'High' ? 100 : 0} />
 
               <FormControlLabel
                 value="Low"
                 control={<Radio checked={value === 'Low'} onChange={handleChange} />}
-                label={<Typography variant="h4">Low</Typography>}
+                label={<Typography variant="h5">Low</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === 'Low' ? 100 : 0} />  <br/> 
+              <LinearProgress variant="determinate" value={value === 'Low' ? 100 : 0} />  
               <FormControlLabel
                 value="veryLow"
                 control={<Radio checked={value === 'veryLow'} onChange={handleChange} />}
-                label={<Typography variant="h4">Very Low</Typography>}
+                label={<Typography variant="h5">Very Low</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === 'veryLow' ? 100 : 0} />  <br/> 
+              <LinearProgress variant="determinate" value={value === 'veryLow' ? 100 : 0} />  
               
 
 

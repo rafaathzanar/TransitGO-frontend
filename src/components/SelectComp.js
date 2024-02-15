@@ -16,7 +16,7 @@ export default function SelectComp() {
   return (
     <Box sx={{ width:"30%",height:"20%",marginTop:"20px"}}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label"><Typography variant='h4'>  Bus Employee</Typography></InputLabel>
+        <InputLabel id="demo-simple-select-label"><Typography variant='h5'>  Bus Employee</Typography></InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -24,10 +24,10 @@ export default function SelectComp() {
           label="Service"
           onChange={handleChange}
         >
-          <MenuItem value={1}><Typography variant='h4'> Excellent </Typography></MenuItem>
-          <MenuItem value={2}><Typography variant='h4'>Satisfactory</Typography></MenuItem>
-          <MenuItem value={3}><Typography variant='h4'>Average</Typography></MenuItem>
-          <MenuItem value={4}><Typography variant='h4'>Rude</Typography></MenuItem>
+          <MenuItem value={1}><Typography variant='h5'> Excellent </Typography></MenuItem>
+          <MenuItem value={2}><Typography variant='h5'>Satisfactory</Typography></MenuItem>
+          <MenuItem value={3}><Typography variant='h5'>Average</Typography></MenuItem>
+          <MenuItem value={4}><Typography variant='h5'>Rude</Typography></MenuItem>
         </Select>
       </FormControl>
     </Box>
