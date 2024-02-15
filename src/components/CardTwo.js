@@ -3,23 +3,31 @@ import React from 'react'
 import SelectComp from './SelectComp'
 import Card from '@mui/material/Card';
 import Reviews from './Reviews';
+import Typography from '@mui/material/Typography';
+
 
 function CardTwo() {
   return (
     <div >
-      <Card style={{ width: '500px', height: '450px'}}>
-
-        <CardContent >
-            <div>
+    
             
+            <Typography variant="h1" 
+            fontFamily='Sans serif'
+            style={{marginTop:'20px'}}>
+                     Reviews
+            </Typography>  <br/> 
+            <div style={{display:'flex'}}>
+            <div style={{flexGrow:'1'}}>
                 <Reviews heading='Route Traffic' />
+                </div>
+                <div style={{flexGrow:'1'}}>
                 <Reviews heading='Bus Crowd Status' />
-                <SelectComp />
             </div>
-        </CardContent>
-      </Card>
+            </div>
+                <SelectComp />
+            
     </div>
   )
 }
 
-export default CardTwo
+export default CardTwo;

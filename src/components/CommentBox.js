@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import StarRating from './StarRating';
 import Card from '@mui/material/Card';
-import FeedBacks from './FeedBacks';
+import FeedbackCards from './FeedbackCards';
 
 const CommentBox = ({ onSubmit }) => {
   const [comment, setComment] = useState('');
@@ -31,7 +31,7 @@ const CommentBox = ({ onSubmit }) => {
       const newFeedback = {
         id: new Date().getTime(),
         username: "User", // Replace with actual values
-        profile: "image.jpg",
+        profile: "https://example.com/avatar.jpg",
         rating: rating,
         comment: comment,
       };
@@ -53,7 +53,7 @@ const CommentBox = ({ onSubmit }) => {
   };
 
   return (
-    <div>
+    <div style={{margin:'50px'}}>
       <h3>Review & Rating</h3>
 
       <StarRating value={rating} onChange={handleRatingChange} />
@@ -90,4 +90,3 @@ const CommentBox = ({ onSubmit }) => {
 };
 
 export default CommentBox;
-

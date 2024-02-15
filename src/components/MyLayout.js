@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import CardOne from './CardOne';
 import CardTwo from './CardTwo';
+import FeedbackCards from './FeedbackCards';
 
 
 
@@ -16,45 +17,24 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-const Left = () => {
-  return (
-    <Item sx={{ padding: 1, margin: 1 }}>
-    <CardOne />
-    
-    </Item>
-  );
-};
 
-const RightMain = () => {
-    return (
-      <Grid container direction="column"> {/* Vertical layout for left side */}
-        <Grid item xs={6}> {/* Upper part spans full width */}
-        <Item sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center' , padding: 1, margin: 1 }}>
 
-       <CardTwo />
-  
-          </Item >
-        </Grid>
-        <Grid item xs={6}> {/* Lower part spans full width */}
-        <Item sx={{ padding: 1, margin: 1 }}>
-      
-          </Item>
-        </Grid>
-      </Grid>
-    );
-  };
+
+
 export default function MyLayout() {
   return (
-    <Box sx={{ width: '100%' }}>
-      <Grid container>
-      <Grid item xs={4} > {/* Left side takes half the width on all screens */}
-          <Left />
-        </Grid>
-        <Grid item xs={8}> {/* Right side takes the other half */}
-          <RightMain />
-        </Grid>
-      </Grid>
-    </Box>
+   <div style={{display:'flex'}}>
+        
+   <div style={{flexBasis:'35%' ,backgroundColor:'#f07a7a',borderTopRightRadius:'50px',height:'73rem',flexGrow:'1',marginRight:'60px'}}>
+       <  CardOne />
+       </div>
+      
+   <div style={{flexBasis:'65%',flexGrow:'1'}}>
+       <CardTwo />
+       </div>
+
+       
+        
+    </div>
   );
 }
-
