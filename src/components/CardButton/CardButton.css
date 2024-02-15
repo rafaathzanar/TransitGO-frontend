@@ -1,15 +1,20 @@
 /* CardButton.css */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .card-button {
   position: relative;
   background: url("../../logo/Rectangle\ 3.png");
   background-size: cover;
   background-position: center;
-  margin: 20px;
+  margin: 0;
   border: none;
-  padding: 15px;
   cursor: pointer;
   outline: none;
+  position: relative; /* Necessary for absolute positioning */
   border-radius: 20px;
   width: 400px; /* Set the desired width */
   height: 250px; /* Set the desired height */
@@ -42,4 +47,22 @@
 
 .card-button:hover {
   transform: scale(1.05);
+}
+
+@media screen and (max-width: 448px) {
+  .card-button {
+    width: 350px;
+    height: 250px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .card-button {
+    width: 280px;
+    height: 180px;
+  }
+  .card-button-icon {
+    width: 80%; /* Set the icon size as a percentage of the card button size */
+    height: auto; /* Maintain aspect ratio */
+  }
 }

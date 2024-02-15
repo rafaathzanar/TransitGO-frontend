@@ -24,7 +24,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isSmallScreen = useMediaQuery("(max-width:768px)");
 
-  const drawerWidth = isSmallScreen ? 60 : "14%"; // Adjust the width based on the screen size
+  const drawerWidth = isSmallScreen ? 60 : "14rem"; // Adjust the width based on the screen size
 
   const handleItemClick = (item) => {
     setSelectedItem(item.id);
