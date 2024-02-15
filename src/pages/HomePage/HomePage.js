@@ -21,7 +21,7 @@ function HomePage() {
           alignItems: "center",
         }}
       >
-        <Grid container spacing={2} mt={15} border={"5px solid #1976d2"}>
+        <Grid container spacing={2} mt={15}>
           <Grid
             container
             xs={12}

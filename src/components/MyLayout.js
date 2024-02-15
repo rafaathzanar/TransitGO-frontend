@@ -5,7 +5,11 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import CardOne from './CardOne';
 import CardTwo from './CardTwo';
+
 import FeedbackCards from './FeedbackCards';
+
+import FeedbackDisplay from './FeedbackDisplay';
+
 
 
 
@@ -17,6 +21,33 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
+
+
+
+export default function MyLayout() {
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Grid container>
+      <Grid item xs={4} > {/* Left side takes half the width on all screens */}
+          <Left />
+        </Grid>
+        <Grid item xs={8}> {/* Right side takes the other half */}
+          <RightMain />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+
+const Left = () => {
+  return (
+    <Item sx={{ padding: 1, margin: 1 }}>
+    <CardOne />
+    
+    </Item>
+  );
+};
+
 
 
 
@@ -38,3 +69,17 @@ export default function MyLayout() {
     </div>
   );
 }
+
+       <CardTwo />
+  
+          </Item >
+        </Grid>
+        <Grid item xs={6}> {/* Lower part spans full width */}
+        <Item sx={{ padding: 1, margin: 1 }}>
+            <FeedbackDisplay />
+
+          </Item>
+        </Grid>
+      </Grid>
+    );
+  };

@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import StarRating from './StarRating';
+
 import Card from '@mui/material/Card';
 import FeedbackCards from './FeedbackCards';
 import { Typography } from '@mui/material';
 
-const CommentBox = ({ onSubmit }) => {
+
+const CommentBox = ({ onFeedbackSubmit }) => {
   const [comment, setComment] = useState('');
   const [commentError, setCommentError] = useState('');
   const [rating, setRating] = useState(0);
-  const [feedbackData, setFeedbackData] = useState([]); // Store submitted feedback
 
   const handleCommentChange = (event) => {
     const value = event.target.value;
@@ -27,33 +28,36 @@ const CommentBox = ({ onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (comment.length > 0 && rating > 0) {
-      // Create new feedback entry
+    if (!commentError && comment.length > 0 && rating > 0) {
+      // Create a new feedback entry with the comment data
       const newFeedback = {
+
         id: new Date().getTime(),
         username: "User", // Replace with actual values
         profile: "https://example.com/avatar.jpg",
+
+        id: new Date().getTime(), // Use timestamp as a unique ID
+        username: "User",
+        date: new Date().toISOString().slice(0, 10),
+
         rating: rating,
-        comment: comment,
+        review: comment,
+        avatarUrl: "https://example.com/user-avatars/default.png",
       };
 
-      // Update feedback data array
-      setFeedbackData([...feedbackData, newFeedback]);
-
-      // Optionally call the provided onSubmit function (if needed)
-      if (onSubmit) {
-        onSubmit(newFeedback);
-      }
+      // Pass the feedback data to the parent component
+      onFeedbackSubmit(newFeedback);
 
       // Reset form values
       setComment('');
       setRating(0);
     } else {
-      setCommentError('Please type a comment and select a rating');
+      setCommentError('Please type something and select a rating');
     }
   };
 
   return (
+
     <div style={{margin:'50px'}}>
 
       <Typography 
@@ -63,6 +67,11 @@ const CommentBox = ({ onSubmit }) => {
       justifyContent: 'center'}}>
       Review & Rating
       </Typography>
+
+    <div>
+      <h3>Review & Rating</h3>
+      <StarRating value={rating} onChange={handleRatingChange} />
+
 
       <StarRating value={rating} onChange={handleRatingChange} />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
@@ -82,6 +91,7 @@ const CommentBox = ({ onSubmit }) => {
 
         <br />
         <br />
+
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
         <Button
           variant="contained"
@@ -91,10 +101,14 @@ const CommentBox = ({ onSubmit }) => {
           type="submit"
           disabled={commentError || comment.length === 0 || rating === 0} // All conditions
         >
+
+        <Button type="submit" disabled={commentError}>
+
           Submit
         </Button>
        </div>
       </form>
+
       </div>
 </div>
    
@@ -103,3 +117,10 @@ const CommentBox = ({ onSubmit }) => {
 };
 
 export default CommentBox;
+
+    </div>
+  );
+};
+
+export default CommentBox;
+
