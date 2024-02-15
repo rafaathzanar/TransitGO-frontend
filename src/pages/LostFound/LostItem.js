@@ -64,7 +64,7 @@ const handleResize = () => {
   return (
     <Container>
       <Grid container spacing={2}>
-      <div style={{display:'flex', gap:'400px'}}>
+      <div style={{display:'flex', gap:'175px'}}>
         <Grid item xs={12} sm={6}>
           
           <div style={{ marginTop: '20px' }}>

@@ -1,27 +1,37 @@
 import React, { Component } from "react";
-import "./LostForm.css";
 import MyForm from "../../components/MyForm";
 import Grid from "@mui/material/Grid";
 import ContainedButton from "../../components/ContainedButton";
 import OutlinedButton from "../../components/OutlinedButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 function LostForm() {
   const navigate = useNavigate();
-
   return (
-    <div className="lost-form">
-      <div className="lost-form-container">
-        <MyForm heading="Report Lost Item" />
-        <Grid container spacing={2} className="button-grid">
-          <Grid item xs={6}>
-            <ContainedButton btnName="Lost" onClick={() => navigate("lostitem")} />
-          </Grid>
-          <Grid item xs={6}>
-            <OutlinedButton btnName="Found" onClick={() => navigate("founditem")} />
-          </Grid>
-        </Grid>
-      </div>
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <MyForm heading="Report Lost Item" />
+
+      <Grid
+        item
+        xs={6}
+        alignItems="center"
+        display="flex"
+        justifyContent="flex-start"
+        style={{ marginLeft: 10 }}
+      >
+        <ContainedButton
+          btnName="Lost"
+          onClick={() => {
+            navigate("lostitem");
+          }}
+        />
+        <OutlinedButton
+          btnName="Found"
+          onClick={() => {
+            navigate("founditem");
+          }}
+        />
+      </Grid>
     </div>
   );
 }

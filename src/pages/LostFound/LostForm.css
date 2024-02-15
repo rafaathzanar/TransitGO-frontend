@@ -1,55 +1,54 @@
 /* Set root font size for em/rem-based scaling */
 html {
-    font-size: 62.5%; /* 10px default font size */
-  }
-  
-  /* Responsive layout using Grid container */
-  .lost-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh; /* Ensure full viewport height on mobile */
-  }
-  
-  /* Responsive form container */
-  .lost-form-container {
-    max-width: 80vw; /* Flexible width up to 80% of viewport */
-    padding: 1rem;
-    border-radius: 5px;
-    background-color: #f2f2f2; /* Subtle background */
-  }
-  
-  /* Responsive button grid */
+  font-size: 62.5%; /* 10px default font size */
+}
+
+/* Responsive layout using Grid container */
+.lost-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Ensure full viewport height on mobile */
+}
+
+/* Responsive form container */
+.lost-form-container {
+  max-width: 80vw; /* Flexible width up to 80% of viewport */
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: #f2f2f2; /* Subtle background */
+}
+
+/* Responsive button grid */
+.button-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+/* Responsive buttons (adjust as needed) */
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contained-button {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.outlined-button {
+  border: 1px solid #4caf50;
+  color: #4caf50;
+}
+
+/* Target screens wider than 438px */
+@media (min-width: 439px) {
   .button-grid {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 1rem;
+    flex-direction: column; /* Stack buttons vertically */
   }
-  
-  /* Responsive buttons (adjust as needed) */
-  .button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .contained-button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-  }
-  
-  .outlined-button {
-    border: 1px solid #4CAF50;
-    color: #4CAF50;
-  }
-  
-  /* Target screens wider than 438px */
-  @media (min-width: 439px) {
-    .button-grid {
-      flex-direction: column; /* Stack buttons vertically */
-    }
-  }
-  
+}

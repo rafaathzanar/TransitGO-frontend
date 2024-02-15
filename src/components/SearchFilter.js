@@ -15,12 +15,11 @@ const SearchFilter = ({ onSearch }) => {
     <TextField
       placeholder="Search..."
       style={{
-        position:"relative",
      
-        width: "20rem", // Adjust the width as needed
+        width: '100%', // Adjust the width as needed
         borderRadius: '4px',
         padding: '0px', // Adjust padding for the inner content
-        height: '5rem',
+        height: '55px',
         backgroundColor: '#020552',
       }}
       value={searchTerm}
