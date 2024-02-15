@@ -3,6 +3,7 @@ import busImg from "../../logo/image 1.png";
 import { Card, CardContent } from "@mui/material";
 
 import "./ScheduleCard.css";
+import { Link } from "react-router-dom";
 
 function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
   const headbarStyle = {
@@ -58,7 +59,7 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
               <p>Galle</p>
               <p>11.00AM</p>
             </div>
-            <a href="#">Review & Ratings</a>
+            <Link to='/reviews'>Review & ReviewRating</Link>
           </div>
           <div className="footer-bar" style={footerbarStyle}>
             <div
