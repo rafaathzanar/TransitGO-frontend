@@ -59,7 +59,7 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
               <p>Galle</p>
               <p>11.00AM</p>
             </div>
-            <Link to='/reviews'>Review & ReviewRating</Link>
+            <Link to="/reviews">Review & ReviewRating</Link>
           </div>
           <div className="footer-bar" style={footerbarStyle}>
             <div
