@@ -4,6 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Typography } from '@mui/material';
 
 export default function SelectComp() {
   const [service, BusEmployee] = React.useState('');
@@ -15,7 +16,7 @@ export default function SelectComp() {
   return (
     <Box sx={{ width:"30%",height:"20%",marginTop:"20px"}}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label"> Bus Employee</InputLabel>
+        <InputLabel id="demo-simple-select-label"><Typography variant='h5'>  Bus Employee</Typography></InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -23,12 +24,12 @@ export default function SelectComp() {
           label="Service"
           onChange={handleChange}
         >
-          <MenuItem value={1}>Excellent</MenuItem>
-          <MenuItem value={2}>Satisfactory</MenuItem>
-          <MenuItem value={3}>Average</MenuItem>
-          <MenuItem value={4}>Rude</MenuItem>
+          <MenuItem value={1}><Typography variant='h5'> Excellent </Typography></MenuItem>
+          <MenuItem value={2}><Typography variant='h5'>Satisfactory</Typography></MenuItem>
+          <MenuItem value={3}><Typography variant='h5'>Average</Typography></MenuItem>
+          <MenuItem value={4}><Typography variant='h5'>Rude</Typography></MenuItem>
         </Select>
       </FormControl>
     </Box>
   );
-}
+};

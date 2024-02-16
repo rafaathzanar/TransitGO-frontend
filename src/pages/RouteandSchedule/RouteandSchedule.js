@@ -9,15 +9,32 @@ const RouteandSchedule = () => {
   const navigate = useNavigate();
 
   return (
-    <Grid container spacing={20}>
-      <Grid item xs={12} sm={8} md={4} lg={10} xl={10}>
+    <Grid container spacing={1} mt={15}>
+      <Grid
+        container
+        xs={12}
+        sm={12}
+        md={6}
+        justifyContent="center"
+        alignItems="center"
+        marginTop={2}
+        style={{ border: "1px solid orange" }}
+      >
         <CardButton
           typography="Route Management"
           icon={Icon1}
           onClick={() => navigate("routemanagement")}
         />
       </Grid>
-      <Grid item xs={12} sm={8} md={10} lg={10} xl={5}>
+      <Grid
+        container
+        xs={12}
+        md={6}
+        justifyContent="center"
+        alignItems="center"
+        marginTop={2}
+        style={{ border: "1px solid orange" }}
+      >
         <CardButton
           typography="Bus Management"
           icon={Icon2}

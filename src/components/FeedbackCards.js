@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import StarRating from './StarRating'; // Assuming you have a StarRating component
 
-const FeedBacks = ({ username, profile, rating, comment }) => {
+const FeedbackCards = ({ username, profile, rating, comment }) => {
   return (
     <Card>
       <CardContent>
@@ -16,4 +16,4 @@ const FeedBacks = ({ username, profile, rating, comment }) => {
   );
 };
 
-export default FeedBacks;
+export default FeedbackCards;
