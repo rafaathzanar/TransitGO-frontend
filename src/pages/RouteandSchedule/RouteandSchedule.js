@@ -18,7 +18,6 @@ const RouteandSchedule = () => {
         justifyContent="center"
         alignItems="center"
         marginTop={2}
-        style={{ border: "1px solid orange" }}
       >
         <CardButton
           typography="Route Management"
@@ -33,7 +32,6 @@ const RouteandSchedule = () => {
         justifyContent="center"
         alignItems="center"
         marginTop={2}
-        style={{ border: "1px solid orange" }}
       >
         <CardButton
           typography="Bus Management"

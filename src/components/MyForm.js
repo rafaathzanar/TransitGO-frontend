@@ -40,16 +40,10 @@ const MyForm = (props) => {
         <Box
           component={Paper}
           marginLeft={2}
-          sx={{ maxWidth: 400, margin: "auto", marginTop: 2 }}
+          sx={{ margin: "auto", marginTop: 2 }}
         >
           <Card>
-            <CardContent
-              sx={{
-                backgroundColor: "#c9d1d4",
-                width: "25rem",
-                height: "30rem",
-              }}
-            >
+            <CardContent>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Stack direction="column" spacing={2}>
