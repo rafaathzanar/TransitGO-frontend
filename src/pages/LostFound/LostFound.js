@@ -23,7 +23,7 @@ export default function LostFound() {
         fontFamily="OpenSans"
         marginBottom="80px"
       >
-        Lost&Found
+        Lost & Found
       </Typography>
 
       <Grid container spacing={6} justifyContent="center" alignItems="center">

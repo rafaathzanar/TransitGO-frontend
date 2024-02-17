@@ -16,6 +16,7 @@ const LostItem = (props) => {
       numb: "075-1234567",
       bus: "Colombo-Kandy",
       desc: "found a  wallet on this route today morning.if it is yours,contact me",
+      dateTime: "2024.01.01 at 7.00 PM",
     },
     {
       id: 2,
@@ -23,6 +24,7 @@ const LostItem = (props) => {
       numb: "074-5123456",
       bus: "Galle-Matale",
       desc: "found a bag",
+      dateTime: "2024.01.01 at 7.00 PM",
     },
     {
       id: 3,
@@ -30,6 +32,7 @@ const LostItem = (props) => {
       numb: "071-6823456",
       bus: "colombo-Jaffna",
       desc: "found an  umbrella",
+      dateTime: "2024.01.01 at 7.00 PM",
     },
     // Other existing data
   ]);
@@ -41,6 +44,7 @@ const LostItem = (props) => {
       numb: "070-7437458",
       bus: "Kaduruwela-Colombo",
       desc: "found a backpack.if you think it might belongs to you please let me know",
+      dateTime: "2024.01.01 at 7.00 PM",
     },
     {
       id: 5,
@@ -48,6 +52,7 @@ const LostItem = (props) => {
       numb: "077-7478458",
       bus: "Colombo-Kurunegale",
       desc: "a watch was founded",
+      dateTime: "2024.01.01 at 7.00 PM",
     },
 
     // Other dynamic data
@@ -71,33 +76,23 @@ const LostItem = (props) => {
   );
 
   return (
-    <Container>
-      <Grid container spacing={2}>
-        <div style={{ display: "flex", gap: "400px" }}>
-          <Grid item xs={12} sm={6}>
-            <div style={{ marginTop: "20px" }}>
-              <HeadingBar title="Found Items" />
-            </div>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <div style={{ marginTop: "20px" }}>
-              <SearchFilter onSearch={handleSearch} />
-            </div>
-          </Grid>
-
-          <div>
-            <IconImg imageSrc={img5} altText="losticon" />
-          </div>
-        </div>
-        <Grid item xs={12}>
-          <DescriptionCardList
-            data={searchTerm ? filteredData : allData}
-            style={{ display: "flex", flexWrap: "wrap" }}
-          />
-        </Grid>
-      </Grid>
-    </Container>
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          marginTop: 20,
+        }}
+      >
+        <h1> Reported Found Items</h1>
+        <SearchFilter onSearch={handleSearch} />
+      </div>
+      <DescriptionCardList
+        data={searchTerm ? filteredData : allData}
+        style={{ display: "flex", flexWrap: "wrap" }}
+      />
+    </>
   );
 };
 

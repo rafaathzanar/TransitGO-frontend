@@ -20,7 +20,7 @@ const SearchFilter = ({ onSearch }) => {
         width: "20rem", // Adjust the width as needed
         borderRadius: "4px",
         padding: "0px", // Adjust padding for the inner content
-        height: "5rem",
+
         backgroundColor: "#020552",
       }}
       value={searchTerm}
