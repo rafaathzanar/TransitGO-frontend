@@ -80,8 +80,8 @@ export default function CRUDtableRoute({ searchData }) {
 
   const columns = [
     { field: "busid", headerName: "Bus Id", width: 200 },
-    { field: "busRegNo", headerName: "Bus RegNo", width: 200 },
-    { field: "busRoutes", headerName: "Bus Routes", width: 200 },
+    { field: "busRegNo", headerName: "Bus Reg No", width: 200 },
+    { field: "busRoutes", headerName: "Bus Route", width: 200 },
     {
       field: "actions",
       headerName: "Actions",
@@ -114,7 +114,12 @@ export default function CRUDtableRoute({ searchData }) {
         value={searchValue}
         onChange={handleSearchChange}
       />
-      <DataGrid rows={filteredRows} columns={columns} hideFooter={true} />
+      <DataGrid
+        rows={filteredRows}
+        columns={columns}
+        hideFooter={true}
+        rowHeight={40}
+      />
 
       <Dialog
         open={open}
