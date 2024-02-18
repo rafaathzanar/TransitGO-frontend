@@ -17,23 +17,19 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function MyLayout() {
   return (
-    <div style={{ display: "flex" }}>
-      <div
+    <Grid container spacing={5} >
+      <Grid item xs={12} sm={12} md={6} lg={6}>
+        <CardTwo />
+      </Grid>
+
+      <Grid item xs={12} sm={12} md={6} lg={6}
         style={{
-          flexBasis: "35%",
           backgroundColor: "#f07a7a",
           borderTopRightRadius: "50px",
-          height: "45rem",
-          flexGrow: "1",
-          marginRight: "60px",
         }}
       >
         <CardOne />
-      </div>
-
-      <div style={{ flexBasis: "65%", flexGrow: "1" }}>
-        <CardTwo />
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 }

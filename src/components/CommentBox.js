@@ -5,6 +5,7 @@ import StarRating from "./StarRating";
 import Card from "@mui/material/Card";
 import FeedbackCards from "./FeedbackCards";
 import { Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 const CommentBox = ({ onSubmit }) => {
   const [comment, setComment] = useState("");
@@ -27,7 +28,7 @@ const CommentBox = ({ onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (comment.length > 0 && rating > 0) {
+    if (comment.length > 0 || rating > 0) {
       // Create new feedback entry
       const newFeedback = {
         id: new Date().getTime(),
@@ -64,7 +65,7 @@ const CommentBox = ({ onSubmit }) => {
           justifyContent: "center",
         }}
       >
-        Review & Rating
+        Review & Ratings
       </Typography>
 
       <StarRating value={rating} onChange={handleRatingChange} />
@@ -76,6 +77,7 @@ const CommentBox = ({ onSubmit }) => {
         }}
       >
         <form onSubmit={handleSubmit}>
+          
           <TextField
             label="Comments"
             multiline
@@ -88,6 +90,7 @@ const CommentBox = ({ onSubmit }) => {
             error={commentError}
             helperText={commentError}
           />
+          
 
           <br />
           <br />
@@ -103,11 +106,12 @@ const CommentBox = ({ onSubmit }) => {
               sx={{
                 backgroundColor: "black",
                 color: "white",
+                width:"13rem",
 
                 justifyContent: "center",
               }}
               type="submit"
-              disabled={commentError || comment.length === 0 || rating === 0} // All conditions
+              disabled={commentError } // All conditions
             >
               Submit
             </Button>
