@@ -8,16 +8,15 @@ function BusManagement() {
   const navigate = useNavigate();
   return (
     <Grid container item xs={10}>
-      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "10rem" }}>
+      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
         <CommonButton
-          sx={{ marginTop: "20px" }}
           variant="contained"
           size="small"
           onClick={() => navigate("addbus")}
         >
           Add Bus
         </CommonButton>
-        <CRUDtableBus style={{ margin: "10rem" }}></CRUDtableBus>
+        <CRUDtableBus></CRUDtableBus>
       </Grid>
     </Grid>
   );

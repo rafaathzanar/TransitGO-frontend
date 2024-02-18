@@ -97,13 +97,18 @@ export default function CRUDtableEmployee({ searchData }) {
   ];
 
   return (
-    <div style={{ height: "40rem", width: "60rem", marginTop: "30px" }}>
+    <div style={{ height: 350, width: "1000px", marginTop: "30px" }}>
       <SearchField
         placeholderText="Search Employee"
         value={searchValue}
         onChange={handleSearchChange}
       />
-      <DataGrid rows={filteredRows} columns={columns} hideFooter={true} />
+      <DataGrid
+        rows={filteredRows}
+        columns={columns}
+        hideFooter={true}
+        rowHeight={40}
+      />
 
       <Dialog
         open={open}
