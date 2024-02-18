@@ -5,6 +5,7 @@ import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 
 const labels = {
   0.5: "Useless",
@@ -30,7 +31,7 @@ const FeedbackCards = ({ username, profile, rating, comment }) => {
         border: 1,
         borderRadius: "25px",
         borderColor: "#f2a2a2",
-        height: "10rem",
+        margin:"5px"
       }}
     >
       <CardContent
@@ -38,6 +39,7 @@ const FeedbackCards = ({ username, profile, rating, comment }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
+          
         }}
       >
         <Typography variant="h3">{username}</Typography>
