@@ -97,7 +97,13 @@ export default function CRUDtableEmployee({ searchData }) {
   ];
 
   return (
-    <div style={{ height: 350, width: "1000px", marginTop: "30px" }}>
+    <div
+      style={{
+        width: "70rem",
+        backgroundColor: "hsla(190, 96%, 80%, 0.2)",
+        marginTop: "30px",
+      }}
+    >
       <SearchField
         placeholderText="Search Employee"
         value={searchValue}
@@ -108,6 +114,11 @@ export default function CRUDtableEmployee({ searchData }) {
         columns={columns}
         hideFooter={true}
         rowHeight={40}
+        sx={{
+          "& .MuiDataGrid-cell:hover": {
+            color: "primary.main",
+          },
+        }}
       />
 
       <Dialog

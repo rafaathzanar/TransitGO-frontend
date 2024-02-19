@@ -95,111 +95,113 @@ const FormRoute = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Add Route
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12}>
-            <Typography>Route No.</Typography>
-            <TextField
-              fullWidth
-              label="Route No"
-              name="routeNo"
-              value={formData.routeNo}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Typography>From</Typography>
-            <TextField
-              fullWidth
-              label="From- Bus Station"
-              name="from"
-              value={formData.from}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Typography>End</Typography>
-            <TextField
-              fullWidth
-              label="End- Bus Station"
-              name="end"
-              value={formData.end}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Typography>Stops</Typography>
-            {formData.stops.map((stop, index) => (
+    <Grid container item xs={10}>
+      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+        <Typography variant="h4" gutterBottom>
+          Add Route
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
+              <Typography>Route No.</Typography>
               <TextField
-                key={index}
                 fullWidth
-                label={`Stop ${index + 1}`}
-                value={stop}
-                onChange={(e) => {
-                  const updatedStops = [...formData.stops];
-                  updatedStops[index] = e.target.value;
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    stops: updatedStops,
-                  }));
-                }}
+                label="Route No"
+                name="routeNo"
+                value={formData.routeNo}
+                onChange={handleChange}
               />
-            ))}
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleAddStop}
-              style={{ marginRight: "10px" }}
-            >
-              Add Stop
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleRemoveStop}
-            >
-              Delete Stop
-            </Button>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Typography>From</Typography>
+              <TextField
+                fullWidth
+                label="From- Bus Station"
+                name="from"
+                value={formData.from}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Typography>End</Typography>
+              <TextField
+                fullWidth
+                label="End- Bus Station"
+                name="end"
+                value={formData.end}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Typography>Stops</Typography>
+              {formData.stops.map((stop, index) => (
+                <TextField
+                  key={index}
+                  fullWidth
+                  label={`Stop ${index + 1}`}
+                  value={stop}
+                  onChange={(e) => {
+                    const updatedStops = [...formData.stops];
+                    updatedStops[index] = e.target.value;
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      stops: updatedStops,
+                    }));
+                  }}
+                />
+              ))}
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleAddStop}
+                style={{ marginRight: "10px" }}
+              >
+                Add Stop
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={handleRemoveStop}
+              >
+                Delete Stop
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" color="primary">
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              Submit
+        </form>
+
+        {/* Validation Error Snackbar */}
+        <Snackbar
+          open={hasErrors(validationErrors)}
+          autoHideDuration={3000}
+          onClose={() => setValidationErrors({})}
+          message="Please fill in all required fields."
+        />
+
+        {/* Success Dialog */}
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle>Route Added Successfully</DialogTitle>
+          <DialogContent>Your route has been added successfully.</DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              OK
             </Button>
-          </Grid>
-        </Grid>
-      </form>
+          </DialogActions>
+        </Dialog>
 
-      {/* Validation Error Snackbar */}
-      <Snackbar
-        open={hasErrors(validationErrors)}
-        autoHideDuration={3000}
-        onClose={() => setValidationErrors({})}
-        message="Please fill in all required fields."
-      />
-
-      {/* Success Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Route Added Successfully</DialogTitle>
-        <DialogContent>Your route has been added successfully.</DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Success Snackbar */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        message="Route Added Successfully"
-      />
-    </Container>
+        {/* Success Snackbar */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          message="Route Added Successfully"
+        />
+      </Grid>
+    </Grid>
   );
 };
 
