@@ -1,28 +1,34 @@
-// DescriptionCard.js
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 
-const DescriptionCard = ({ Uname,numb,bus,desc }) => {
+const DescriptionCard = ({ Uname, numb, bus, desc, dateTime }) => {
   return (
-    <Card style={{width:'100%'}}>
+    <Card
+      sx={{
+        background: "light-grey",
+
+        border: "2px solid #FA6B6B",
+      }}
+      style={{ width: "80%", margin: 20 }}
+    >
       <CardContent>
-        <Typography variant="body2" component="div">
-          Name: {Uname}
+        <Typography variant="body1" component="div">
+          <strong>Name:</strong> {Uname}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
-          Contact Number:{numb}
+        <Typography variant="body1" color="textSecondary">
+          <strong>Contact Number:</strong> {numb}
         </Typography>
-
-        <Typography variant="body2" color="textSecondary">
-          Bus Details:{bus}
+        <Typography variant="body1" color="textSecondary">
+          <strong>Bus Details:</strong> {bus}
         </Typography>
-
-        <Typography variant="body2" component="div">
-          Item Description:{desc}
+        <Typography variant="body1" component="div">
+          <strong>Item Description:</strong> {desc}
         </Typography>
-
+        <span style={{ color: "red" }}>
+          <Typography variant="body3 ">Posted On :</Typography> {dateTime}{" "}
+        </span>
       </CardContent>
     </Card>
   );

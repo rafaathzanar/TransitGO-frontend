@@ -1,4 +1,3 @@
-// App.js
 import React from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { dashboardTheme } from "./dashboardTheme";
@@ -9,8 +8,8 @@ import LoginGeneralUser from "./pages/LoginGeneralUser/LoginGeneralUser";
 import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import LoginBusEmployee from "./pages/LoginBusEmployee/LoginBusEmployee";
-
-
+import ReviewRating from "./pages/ReviewRating/ReviewRating";
+import MyLayout from "./components/MyLayout";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -22,8 +21,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
-
-          
+          <Route path="/reviews" element={<MyLayout />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

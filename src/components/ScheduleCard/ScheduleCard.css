@@ -1,3 +1,9 @@
+.footer-bar p {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
 .schedule-card {
   width: 60%;
   margin-left: 20%;
@@ -7,12 +13,16 @@
 
 .schedule-card-content {
   background: linear-gradient(to right, lightblue, white);
-  padding: 20px;
 }
 
 .header-bar {
   font-size: 20px;
 }
+.header-bar p {
+  margin: 0%;
+  border: 0;
+}
+
 .middle-bar {
   font-size: 20px;
 }
@@ -142,9 +152,6 @@
   .header-bar {
     color: brown;
   }
-  .footer-bar {
-    font-size: 5px;
-  }
 }
 @media screen and (max-width: 425px) {
   .schedule-card {
@@ -167,17 +174,14 @@
   }
 
   .cringe p {
+    padding: 20;
     font-size: 10px;
   }
-  .header-bar {
+  /* .header-bar {
     color: brown;
-  }
+  } */
   .footer-bar {
-    font-size: 5px;
     flex-direction: column;
     align-items: flex-start;
-  }
-  .footer-bar > * {
-    margin: -6px;
   }
 }

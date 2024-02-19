@@ -19,32 +19,59 @@ function HomePage() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
         }}
       >
-        <Grid container>
-          <Grid xs={12} sm={6} md={6}>
+        <Grid container spacing={2} mt={15}>
+          <Grid
+            container
+            xs={12}
+            md={6}
+            justifyContent="center"
+            alignItems="center"
+            marginTop={2}
+          >
             <CardButton
               typography="Bus Schedules"
               icon={Icon1}
               onClick={() => navigate("busschedule")}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={6}>
+          <Grid
+            container
+            xs={12}
+            md={6}
+            justifyContent="center"
+            alignItems="center"
+            marginTop={2}
+          >
             <CardButton
               typography="Lost/Found"
               icon={Icon2}
               onClick={() => navigate("lostandfound")}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={6}>
+          <Grid
+            container
+            xs={12}
+            md={6}
+            justifyContent="center"
+            alignItems="center"
+            marginTop={2}
+          >
             <CardButton
               typography="Package Transfer"
               icon={Icon3}
-              onClick={() => console.log("Button clicked!")}
+              onClick={() => navigate("packagetransfer")}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={6}>
+          <Grid
+            container
+            xs={12}
+            md={6}
+            justifyContent="center"
+            alignItems="center"
+            marginTop={2}
+          >
             <CardButton
               typography="Delay Reports Announcements"
               icon={Icon4}

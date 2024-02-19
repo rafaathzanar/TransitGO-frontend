@@ -36,7 +36,7 @@ const DelayReport = (props) => {
             <div className={`form-control ${!isValid ? "invalid" : ""}`}>
               <textarea type="text" onChange={delayInputChangeHandler} />
             </div>
-            <Button type="submit" >Submit Post</Button>
+            <Button type="submit" class="bb">Submit Post</Button>
           </form>
         </div>
     </div>

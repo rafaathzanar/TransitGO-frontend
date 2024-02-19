@@ -1,72 +1,71 @@
-*{
-    padding: 0;
-    margin: 0;
+* {
+  padding: 0;
+  margin: 0;
 }
-.App{
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-areas: 
-    "Left-Form  Right-Image" ;
-    height: 100vh;
-}
-
-.Right-Image{
-    grid-area: Right-Image;
-    background-color: #F1F3F6;
-    max-width: 100%;
-    height: auto;
+.App {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas: "Left-Form  Right-Image";
+  height: 100vh;
 }
 
-.Left-Form{
-    grid-area: Left-Form;
-    background-color: white;
-    padding: 4%;
-    display: grid;
-    grid-template-rows: 1fr 1fr 2fr 1fr 1fr;
-    grid-template-areas: 
+.Left-Form {
+  grid-area: Left-Form;
+  background-color: white;
+  padding: 4%;
+}
+
+.Right-Image {
+  grid-area: Right-Image;
+  background-color: #f1f3f6;
+  max-width: 100%;
+  height: auto;
+}
+
+.LoginBusEmployee {
+  display: grid;
+  grid-template-rows: 1fr 1fr 2fr 1fr 1fr;
+  grid-template-areas:
     "logo"
     "signin-form-heading"
     "signin-form"
     "btn"
     "signup";
-    gap: 0.3em;
-    padding: 5%;
-    width: 100%;
- }
- 
- .logo{
-     grid-area: logo;
- }
- 
- .form-heading{
-    grid-area: form-heading;
- }
+  gap: 0.3em;
+  padding: 5%;
+}
 
- .signin-form{
-     grid-area: signin-form;
- }
+.logo {
+  grid-area: logo;
+}
 
- .signup{
-    grid-area: signup;
-    width: 100%;
-    height: auto;
- }
- 
- .btn{
-     grid-area: btn;
-     width: 100%;
- }
+.form-heading {
+  grid-area: form-heading;
+}
 
- @media only screen and (max-width: 1024px){
-    .App {
-        grid-template-columns: 1fr; /* Change layout to single column */
-    }
-    
-    .Right-Image {
-        display: none;
-    }
+.login-form {
+  grid-area: login-form;
+}
 
-    .Left-Form{
-        width: 100vw;
-    }
+.signup {
+  grid-area: signup;
+  width: 100%;
+  height: auto;
+}
+
+.btn {
+  grid-area: btn;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .App {
+    grid-template-columns: 1fr; /* Change layout to single column */
+  }
+  .Right-Image {
+    display: none;
+  }
+  .Left-Form {
+    width: 100vw;
+  }
 }
