@@ -24,15 +24,35 @@
         align-items: center;
 }
 
-.search,.track{
+.search{
     display: flex;
     justify-content: center;
     align-items: center;
 
 }
 
-.map{
-    width: 90%;
+.track{
+    width: 70%;
     height: 90%;
     background-color: #132968;
+    margin-left:auto;
+    margin-right: auto;
+    display:grid;
+    grid-template-columns: 2fr 2fr;
+    grid-template-areas: "im1 tline";
+}
+
+.im1{
+    margin-left: 20%;
+    margin-top: 8%;
+    width: 55%;
+    height: 80%;
+}
+
+.tline{
+    margin-top: 10%;
+    margin-right: 20%;
+    justify-content: center;
+    align-items: center;
+    color: white;
 }

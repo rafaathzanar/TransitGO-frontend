@@ -1,31 +1,33 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CommentBox from './CommentBox';
+import React, { useState } from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CommentBox from "./CommentBox";
+import FeedbackCards from "./FeedbackCards";
+import Grid from "@mui/material/Grid";
 
-const CardOne = ({ onSubmit }) => {
+const CardOne = () => {
+  const [feedbacks, setFeedbacks] = useState([]); // Store submitted feedback
+
+  const handleFeedbackSubmission = (feedback) => {
+    // Update feedback state
+    setFeedbacks([...feedbacks, feedback]);
+  };
+
   return (
-    <div style={{ width: '250px', height: '400px' }}>
-      <Card>
-        <CardContent sx={{ backgroundColor: '#f07a7a' }}>
-          <CardContent
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              spacing: 2,
-              backgroundColor: 'white',
-            }}
-          >
-            {/* Pass the onSubmit function directly to CommentBox */}
-            <CommentBox onSubmit={onSubmit} />
-          </CardContent>
+    <div>
+      <Grid item xs={11} sm={11} md={10} lg={10} xl={10} m={6}>
+        <CardContent sx={{ backgroundColor: "white", borderRadius: "25px"}}>
+          <CommentBox onSubmit={handleFeedbackSubmission} />
         </CardContent>
-      </Card>
+      </Grid>
+
+      
+      {feedbacks.map((feedback) => (
+        <FeedbackCards key={feedback.id} {...feedback} />
+      ))}
+     
     </div>
   );
 };
 
 export default CardOne;
-
-

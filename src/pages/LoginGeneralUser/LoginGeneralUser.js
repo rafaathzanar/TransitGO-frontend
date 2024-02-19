@@ -13,27 +13,28 @@ function LoginGeneralUser() {
   return (
     <div className="App">
       <div className="Left-Form">
-          <div className="logo">
-            <Logo></Logo>
-          </div>
-          <div className="signin-form-heading">
-            <SubHeading heading="Login to Your Account"></SubHeading>
-          </div>
-          <div className="signin-form">
-            <LoginForm
-              userNameTitle="User Name or E-mail"
-              userNamePlaceholder="Enter Your User Name or E-mail"
-              loginAs="Login as Bus Employee?"
-            ></LoginForm>
-          </div>
-          <div className="btn">
-            <LoginButton buttonTitle='Login Now'></LoginButton>
-          </div>
-          <div className="signup">
-            <Link to="/SignUp">
-              <SignUpButton></SignUpButton>
-            </Link>
-          </div>
+        `
+        <div className="logo">
+          <Logo></Logo>
+        </div>
+        <div className="login-form-heading">
+          <SubHeading heading="Login to Your Account"></SubHeading>
+        </div>
+        <div className="login-form">
+          <LoginForm
+            userNameTitle="User Name or E-mail"
+            userNamePlaceholder="Enter Your User Name or E-mail"
+            loginAs="Login as Bus Employee?"
+          ></LoginForm>
+        </div>
+        <div className="btn">
+          <LoginButton buttonTitle="Login Now"></LoginButton>
+        </div>
+        <div className="signup">
+          <Link to="/SignUp">
+            <SignUpButton></SignUpButton>
+          </Link>
+        </div>
       </div>
       <div className="Right-Image">
         <MainImage img={img}></MainImage>

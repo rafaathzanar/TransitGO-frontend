@@ -9,6 +9,9 @@ import LostItem from "./pages/LostFound/LostItem";
 import FoundItemPage from "./pages/LostFound/FoundItem";
 import FoundForm from "./pages/LostFound/FoundForm";
 import LostForm from "./pages/LostFound/LostForm";
+import Main from "./pages/firstpage/Main";
+import Tracking from "./pages/tracking/Tracking";
+import Form from "./pages/form/Form";
 function PageRoutes() {
   return (
     <>
@@ -27,6 +30,11 @@ function PageRoutes() {
           <Route path="founditem" element={<FoundItemPage />} />
           <Route path="lostfoundreport" element={<FoundForm />} />
           <Route path="lostfoundreport2" element={<LostForm />} />
+        </Route>
+        <Route path="packagetransfer">
+          <Route index element={<Main />} />
+          <Route path="tracking" element={<Tracking />} />
+          <Route path="form" element={<Form />} />
         </Route>
       </Routes>
     </>

@@ -6,10 +6,15 @@ import ActivityHistoryTable from '../../components/ActivityHistoryTable/Activity
 
 function ActivityHistory(){
     const activityData = [
-        {desc: 'FirstDataFirstDataFirstData', status: 'Live'},
-        {desc: ' SecondDataSecondDataSecondData', status: 'Draft'},
-        {desc: ' ThirdDataThirdDataThirdData', status: 'Done'}
+        {desc: 'FirstDataFirstDataFirstData'},
+        {desc: ' SecondDataSecondDataSecondData'},
+        {desc: ' ThirdDataThirdDataThirdData'}
       ]
+       
+      const handleDelete = (index) => {
+        const updateActivity = [...activityData];
+        
+      }
    
    
     return(

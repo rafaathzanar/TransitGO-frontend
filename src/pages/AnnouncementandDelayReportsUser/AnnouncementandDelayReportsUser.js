@@ -7,25 +7,25 @@ import Select from "../../components/UI/select/Select";
 import Button from "../../components/UI/Button/Button";
 
 function AnnouncementandDelayReportsUser() {
-  // const [Delay, setNewDelay] = useState([
-  //   { text: '"We are sorry to announce that all bus services from Pettah are currently delayed by 20 minutes. This is due to an unexpected incident on the route. We are working to resolve the issue as quickly as possible and will keep you updated. Thank you for your understanding."', id: 'g1' },
-  //   { text: '"Traffic congestion causing delays. Next bus expected at 10:45."', id: 'g2' }
-  // ]);
+  const [Delay, setNewDelay] = useState([
+    { text: '"We are sorry to announce that all bus services from Pettah are currently delayed by 20 minutes. This is due to an unexpected incident on the route. We are working to resolve the issue as quickly as possible and will keep you updated. Thank you for your understanding."', id: 'g1' },
+    { text: '"Traffic congestion causing delays. Next bus expected at 10:45."', id: 'g2' }
+  ]);
 
-  // const addDelayHandler = enteredText => {
-  //   setNewDelay(prevdelay => {
-  //     const updateddelay = [...prevdelay];
-  //     updateddelay.unshift({ text: enteredText, id: Math.random().toString() });
-  //     return updateddelay;
-  //   });
-  // };
+  const addDelayHandler = enteredText => {
+    setNewDelay(prevdelay => {
+      const updateddelay = [...prevdelay];
+      updateddelay.unshift({ text: enteredText, id: Math.random().toString() });
+      return updateddelay;
+    });
+  };
 
-  // const deleteItemHandler = delayId => {
-  //   setNewDelay(prevdelay => {
-  //     const updateddelay = prevdelay.filter(delay => delay.id !== delayId);
-  //     return updateddelay;
-  //   });
-  // };
+  const deleteItemHandler = delayId => {
+    setNewDelay(prevdelay => {
+      const updateddelay = prevdelay.filter(delay => delay.id !== delayId);
+      return updateddelay;
+    });
+  };
 
   let content = (
     <p style={{ textAlign: "center" }}>No Announcement found. Maybe add one?</p>
@@ -58,7 +58,7 @@ function AnnouncementandDelayReportsUser() {
             <div>
               <section id="goal-form">
                 <div className="head">ANNOUNCEMENT</div>
-                <DelayReport />
+                <DelayReport onAddGoal={addDelayHandler} />
               </section>
             </div>
             <section id="goals">
