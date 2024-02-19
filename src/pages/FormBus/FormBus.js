@@ -81,129 +81,102 @@ const additionalFieldsDatasets = [
 ];
 
 function FormBus() {
-  const [busId, setBusId] = useState("");
-  const [busRegNo, setBusRegNo] = useState("");
-  const [selectedValue, setSelectedValue] = useState("");
-  const [showAdditionalFields, setShowAdditionalFields] = useState(false);
-  const [errors, setErrors] = useState({
+  const [formData, setFormData] = useState({
     busId: "",
     busRegNo: "",
     selectedValue: "",
   });
+  const [selectedValue, setSelectedValue] = useState("");
 
-  const handleBusIdChange = (event) => {
-    const value = event.target.value;
-    setBusId(value);
-    setErrors((prevErrors) => ({ ...prevErrors, busId: validateBusId(value) }));
-  };
+  const [formErrors, setFormErrors] = useState({
+    busId: false,
+    busRegNo: false,
+    selectedValue: false,
+  });
+  const [showAdditionalFields, setShowAdditionalFields] = useState(false);
 
-  const handleBusRegNoChange = (event) => {
-    const value = event.target.value;
-    setBusRegNo(value);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      busRegNo: validateBusRegNo(value),
-    }));
-  };
-
-  const handleSelectChange = (event) => {
-    const selectedOption = event.target.value;
+  const handleChange = (e) => {
+    const selectedOption = e.target.value; // Change 'event' to 'e'
     setSelectedValue(selectedOption);
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      selectedValue: validateRoute(selectedOption),
-    }));
-
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setFormErrors({ ...formErrors, [name]: false });
     setShowAdditionalFields(
       selectedOption !== "" &&
         additionalFieldsDatasets[selectedOption].length > 0
     );
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Perform actions when the form is submitted
-    if (validateForm()) {
-      console.log("Bus ID:", busId);
-      console.log("Bus Reg. No:", busRegNo);
-      console.log("Selected Value:", selectedValue);
-      // Add further actions or API calls here
-    } else {
-      console.log("Form has validation errors. Please fix them.");
-    }
-  };
-
-  const validateBusId = (value) => {
-    return value.trim() === "" ? "Bus ID is required" : "";
-  };
-
-  const validateBusRegNo = (value) => {
-    return value.trim() === "" ? "Bus Registration Number is required" : "";
-  };
-
-  const validateRoute = (value) => {
-    return value === "" ? "Route selection is required" : "";
-  };
-
-  const validateForm = () => {
-    const busIdError = validateBusId(busId);
-    const busRegNoError = validateBusRegNo(busRegNo);
-    const selectedValueError = validateRoute(selectedValue);
-
-    setErrors({
-      busId: busIdError,
-      busRegNo: busRegNoError,
-      selectedValue: selectedValueError,
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errors = {};
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key]) {
+        errors[key] = true;
+      }
     });
 
-    return (
-      busIdError === "" && busRegNoError === "" && selectedValueError === ""
-    );
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+    console.log(formData);
   };
 
   return (
-    <Container>
-      <div>
+    <Grid container item xs={10}>
+      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
         <Typography variant="h4" gutterBottom>
           Add Bus
         </Typography>
         <form onSubmit={handleSubmit}>
-          <TextField
-            label="Bus ID"
-            variant="outlined"
-            fullWidth
-            value={busId}
-            onChange={handleBusIdChange}
-            margin="normal"
-          />
-          <Validation error={errors.busId} />
-
-          <TextField
-            label="Bus Reg. No"
-            variant="outlined"
-            fullWidth
-            value={busRegNo}
-            onChange={handleBusRegNoChange}
-            margin="normal"
-          />
-          <Validation error={errors.busRegNo} />
-
-          <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel>Select Route</InputLabel>
-            <Select
-              label="Select Route"
-              value={selectedValue}
-              onChange={handleSelectChange}
-            >
-              <MenuItem value="">Select an option</MenuItem>
-              <MenuItem value="1">Matara-Colombo</MenuItem>
-              <MenuItem value="2">Colombo-Kandy</MenuItem>
-              <MenuItem value="3">Colombo-Monaragala</MenuItem>
-            </Select>
-          </FormControl>
-          <Validation error={errors.selectedValue} />
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Bus ID"
+                name="busId"
+                value={formData.busId}
+                onChange={handleChange}
+                error={formErrors.busId}
+                helperText={formErrors.busId && "Bus ID is required"}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Bus Reg. No"
+                name="busRegNo"
+                value={formData.busRegNo}
+                onChange={handleChange}
+                error={formErrors.busRegNo}
+                helperText={formErrors.busRegNo && "Bus Reg. No is required"}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Select
+                fullWidth
+                label="Select Route"
+                name="selectedValue"
+                value={formData.selectedValue}
+                onChange={handleChange}
+                error={formErrors.selectedValue}
+                displayEmpty
+              >
+                <MenuItem value="" disabled>
+                  Select Route
+                </MenuItem>
+                <MenuItem value="1">Matara-Colombo</MenuItem>
+                <MenuItem value="2">Colombo-Kandy</MenuItem>
+                <MenuItem value="3">Colombo-Monaragala</MenuItem>
+              </Select>
+              {formErrors.selectedValue && (
+                <Typography variant="caption" color="error">
+                  Route selection is required
+                </Typography>
+              )}
+            </Grid>
+          </Grid>
 
           {showAdditionalFields && (
             <>
@@ -232,14 +205,17 @@ function FormBus() {
             </>
           )}
 
-          <div style={{ marginTop: "16px" }}>
-            <Button variant="contained" color="primary" type="submit">
-              Submit
-            </Button>
-          </div>
+          <Button
+            sx={{ marginTop: "20px" }}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            Submit
+          </Button>
         </form>
-      </div>
-    </Container>
+      </Grid>
+    </Grid>
   );
 }
 
