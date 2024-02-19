@@ -10,8 +10,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import LoginBusEmployee from "./pages/LoginBusEmployee/LoginBusEmployee";
 
-import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
-import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
+
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -24,8 +23,7 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
 
-          <Route path="/GeneralUserProfile" element={<GeneralUserProfile/>}/>
-          <Route path="/ActivityHistory" element={<ActivityHistory/>}/>
+          
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
