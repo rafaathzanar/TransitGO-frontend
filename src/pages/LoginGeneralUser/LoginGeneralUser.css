@@ -27,8 +27,8 @@
   grid-template-rows: 1fr 1fr 2fr 1fr 1fr;
   grid-template-areas:
     "logo"
-    "form-heading"
-    "login-form"
+    "signin-form-heading"
+    "signin-form"
     "btn"
     "signup";
   gap: 0.3em;
