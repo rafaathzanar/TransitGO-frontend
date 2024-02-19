@@ -118,7 +118,9 @@ export default function CRUDtablePackage({ searchData }) {
   ];
 
   return (
-    <div style={{ width: "80rem" }}>
+    <div
+      style={{ width: "70rem", backgroundColor: "hsla(190, 96%, 80%, 0.2)" }}
+    >
       <SearchField
         placeholderText="Search Package"
         value={searchValue}
@@ -129,6 +131,11 @@ export default function CRUDtablePackage({ searchData }) {
         columns={columns}
         hideFooter={true}
         rowHeight={40}
+        sx={{
+          "& .MuiDataGrid-cell:hover": {
+            color: "primary.main",
+          },
+        }}
       />
 
       <Dialog

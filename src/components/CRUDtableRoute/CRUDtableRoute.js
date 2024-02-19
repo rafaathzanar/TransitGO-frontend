@@ -7,122 +7,67 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
+import { List, ListItem, ListItemText } from "@mui/material";
 
+< main
 
 export default function CRUDtableRoute({ searchData }) {
+
+export default function CRUDtableRoute() {
+> main
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
+  const [openBUSLIST, setOpenBUSLIST] = useState(false);
+  const [openBUSSTOPLIST, setOpenBUSSTOPLIST] = useState(false);
   const [rows, setRows] = useState([
     {
       id: 1,
       routeno: "123",
       route: "Route A",
-      listofbuses: "Bus1, Bus2",
+      busstops:
+        "Stop 1 , Stop 2, Stop 3 , Stop 4 ,Stop 5 , Stop 6,Stop 7 , Stop 8 ",
+      listofbuses: "Bus 1, Bus 2",
     },
     {
       id: 2,
       routeno: "456",
       route: "Route B",
-      listofbuses: "Bus3, Bus4",
+      busstops: "Stop 1 , Stop 2 ",
+      listofbuses: "Bus 3, Bus 4",
     },
-    {
-      id: 3,
-      routeno: "789",
-      route: "Route C",
-      listofbuses: "Bus5, Bus6",
-    },
-    {
-      id: 4,
-      routeno: "101",
-      route: "Route D",
-      listofbuses: "Bus7, Bus8",
-    },
-    {
-      id: 5,
-      routeno: "112",
-      route: "Route E",
-      listofbuses: "Bus9, Bus10",
-    },
-    {
-      id: 6,
-      routeno: "131",
-      route: "Route F",
-      listofbuses: "Bus11, Bus12",
-    },
-    {
-      id: 7,
-      routeno: "145",
-      route: "Route G",
-      listofbuses: "Bus13, Bus14",
-    },
-    {
-      id: 8,
-      routeno: "157",
-      route: "Route H",
-      listofbuses: "Bus15, Bus16",
-    },
-    {
-      id: 9,
-      routeno: "169",
-      route: "Route I",
-      listofbuses: "Bus17, Bus18",
-    },
-    {
-      id: 10,
-      routeno: "171",
-      route: "Route J",
-      listofbuses: "Bus19, Bus20",
-    },
-    {
-      id: 11,
-      routeno: "183",
-      route: "Route K",
-      listofbuses: "Bus21, Bus22",
-    },
-    {
-      id: 12,
-      routeno: "194",
-      route: "Route L",
-      listofbuses: "Bus23, Bus24",
-    },
+    // Add more rows here as needed
   ]);
 
-  const [filteredRows, setFilteredRows] = useState(rows); // New state for filtered rows
-  const [searchValue, setSearchValue] = useState(""); // New state for search input value
+  const [filteredRows, setFilteredRows] = useState(rows);
+  const [searchValue, setSearchValue] = useState("");
 
-  // Function to handle row deletion
   const handleDelete = (id = null) => {
     setSelectedRowId(id);
     setOpen(true);
   };
 
-  // Function to confirm row deletion
   const handleConfirmDelete = () => {
     const updatedRows = rows.filter((row) => row.id !== selectedRowId);
     setRows(updatedRows);
-    setFilteredRows(updatedRows); // Update filteredRows
+    setFilteredRows(updatedRows);
     handleClose();
   };
 
-  // Function to close delete confirmation dialog
   const handleClose = () => {
     setOpen(false);
     setSelectedRowId(null);
   };
 
-  // Function to handle row edit
   const handleEdit = (id) => {
     console.log(`Editing row with id ${id}`);
   };
 
-  // Function to handle search input change
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
     const filtered = rows.filter(
       (row) =>
         row.routeno.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        row.route.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        row.listofbuses.toLowerCase().includes(e.target.value.toLowerCase())
+        row.route.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredRows(filtered);
   };
@@ -130,7 +75,40 @@ export default function CRUDtableRoute({ searchData }) {
   const columns = [
     { field: "routeno", headerName: "Route No.", width: 200 },
     { field: "route", headerName: "Route", width: 200 },
-    { field: "listofbuses", headerName: "List Of Buses", width: 200 },
+    {
+      field: "busstops",
+      headerName: "Bus Stops",
+      width: 200,
+      renderCell: (params) => (
+        <a
+          href="#"
+          onClick={(event) => {
+            event.preventDefault();
+            setSelectedRowId(params.row.id);
+            setOpenBUSSTOPLIST(true);
+          }}
+        >
+          List Of Bus Stops
+        </a>
+      ),
+    },
+    {
+      field: "listofbuses",
+      headerName: "Available Buses",
+      width: 200,
+      renderCell: (params) => (
+        <a
+          href="#"
+          onClick={(event) => {
+            event.preventDefault();
+            setSelectedRowId(params.row.id);
+            setOpenBUSLIST(true);
+          }}
+        >
+          List Of Buses
+        </a>
+      ),
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -157,8 +135,18 @@ export default function CRUDtableRoute({ searchData }) {
   ];
 
   return (
+< main
     
     <div style={{ height: "40rem", width: "60rem", marginTop: "30px"}}>
+=======
+    <div
+      style={{
+        width: "70rem",
+        backgroundColor: "hsla(190, 96%, 80%, 0.2)",
+        marginTop: "30px",
+      }}
+    >
+> main
       <SearchField
         placeholderText="Search Route"
         value={searchValue}
@@ -169,7 +157,55 @@ export default function CRUDtableRoute({ searchData }) {
         columns={columns}
         hideFooter={true}
         rowHeight={40}
+        sx={{
+          "& .MuiDataGrid-cell:hover": {
+            color: "primary.main",
+          },
+        }}
       />
+      <Dialog open={openBUSLIST} onClose={() => setOpenBUSLIST(false)}>
+        <DialogTitle>Current Buses Availabe In The Route</DialogTitle>
+        <DialogContent>
+          <List>
+            {selectedRowId !== null &&
+              rows
+                .find((row) => row.id === selectedRowId)
+                .listofbuses.split(",")
+                .map((bus, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={bus.trim()} />
+                  </ListItem>
+                ))}
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenBUSLIST(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openBUSSTOPLIST} onClose={() => setOpenBUSSTOPLIST(false)}>
+        <DialogTitle>Current Buses Availabe In The Route</DialogTitle>
+        <DialogContent>
+          <List>
+            {selectedRowId !== null &&
+              rows
+                .find((row) => row.id === selectedRowId)
+                .busstops.split(",")
+                .map((stop, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={stop.trim()} />
+                  </ListItem>
+                ))}
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenBUSSTOPLIST(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog
         open={open}
