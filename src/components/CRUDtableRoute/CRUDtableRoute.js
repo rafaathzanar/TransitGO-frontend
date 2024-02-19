@@ -8,6 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 
+
 export default function CRUDtableRoute({ searchData }) {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -156,7 +157,8 @@ export default function CRUDtableRoute({ searchData }) {
   ];
 
   return (
-    <div style={{ height: "40rem", width: "60rem", marginTop: "30px" }}>
+    
+    <div style={{ height: "40rem", width: "60rem", marginTop: "30px"}}>
       <SearchField
         placeholderText="Search Route"
         value={searchValue}
@@ -186,5 +188,6 @@ export default function CRUDtableRoute({ searchData }) {
         </DialogActions>
       </Dialog>
     </div>
+    
   );
 }

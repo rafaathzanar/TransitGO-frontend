@@ -1,0 +1,49 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.general-user-profile{
+    display: grid;
+    grid-template-columns:1fr 4fr;
+    grid-template-areas: 
+    "nav-bar main";
+    height: 100vh;
+    max-width: 100%;
+}
+
+.nav-bar{
+    grid-area: nav-bar;
+}
+
+.main{
+    grid-area: main;
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    grid-template-areas:
+    "main-header"
+    "main-subject";
+    gap: 2%;
+    padding: 3%;
+}
+
+.main-header{
+    grid-area: main-header;
+    display: grid;
+    grid-template-columns:1fr 1fr ;
+    grid-template-areas:
+    "main-profile main-notification";
+}
+
+.main-profile{
+    grid-area: main-profile;
+}
+
+.main-notification{
+    grid-area: main-notification;
+    text-align: right;
+}
+
+.main-subject{
+    grid-area: main-subject;
+}

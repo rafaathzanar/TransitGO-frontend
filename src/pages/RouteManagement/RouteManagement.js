@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import CRUDtableRoute from "../../components/CRUDtableRoute/CRUDtableRoute";
 import CommonButton from "../../components/common/CommonButton/CommonButton";
 import { useNavigate } from "react-router";
+
 function RouteManagement() {
   const navigate = useNavigate();
   return (
@@ -18,8 +19,10 @@ function RouteManagement() {
             Add Route
           </CommonButton>
         </div>
-
+        
+        <div>
         <CRUDtableRoute style={{ margin: "10rem" }}></CRUDtableRoute>
+        </div>
       </Grid>
     </Grid>
   );

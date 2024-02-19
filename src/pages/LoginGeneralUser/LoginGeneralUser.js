@@ -13,15 +13,13 @@ function LoginGeneralUser() {
   return (
     <div className="App">
       <div className="Left-Form">
-        `
-        <div className="LoginBusEmployee">
           <div className="logo">
             <Logo></Logo>
           </div>
-          <div className="login-form-heading">
+          <div className="signin-form-heading">
             <SubHeading heading="Login to Your Account"></SubHeading>
           </div>
-          <div className="login-form">
+          <div className="signin-form">
             <LoginForm
               userNameTitle="User Name or E-mail"
               userNamePlaceholder="Enter Your User Name or E-mail"
@@ -36,7 +34,6 @@ function LoginGeneralUser() {
               <SignUpButton></SignUpButton>
             </Link>
           </div>
-        </div>
       </div>
       <div className="Right-Image">
         <MainImage img={img}></MainImage>

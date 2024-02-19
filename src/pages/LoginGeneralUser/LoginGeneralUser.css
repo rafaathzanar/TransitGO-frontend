@@ -10,12 +10,6 @@
     height: 100vh;
 }
 
-.Left-Form{
-    grid-area: Left-Form;
-    background-color: white;
-    padding: 4%;
-}
-
 .Right-Image{
     grid-area: Right-Image;
     background-color: #F1F3F6;
@@ -23,17 +17,21 @@
     height: auto;
 }
 
-.LoginBusEmployee{
+.Left-Form{
+    grid-area: Left-Form;
+    background-color: white;
+    padding: 4%;
     display: grid;
     grid-template-rows: 1fr 1fr 2fr 1fr 1fr;
     grid-template-areas: 
     "logo"
-    "form-heading"
-    "login-form"
+    "signin-form-heading"
+    "signin-form"
     "btn"
     "signup";
     gap: 0.3em;
     padding: 5%;
+    width: 100%;
  }
  
  .logo{
@@ -44,8 +42,8 @@
     grid-area: form-heading;
  }
 
- .login-form{
-     grid-area: login-form;
+ .signin-form{
+     grid-area: signin-form;
  }
 
  .signup{
@@ -63,7 +61,12 @@
     .App {
         grid-template-columns: 1fr; /* Change layout to single column */
     }
+    
     .Right-Image {
         display: none;
+    }
+
+    .Left-Form{
+        width: 100vw;
     }
 }
