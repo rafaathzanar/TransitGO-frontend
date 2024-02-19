@@ -5,6 +5,13 @@ import { CircleNotifications } from '@mui/icons-material';
 import ActivityHistoryTable from '../../components/ActivityHistoryTable/ActivityHistoryTable';
 
 function ActivityHistory(){
+    const activityData = [
+        {desc: 'FirstDataFirstDataFirstData', status: 'Live'},
+        {desc: ' SecondDataSecondDataSecondData', status: 'Draft'},
+        {desc: ' ThirdDataThirdDataThirdData', status: 'Done'}
+      ]
+   
+   
     return(
         <div className='activity-history'>
         <div className='nav-bar'>
@@ -20,7 +27,7 @@ function ActivityHistory(){
                </div>
             </div>
             <div className='main-subject'>
-                 <ActivityHistoryTable></ActivityHistoryTable>
+                 <ActivityHistoryTable activityData={activityData}></ActivityHistoryTable>
             </div>
         </div>
       </div>

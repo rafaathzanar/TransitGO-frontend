@@ -28,7 +28,35 @@
  }
 
  .activity:hover{
-    background-color:rgb(250, 107, 107, 0.2) ;
+    background-color:#132968 ;
+    color: white;
  }
 
+ .desc{
+   width: 100%;
+ }
+
+ .status{
+   background-color: white;
+   color: white;
+   padding: 5px;
+   border-radius: 5px;
+   margin-right: 3%;
+   padding: 1%;
+ }
+
+ .live{
+   background-color: rgb(10, 198, 10);
+ }
+
+ .draft{
+   background-color: rgb(104, 104, 100);
+ }
+
+ .done{
+   background-color: rgb(237, 65, 65);
+ }
  
+ .dlt-btn{
+   color: red;
+ }

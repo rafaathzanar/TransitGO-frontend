@@ -4,37 +4,26 @@ import { DeleteOutline,Edit } from '@mui/icons-material';
 import './ActivityHistoryTable.css';
 
 
-export const ActivityHistoryTable = () => {
+export const ActivityHistoryTable = ({activityData}) => {
+  
   return (
     
        <div className='activities'>
-          <div className='activity'>
-              <span className='desc'>
-                   FirstDataFirstDataFirstData
-              </span>
-              <span className='action'>
-                    <DeleteOutline></DeleteOutline>
-                    <Edit></Edit>
-              </span>
-          </div>
-          <div className='activity'>
-              <span className='desc'>
-                   SecondDataSecondDataSecondData
-              </span>
-              <span className='action'>
-                    <DeleteOutline></DeleteOutline>
-                    <Edit></Edit>
-              </span>
-          </div>
-          <div className='activity'>
-              <span className='desc'>
-                   SecondDataSecondDataSecondData
-              </span>
-              <span className='action'>
-                    <DeleteOutline></DeleteOutline>
-                    <Edit></Edit>
-              </span>
-          </div>
+          {
+               activityData.map((activity, index) => (
+              <div className='activity'>
+                   <span className='desc'>
+                      {activity.desc}
+                   </span>
+                   <span className='action'>
+                       <DeleteOutline className='dlt-btn'></DeleteOutline>
+                       <Edit></Edit>
+                   </span>
+              </div>
+               ))
+          }
+          
+          
        </div>
     
   )
