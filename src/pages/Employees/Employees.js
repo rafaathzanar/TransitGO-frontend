@@ -12,7 +12,7 @@ function Employees() {
           <CommonButton
             variant="contained"
             size="small"
-            onClick={() => navigate("addroute")}
+            onClick={() => navigate("addemployee")}
           >
             Add Employee
           </CommonButton>
