@@ -3,7 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import './selectone.css'
+
 
 export default function SelectVariants() {
   const [station, setStation] = React.useState('');
@@ -31,7 +31,7 @@ export default function SelectVariants() {
           <MenuItem value={3}>Kandy</MenuItem>
         </Select>
       </FormControl>
-      <FormControl className='second' sx={{ minWidth: 250 }}>
+      <FormControl className='second' sx={{ minWidth: 250, ml:1}}>
         <InputLabel id="demo-simple-select-standard-label">To</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
