@@ -10,13 +10,13 @@ export const NavbarUserItems = [
     id: 0,
     icon: <AccountCircle />,
     label: "Profile",
-    route: "",
+    route: "/profile",
   },
   {
     id: 2,
-    icon: <AccessTime/>,
+    icon: <AccessTime />,
     label: "Activity History",
-    route: "",
+    route: "/activityhistory",
   },
   {
     id: 3,
@@ -28,12 +28,12 @@ export const NavbarUserItems = [
     id: 4,
     icon: <Home />,
     label: "Home",
-    route: "",
+    route: "/",
   },
   {
     id: 5,
     icon: <LogoutOutlined />,
     label: "Log Out",
-    route: "",
-  }
+    route: "/",
+  },
 ];
