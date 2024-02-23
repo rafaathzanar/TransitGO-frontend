@@ -13,7 +13,7 @@ export default function SelectVariants() {
 
   return (
     <div>
-      <FormControl sx={{ minWidth: 300 }}>
+      <FormControl sx={{ minWidth: 300}}>
         <InputLabel id="demo-simple-select-standard-label">Select bus</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
