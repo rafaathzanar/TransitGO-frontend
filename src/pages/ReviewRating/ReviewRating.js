@@ -1,19 +1,12 @@
-import React, { Component } from 'react'
-import MyLayout from '../../components/MyLayout';
+import React from "react";
+import MyLayout from "../../components/MyLayout";
 
-export class ReviewRating extends Component {
-  render() {
-    return (
-      <div>
-
-
-    
-        <MyLayout/>
-        
-      </div>
-
-    )
-  }
+function ReviewRating() {
+  return (
+    <div>
+      <MyLayout />
+    </div>
+  );
 }
 
-export default ReviewRating
+export default ReviewRating;

@@ -12,7 +12,7 @@ function FoundForm() {
     <div style={{ display: "flex", justifyContent: "center" }}>
       <MyForm heading="Report Found Item" />
 
-      <Grid
+      {/* <Grid
         item
         xs={6}
         alignItems="center"
@@ -33,7 +33,7 @@ function FoundForm() {
             navigate("lostitem");
           }}
         />
-      </Grid>
+      </Grid> */}
     </div>
   );
 }

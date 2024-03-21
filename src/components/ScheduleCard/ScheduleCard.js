@@ -3,6 +3,7 @@ import busImg from "../../logo/image 1.png";
 import { Card, CardContent } from "@mui/material";
 
 import "./ScheduleCard.css";
+import { Link } from "react-router-dom";
 
 function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
   const headbarStyle = {
@@ -44,7 +45,7 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
               <img src={busImg} style={{ position: "relative" }} />
             </div>
             <div>
-              <p style={{ marginBottom: -8, fontSize: 15 }}>From:</p>
+              <p style={{ marginBottom: -10, fontSize: 15 }}>From:</p>
               <p>Colombo</p>
               <p>9.00AM</p>
             </div>
@@ -54,20 +55,14 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
             </p>
 
             <div>
-              <p style={{ marginBottom: -8, fontSize: 15 }}>To:</p>
+              <p style={{ marginBottom: -10, fontSize: 15 }}>To:</p>
               <p>Galle</p>
               <p>11.00AM</p>
             </div>
-            <a href="#">Review & Ratings</a>
+            <Link to="/reviews">Review & ReviewRating</Link>
           </div>
           <div className="footer-bar" style={footerbarStyle}>
-            <div
-              className="cringe"
-              style={{
-                padding: 5,
-                fontWeight: "bold",
-              }}
-            >
+            <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
               <p
                 style={{
                   backgroundColor: "#90EE90",
@@ -78,14 +73,14 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
                 Got off from "Pettah" at 8.55 PM
               </p>
             </div>
-            <div className="cringe" style={{ alignItems: "center" }}>
+            <div>
               <select
                 className="select-option"
                 defaultValue=""
                 displayEmpty
                 style={{
                   width: "250px",
-                  height: "30px",
+                  height: "20px",
                   backgroundColor: "white",
                 }}
               >
@@ -95,14 +90,11 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
                 <option>Arrival at Wellawatta 9.30 PM</option>
               </select>
             </div>
-            <div
-              className="cringe"
-              style={{ fontWeight: "bold", alignItems: "center" }}
-            >
+            <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
               <p
                 style={{
                   backgroundColor: "red",
-                  padding: 2,
+                  padding: 6,
                   borderRadius: 15,
                 }}
               >

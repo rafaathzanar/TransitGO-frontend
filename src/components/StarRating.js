@@ -1,39 +1,51 @@
-import React from 'react';
-import Rating from '@mui/material/Rating';
-import Box from '@mui/material/Box';
-import StarIcon from '@mui/icons-material/Star';
-import Typography from '@mui/material/Typography';
+import React, { useState } from "react";
+import Rating from "@mui/material/Rating";
+import Box from "@mui/material/Box";
+import StarIcon from "@mui/icons-material/Star";
+import Typography from "@mui/material/Typography";
 
 const labels = {
-  0.5: 'Useless',
-  1: 'Useless+',
-  1.5: 'Poor',
-  2: 'Poor+',
-  2.5: 'Ok',
-  3: 'Ok+',
-  3.5: 'Good',
-  4: 'Good+',
-  4.5: 'Excellent',
-  5: 'Excellent+',
+  0.5: "Useless",
+  1: "Useless+",
+  1.5: "Poor",
+  2: "Poor+",
+  2.5: "Ok",
+  3: "Ok+",
+  3.5: "Good",
+  4: "Good+",
+  4.5: "Excellent",
+  5: "Excellent+",
 };
 
 function getLabelText(value) {
-  return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]};`;
+  return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]};`;
 }
 
-const StarRating = ({ value, onChange }) => {
+const StarRating = React.forwardRef((props, ref) => {
+  const { value, onChange } = props;
   const [hover, setHover] = React.useState(-1);
 
   return (
     <Box
       sx={{
-        width: 200,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center", // Center vertically
+        justifyContent: "center", // Center horizontally
+        height: "6rem",
       }}
     >
-      <Typography component="legend">Ratings</Typography>
+      <Typography
+        component="legend"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center", // Center vertically
+          justifyContent: "center",
+        }}
+      >
+        Ratings
+      </Typography>
 
       <Rating
         name="hover-feedback"
@@ -56,8 +68,6 @@ const StarRating = ({ value, onChange }) => {
       )}
     </Box>
   );
-};
+});
 
 export default StarRating;
-
-

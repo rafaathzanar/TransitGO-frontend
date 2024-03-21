@@ -1,0 +1,73 @@
+.profile-form{
+    display: grid;
+    grid-template-rows: 4fr 1fr;
+    grid-template-areas:
+    "form"
+    "edit-and-save" ;
+    background-color: rgb(94, 144, 204,0.2);
+    border: 1px solid  #FA6B6B ;
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.form{
+    grid-area: form;
+}
+
+.form-control{
+    background-color: white;
+    border:2px solid rgb(241, 243, 246);
+    font-size: 30px;
+}
+
+.input input{
+    padding-top: 2%;
+}
+
+input::placeholder{
+    color:#f1f3f6;
+    opacity: 0.5;
+}
+
+label{
+    color: #1E2772;
+}
+
+.other-option{
+    display: flex;
+    justify-content: space-between;
+}
+
+.name{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+    "fn ln";
+    gap: 5px;
+}
+
+.fn{
+    grid-area: fn;
+}
+
+.ln{
+    grid-area: ln;
+}
+
+.edit-and-save{
+    grid-area: edit-and-save;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "edit save";
+    gap: 2%;
+    padding: 2%;
+  }
+  
+  .edit{
+      grid-area: edit;
+  }
+  
+  .save{
+      grid-area: save;
+  }

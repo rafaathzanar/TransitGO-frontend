@@ -1,0 +1,11 @@
+.pieAndTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centeredTypography {
+  margin-top: 10px;
+  text-align: center;
+  margin-right: 80px;
+}

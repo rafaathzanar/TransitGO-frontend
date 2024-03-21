@@ -57,41 +57,41 @@ function DashboardElement() {
   return (
     <>
       <BasicPie></BasicPie>
-      <div className="main-container">
-        <div className="main-cards">
-          <div className="card">
-            <div className="card-inner">
+      <div className="main-container-hash">
+        <div className="main-cards-hash">
+          <div className="card-hash">
+            <div className="card-inner-hash">
               <Typography variant="inherit">
                 <h3>TOTAL USERS</h3>
               </Typography>
-              <PeopleAltIcon className="card_icon" />
+              <PeopleAltIcon className="card_icon-hash" />
             </div>
             <h1>300</h1>
           </div>
-          <div className="card">
-            <div className="card-inner">
+          <div className="card-hash">
+            <div className="card-inner-hash">
               <h3>TOTAL ROUTES</h3>
 
-              <RampRightIcon className="card_icon" />
+              <RampRightIcon className="card_icon-hash" />
             </div>
             <h1>12</h1>
           </div>
-          <div className="card">
-            <div className="card-inner">
+          <div className="card-hash">
+            <div className="card-inner-hash">
               <Typography>
                 <h3>BUS EMPLOYEES</h3>
               </Typography>
-              <BsPeopleFill className="card_icon" />
+              <BsPeopleFill className="card_icon-hash" />
             </div>
             <h1>33</h1>
           </div>
-          <div className="card">
-            <div className="card-inner">
+          <div className="card-hash">
+            <div className="card-inner-hash">
               <Typography>
                 {" "}
                 <h3>TOTAL BUSES </h3>
               </Typography>
-              <DirectionsBusFilledIcon className="card_icon" />
+              <DirectionsBusFilledIcon className="card_icon-hash" />
             </div>
             <h1>42</h1>
           </div>

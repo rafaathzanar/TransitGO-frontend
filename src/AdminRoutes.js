@@ -11,6 +11,7 @@ import RouteManagement from "./pages/RouteManagement/RouteManagement";
 import BusManagement from "./pages/BusManagement/BusManagement";
 import FormBus from "./pages/FormBus/FormBus";
 import FormRoute from "./pages/FormRoute/FormRoute";
+import FormAddEmployee from "./pages/FormAddEmployee/FormAddEmployee";
 
 function AdminRoutes() {
   return (
@@ -29,12 +30,17 @@ function AdminRoutes() {
               <Route index element={<BusManagement />} />
               <Route path="addbus" element={<FormBus />} />
             </Route>
+            <Route path="employees"></Route>
           </Route>
           <Route
             path="announcementanddelayreports"
             element={<AnnouncementandDelayReportsAdmin />}
           />
-          <Route path="employees" element={<Employees />} />
+          <Route path="employees">
+            <Route index element={<Employees />} />
+            <Route path="addemployee" element={<FormAddEmployee />} />
+          </Route>
+
           <Route path="packagetransfer" element={<Package />} />
         </Routes>
       </div>

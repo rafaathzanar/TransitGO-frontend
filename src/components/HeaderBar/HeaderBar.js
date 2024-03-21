@@ -7,10 +7,10 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+
 import MenuItem from "@mui/material/MenuItem";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Logo from "../../logo/logo.png";
 import { useNavigate } from "react-router";
 
@@ -33,6 +33,9 @@ function HeaderBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const isSmallScreen = useMediaQuery("(max-width:400px)");
+
+  const logoWidth = isSmallScreen ? "150px" : "216px"; // Adjust the width based on the screen size
 
   return (
     <AppBar position="fixed" style={{ zIndex: 100000, top: 0 }} width="100%">
@@ -40,7 +43,7 @@ function HeaderBar() {
         <Toolbar disableGutters>
           <img
             src={Logo}
-            width="216px"
+            width={logoWidth}
             sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
           />
 
@@ -52,6 +55,9 @@ function HeaderBar() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+              sx={{
+                display: { xs: "block", md: "block", lg: "none" },
+              }}
             >
               <MenuIcon />
             </IconButton>

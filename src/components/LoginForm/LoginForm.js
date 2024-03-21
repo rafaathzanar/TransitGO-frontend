@@ -25,19 +25,20 @@ function LoginForm({ userNameTitle, userNamePlaceholder, loginAs }) {
             placeholder="Enter Your Password"
           />
         </div>
-        {/* <div className='other-option'>
-               {loginAs === 'Login as Customer?' ? ( 
-               <div className='option'>
-                 <Link to='/LoginGeneralUser'>{loginAs}</Link>
-               </div>):(
-               <div className='option'>
-                  <Link to='/LoginBusEmployee'>{loginAs}</Link>
-               </div>
-               )}
-               <div className='option'>
-                  <Link to='/ForgotPassword'>Forgot Password</Link>
-               </div>
-            </div> */}
+        <div className="other-option">
+          {loginAs === "Login as Customer?" ? (
+            <div className="option">
+              <Link to="/signin">{loginAs}</Link>
+            </div>
+          ) : (
+            <div className="option">
+              <Link to="/signin-employee">{loginAs}</Link>
+            </div>
+          )}
+          <div className="option">
+            <Link to="/forgotpassword">Forgot Password</Link>
+          </div>
+        </div>
       </form>
     </div>
   );
