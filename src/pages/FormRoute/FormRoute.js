@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   TextField,
   Button,
@@ -11,54 +12,55 @@ import {
   DialogActions,
   Snackbar,
 } from "@mui/material";
-
+import { useNavigate } from "react-router";
 const FormRoute = () => {
-  const [formData, setFormData] = useState({
-    routeNo: "",
-    from: "",
-    end: "",
+  const [route, setroute] = useState({
+    routeno: "",
+    routename: "",
     stops: [],
   });
+  const navigate = useNavigate();
+
+  const { routeno, routename, stops } = route;
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const [validationErrors, setValidationErrors] = useState({
-    routeNo: false,
-    from: false,
-    end: false,
-    stops: false,
+    routeno: false,
+    routename: false,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setroute((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   const handleAddStop = () => {
-    setFormData((prevData) => ({
+    setroute((prevData) => ({
       ...prevData,
       stops: [...prevData.stops, ""],
     }));
   };
 
   const handleRemoveStop = () => {
-    if (formData.stops.length > 0) {
-      const updatedStops = [...formData.stops];
+    if (route.stops.length > 0) {
+      const updatedStops = [...route.stops];
       updatedStops.pop();
 
-      setFormData((prevData) => ({
+      setroute((prevData) => ({
         ...prevData,
         stops: updatedStops,
       }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await axios.post("http://localhost:8080/busroute", route);
 
     // Validate the form
     const validationErrors = validateForm();
@@ -73,10 +75,9 @@ const FormRoute = () => {
 
   const validateForm = () => {
     const errors = {
-      routeNo: formData.routeNo.trim() === "",
-      from: formData.from.trim() === "",
-      end: formData.end.trim() === "",
-      stops: formData.stops.some((stop) => stop.trim() === ""),
+      routeno: route.routeno.trim() === "",
+      routename: route.routename.trim() === "",
+      stops: route.stops.some((stop) => stop.trim() === ""),
     };
 
     return errors;
@@ -87,7 +88,7 @@ const FormRoute = () => {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    navigate("/admin/routeschedule/routemanagement/");
   };
 
   const handleCloseSnackbar = () => {
@@ -100,50 +101,40 @@ const FormRoute = () => {
         <Typography variant="h4" gutterBottom>
           Add Route
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
               <Typography>Route No.</Typography>
               <TextField
                 fullWidth
                 label="Route No"
-                name="routeNo"
-                value={formData.routeNo}
-                onChange={handleChange}
+                name="routeno"
+                value={routeno}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Typography>From</Typography>
+              <Typography>Route Name</Typography>
               <TextField
                 fullWidth
-                label="From- Bus Station"
-                name="from"
-                value={formData.from}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography>End</Typography>
-              <TextField
-                fullWidth
-                label="End- Bus Station"
-                name="end"
-                value={formData.end}
-                onChange={handleChange}
+                label="Route Name"
+                name="routename"
+                value={routename}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
               <Typography>Stops</Typography>
-              {formData.stops.map((stop, index) => (
+              {route.stops.map((stop, index) => (
                 <TextField
                   key={index}
                   fullWidth
                   label={`Stop ${index + 1}`}
                   value={stop}
                   onChange={(e) => {
-                    const updatedStops = [...formData.stops];
+                    const updatedStops = [...stops];
                     updatedStops[index] = e.target.value;
-                    setFormData((prevData) => ({
+                    setroute((prevData) => ({
                       ...prevData,
                       stops: updatedStops,
                     }));

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -8,43 +8,55 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 import { List, ListItem, ListItemText } from "@mui/material";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 export default function CRUDtableRoute() {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
+  const [selectedRouteNo, setSelectedRouteNo] = useState(null);
   const [openBUSLIST, setOpenBUSLIST] = useState(false);
   const [openBUSSTOPLIST, setOpenBUSSTOPLIST] = useState(false);
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      routeno: "123",
-      route: "Route A",
-      busstops:
-        "Stop 1 , Stop 2, Stop 3 , Stop 4 ,Stop 5 , Stop 6,Stop 7 , Stop 8 ",
-      listofbuses: "Bus 1, Bus 2",
-    },
-    {
-      id: 2,
-      routeno: "456",
-      route: "Route B",
-      busstops: "Stop 1 , Stop 2 ",
-      listofbuses: "Bus 3, Bus 4",
-    },
-    // Add more rows here as needed
-  ]);
+  const [routes, setRoutes] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    loadRoutes();
+  }, []);
 
-  const [filteredRows, setFilteredRows] = useState(rows);
-  const [searchValue, setSearchValue] = useState("");
+  const loadRoutes = async () => {
+    try {
+      const result = await axios.get("http://localhost:8080/busroutes");
 
-  const handleDelete = (id = null) => {
-    setSelectedRowId(id);
-    setOpen(true);
+      const routesWithIds = result.data.map((route, index) => ({
+        ...route,
+        id: index + 1,
+      }));
+      setRoutes(routesWithIds);
+      setFilteredRows(routesWithIds);
+    } catch (error) {
+      console.error("Error loading routes:", error.message);
+    }
   };
 
-  const handleConfirmDelete = () => {
-    const updatedRows = rows.filter((row) => row.id !== selectedRowId);
-    setRows(updatedRows);
-    setFilteredRows(updatedRows);
+  const [filteredRows, setFilteredRows] = useState(routes);
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleDelete = (id, routeno) => {
+    setSelectedRowId(id);
+    setSelectedRouteNo(routeno);
+    setOpen(true);
+    console.log("idd no  is ", id);
+    console.log("route no  is ", routeno);
+  };
+
+  const handleConfirmDelete = async (routeno) => {
+    try {
+      await axios.delete(`http://localhost:8080/busroute/${routeno}`);
+      loadRoutes();
+    } catch (error) {
+      console.error("Error deleting route:", error.message);
+    }
+    console.log("route no ", routeno, "has been deleted");
     handleClose();
   };
 
@@ -59,17 +71,17 @@ export default function CRUDtableRoute() {
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
-    const filtered = rows.filter(
+    const filtered = routes.filter(
       (row) =>
         row.routeno.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        row.route.toLowerCase().includes(e.target.value.toLowerCase())
+        row.routename.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredRows(filtered);
   };
 
   const columns = [
     { field: "routeno", headerName: "Route No.", width: 200 },
-    { field: "route", headerName: "Route", width: 200 },
+    { field: "routename", headerName: "Route", width: 200 },
     {
       field: "busstops",
       headerName: "Bus Stops",
@@ -79,7 +91,7 @@ export default function CRUDtableRoute() {
           href="#"
           onClick={(event) => {
             event.preventDefault();
-            setSelectedRowId(params.row.id);
+            setSelectedRowId(params.id);
             setOpenBUSSTOPLIST(true);
           }}
         >
@@ -96,7 +108,7 @@ export default function CRUDtableRoute() {
           href="#"
           onClick={(event) => {
             event.preventDefault();
-            setSelectedRowId(params.row.id);
+            setSelectedRowId(params.id);
             setOpenBUSLIST(true);
           }}
         >
@@ -113,14 +125,14 @@ export default function CRUDtableRoute() {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => handleDelete(params.row.id, params.row.routeno)}
           >
             Delete
           </Button>
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleEdit(params.row.id)}
+            onClick={() => handleEdit(params.id)}
           >
             Edit
           </Button>
@@ -158,9 +170,9 @@ export default function CRUDtableRoute() {
         <DialogContent>
           <List>
             {selectedRowId !== null &&
-              rows
+              routes
                 .find((row) => row.id === selectedRowId)
-                .listofbuses.split(",")
+                ?.listofbuses?.split(",")
                 .map((bus, index) => (
                   <ListItem key={index}>
                     <ListItemText primary={bus.trim()} />
@@ -180,9 +192,9 @@ export default function CRUDtableRoute() {
         <DialogContent>
           <List>
             {selectedRowId !== null &&
-              rows
+              routes
                 .find((row) => row.id === selectedRowId)
-                .busstops.split(",")
+                ?.busstops?.split(",")
                 .map((stop, index) => (
                   <ListItem key={index}>
                     <ListItemText primary={stop.trim()} />
@@ -213,7 +225,11 @@ export default function CRUDtableRoute() {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleConfirmDelete} color="secondary" autoFocus>
+          <Button
+            onClick={() => handleConfirmDelete(selectedRouteNo)}
+            color="secondary"
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>
