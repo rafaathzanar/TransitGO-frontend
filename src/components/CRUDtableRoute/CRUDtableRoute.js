@@ -166,16 +166,15 @@ export default function CRUDtableRoute() {
         }}
       />
       <Dialog open={openBUSLIST} onClose={() => setOpenBUSLIST(false)}>
-        <DialogTitle>Current Buses Availabe In The Route</DialogTitle>
+        <DialogTitle>Buses In The Route</DialogTitle>
         <DialogContent>
           <List>
             {selectedRowId !== null &&
               routes
                 .find((row) => row.id === selectedRowId)
-                ?.listofbuses?.split(",")
-                .map((bus, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={bus.trim()} />
+                ?.buses.map((bus) => (
+                  <ListItem key={bus.id}>
+                    <ListItemText primary={bus.regNo} />
                   </ListItem>
                 ))}
           </List>
@@ -188,16 +187,15 @@ export default function CRUDtableRoute() {
       </Dialog>
 
       <Dialog open={openBUSSTOPLIST} onClose={() => setOpenBUSSTOPLIST(false)}>
-        <DialogTitle>Current Buses Availabe In The Route</DialogTitle>
+        <DialogTitle>Bus Stops In The Route</DialogTitle>
         <DialogContent>
           <List>
             {selectedRowId !== null &&
               routes
                 .find((row) => row.id === selectedRowId)
-                ?.busstops?.split(",")
-                .map((stop, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={stop.trim()} />
+                ?.busStops.map((stop) => (
+                  <ListItem key={stop.id}>
+                    <ListItemText primary={stop.name} />
                   </ListItem>
                 ))}
           </List>
