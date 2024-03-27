@@ -12,6 +12,7 @@ import ReviewRating from "./pages/ReviewRating/ReviewRating";
 import MyLayout from "./components/MyLayout";
 import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
+import Dummy from "./dummy";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -26,6 +27,7 @@ function App() {
           <Route path="/reviews" element={<MyLayout />} />
           <Route path="/profile" element={<GeneralUserProfile />} />
           <Route path="/activityhistory" element={<ActivityHistory />} />
+          <Route path="/dummy" element={<Dummy />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
