@@ -84,22 +84,49 @@ function FormBus() {
     }));
   };
   const handleChangeSelectOption = (e) => {
-    const selectedOption = e.target.value;
-    setSelectedValue(selectedOption);
-    console.log("Selected option:", selectedOption);
-    const { name, value } = e.target;
-    setBus({ ...bus, [name]: value });
-
+    const selectedOptionIndex = e.target.value;
+    setSelectedValue(selectedOptionIndex);
+    
+    // Get the selected route object from menuOptions
+    const selectedRoute = menuOptions[selectedOptionIndex];
+    
+    // Access routeno from the selected route object
+    const selectedRouteNo = selectedRoute ? selectedRoute.routeno : "";
+    
+    console.log("selectedRouteNo is", selectedRouteNo);
+    
+    setBus((prevBus) => ({
+      ...prevBus,
+      busroute: {
+        ...prevBus.busroute,
+        routeno: selectedRouteNo,
+      },
+    }));
+    
     setShowAdditionalFields(
-      selectedOption !== "" &&
-        additionalFieldsDatasets[selectedOption] &&
-        additionalFieldsDatasets[selectedOption].length > 0
+      selectedOptionIndex !== "" &&
+      additionalFieldsDatasets[selectedOptionIndex] &&
+      additionalFieldsDatasets[selectedOptionIndex].length > 0
     );
   };
+  
+  
+  
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(bus);
+console.log("posting json is",bus);
+    try {
+      const addbus = await axios.post(
+        "http://localhost:8080/bus",
+        bus
+      );
+     
+    } catch (error) {
+      console.error("Error adding bus:", error);
+    }
+    
   };
 
   return (
