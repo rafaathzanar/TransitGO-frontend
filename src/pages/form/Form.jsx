@@ -1,7 +1,6 @@
 import React from "react";
-import { Grid } from "@mui/material";
 import "./form.css"
-
+import {Grid} from "@mui/material";
 import H1 from "../../components/heading/heading";
 import M2 from "../../components/assets/p2.png";
 import TextField from "../../components/textfield/Textfield";
