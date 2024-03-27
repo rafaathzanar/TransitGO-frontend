@@ -1,5 +1,5 @@
 // FormBus.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Select,
@@ -12,8 +12,8 @@ import {
   Container,
 } from "@mui/material";
 import Validation from "../../components/Validation/Validation";
+import axios from "axios";
 
-// Custom component for a row with two input fields
 const TwoInputFieldsRow = ({ label1, label2 }) => {
   return (
     <Grid container spacing={2}>
@@ -39,93 +39,99 @@ const TwoInputFieldsRow = ({ label1, label2 }) => {
   );
 };
 
-const additionalFieldsDatasets = [
-  [],
-  [
-    "Matara",
-    "Godagama Interchange",
-    "Southern Expressway",
-    "Kottawa Interchange",
-    "Makumbura",
-    "Kottawa",
-    "Pannipitiya",
-    "Thalawathugoda",
-    "Battaramulla",
-    "Rajagiriya",
-    "Borella",
-    "Colombo Bus Stand",
-  ],
-  [
-    "Colombo",
-    "Peliyagoda",
-    "Kadawatha Interchange",
-    "Mirigama Interchange",
-    "Kurunegala Interchange",
-    "Galagedara",
-    "Kandy",
-  ],
-  [
-    "Colombo",
-    "Nugegoda",
-    "Maharagama",
-    "Pannipitiya",
-    "Kottawa",
-    "Makumbura",
-    "Southern Expressway",
-    "Mattala",
-    "Thanamalwila",
-    "Wellawaya",
-    "Buttala",
-    "Monaragala",
-  ],
-];
+
+
 
 function FormBus() {
-  const [formData, setFormData] = useState({
-    busId: "",
-    busRegNo: "",
-    selectedValue: "",
+  const [additionalFieldsDatasets, setAdditionalFieldsDatasets] = useState([]);
+  const [bus, setBus] = useState({
+    regNo: "",
+    busroute: {
+      routeno: "",
+    },
   });
+
+  const {
+    regNo,
+    busroute: { routeno },
+  } = bus;
   const [selectedValue, setSelectedValue] = useState("");
+  const [menuOptions, setMenuOptions] = useState([]);
 
-  const [formErrors, setFormErrors] = useState({
-    busId: false,
-    busRegNo: false,
-    selectedValue: false,
-  });
+  useEffect(() => {
+
+    axios
+      .get("http://localhost:8080/busroutes")
+      .then((response) => {
+        const routes = response.data;
+        const routeNames = routes.map((route) => route.routename);
+        const busstoplist = routes.map((route) => route.busStops.map((stop) => stop.name));
+      setAdditionalFieldsDatasets(busstoplist);
+        setMenuOptions(routeNames);
+        console.log(routeNames);
+      })
+      .catch((error) => {
+        console.error("Error fetching menu options:", error);
+      });
+  }, []);
+
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
-
   const handleChange = (e) => {
-    const selectedOption = e.target.value; // Change 'event' to 'e'
-    setSelectedValue(selectedOption);
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setFormErrors({ ...formErrors, [name]: false });
+    setBus((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const handleChangeSelectOption = (e) => {
+    const selectedOptionIndex = e.target.value;
+    setSelectedValue(selectedOptionIndex);
+    
+    // Get the selected route object from menuOptions
+    const selectedRoute = menuOptions[selectedOptionIndex];
+    
+    // Access routeno from the selected route object
+    const selectedRouteNo = selectedRoute ? selectedRoute.routeno : "";
+    
+    console.log("selectedRouteNo is", selectedRouteNo);
+    
+    setBus((prevBus) => ({
+      ...prevBus,
+      busroute: {
+        ...prevBus.busroute,
+        routeno: selectedRouteNo,
+      },
+    }));
+    
     setShowAdditionalFields(
-      selectedOption !== "" &&
-        additionalFieldsDatasets[selectedOption].length > 0
+      selectedOptionIndex !== "" &&
+      additionalFieldsDatasets[selectedOptionIndex] &&
+      additionalFieldsDatasets[selectedOptionIndex].length > 0
     );
   };
+  
+  
+  
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const errors = {};
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        errors[key] = true;
-      }
-    });
-
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
+console.log("posting json is",bus);
+    try {
+      const addbus = await axios.post(
+        "http://localhost:8080/bus",
+        bus
+      );
+     
+    } catch (error) {
+      console.error("Error adding bus:", error);
     }
-    console.log(formData);
+    
   };
 
   return (
     <Grid container item xs={10}>
-      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+      <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
         <Typography variant="h4" gutterBottom>
           Add Bus
         </Typography>
@@ -134,23 +140,10 @@ function FormBus() {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Bus ID"
-                name="busId"
-                value={formData.busId}
-                onChange={handleChange}
-                error={formErrors.busId}
-                helperText={formErrors.busId && "Bus ID is required"}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
                 label="Bus Reg. No"
-                name="busRegNo"
-                value={formData.busRegNo}
+                name="regNo"
+                value={bus.regNo}
                 onChange={handleChange}
-                error={formErrors.busRegNo}
-                helperText={formErrors.busRegNo && "Bus Reg. No is required"}
               />
             </Grid>
             <Grid item xs={12}>
@@ -158,23 +151,19 @@ function FormBus() {
                 fullWidth
                 label="Select Route"
                 name="selectedValue"
-                value={formData.selectedValue}
-                onChange={handleChange}
-                error={formErrors.selectedValue}
+                value={selectedValue}
+                onChange={handleChangeSelectOption}
                 displayEmpty
               >
                 <MenuItem value="" disabled>
                   Select Route
                 </MenuItem>
-                <MenuItem value="1">Matara-Colombo</MenuItem>
-                <MenuItem value="2">Colombo-Kandy</MenuItem>
-                <MenuItem value="3">Colombo-Monaragala</MenuItem>
+                {menuOptions.map((option, index) => (
+                  <MenuItem key={index} value={index}>
+                    {option}
+                  </MenuItem>
+                ))}
               </Select>
-              {formErrors.selectedValue && (
-                <Typography variant="caption" color="error">
-                  Route selection is required
-                </Typography>
-              )}
             </Grid>
           </Grid>
 
@@ -194,7 +183,7 @@ function FormBus() {
                             <Typography variant="subtitle1">{text}</Typography>
                           </td>
                           <td>
-                            <TwoInputFieldsRow />
+                            <TwoInputFieldsRow label1="Arrival time" label2="Departure time"/>
                           </td>
                         </tr>
                       )

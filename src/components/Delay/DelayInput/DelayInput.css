@@ -39,3 +39,15 @@
  padding-bottom: 20px;
 }
 
+
+
+@media screen and (max-width: 600px) {
+  .button-text {
+    color: transparent;
+  }
+  .but-add{
+    size: 10px;
+  }
+  
+}
+
