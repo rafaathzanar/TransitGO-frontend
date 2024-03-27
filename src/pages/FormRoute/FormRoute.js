@@ -83,7 +83,7 @@ const FormRoute = () => {
         console.error("Error adding route:", error);
       }
     }
-  
+  if (!hasErrors(validationErrors)){navigate("/admin/routeschedule/routemanagement")}
   };
 
   const validateForm = () => {

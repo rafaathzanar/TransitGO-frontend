@@ -39,48 +39,11 @@ const TwoInputFieldsRow = ({ label1, label2 }) => {
   );
 };
 
-const additionalFieldsDatasets = [
-  [],
-  [
-    "Matara",
-    "Godagama Interchange",
-    "Southern Expressway",
-    "Kottawa Interchange",
-    "Makumbura",
-    "Kottawa",
-    "Pannipitiya",
-    "Thalawathugoda",
-    "Battaramulla",
-    "Rajagiriya",
-    "Borella",
-    "Colombo Bus Stand",
-  ],
-  [
-    "Colombo",
-    "Peliyagoda",
-    "Kadawatha Interchange",
-    "Mirigama Interchange",
-    "Kurunegala Interchange",
-    "Galagedara",
-    "Kandy",
-  ],
-  [
-    "Colombo",
-    "Nugegoda",
-    "Maharagama",
-    "Pannipitiya",
-    "Kottawa",
-    "Makumbura",
-    "Southern Expressway",
-    "Mattala",
-    "Thanamalwila",
-    "Wellawaya",
-    "Buttala",
-    "Monaragala",
-  ],
-];
+
+
 
 function FormBus() {
+  const [additionalFieldsDatasets, setAdditionalFieldsDatasets] = useState([]);
   const [bus, setBus] = useState({
     regNo: "",
     busroute: {
@@ -96,12 +59,14 @@ function FormBus() {
   const [menuOptions, setMenuOptions] = useState([]);
 
   useEffect(() => {
-    // Fetch menu options from Spring backend when component mounts
+
     axios
       .get("http://localhost:8080/busroutes")
       .then((response) => {
         const routes = response.data;
         const routeNames = routes.map((route) => route.routename);
+        const busstoplist = routes.map((route) => route.busStops.map((stop) => stop.name));
+      setAdditionalFieldsDatasets(busstoplist);
         setMenuOptions(routeNames);
         console.log(routeNames);
       })
@@ -134,7 +99,6 @@ function FormBus() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     console.log(bus);
   };
 
@@ -192,7 +156,7 @@ function FormBus() {
                             <Typography variant="subtitle1">{text}</Typography>
                           </td>
                           <td>
-                            <TwoInputFieldsRow />
+                            <TwoInputFieldsRow label1="Arrival time" label2="Departure time"/>
                           </td>
                         </tr>
                       )
