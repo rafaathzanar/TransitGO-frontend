@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Autocomplete,
   TextField,
@@ -7,19 +7,38 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
+import { useState } from "react";
+import axios from "axios";
+
 
 const ScheduleSearchBar = () => {
-  const fromOptions = [
-    { label: "Option 1" },
-    { label: "Option 2" },
-    { label: "Option 3" },
-  ];
+  const [Busstops,setBusstops] = useState();
+  useEffect(() => {
+    loadBusStops();
+  }, []);
 
-  const toOptions = [
-    { label: "Option A" },
-    { label: "Option B" },
-    { label: "Option C" },
-  ];
+
+  const loadBusStops=async () =>{
+  try {
+    const busStopData = await axios.get("http://localhost:8080/busstops");
+    const busStopNames = busStopData.data.map((stop) => ({
+      label: stop.name.trim(),
+    }));
+    setBusstops(busStopNames);
+  
+  } catch (error) {
+    console.error("Error loading routes:", error.message);
+  }
+  };
+
+
+
+
+
+  
+  const fromOptions = Busstops;
+
+  const toOptions =Busstops;
   return (
     <Container style={{ paddingTop: 80 }}>
       <Paper elevation={3} style={{ padding: 10, margin: 10 }}>

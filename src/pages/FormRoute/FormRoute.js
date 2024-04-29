@@ -59,6 +59,9 @@ const FormRoute = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
+    if(stops == []){
+      console.log("Fill Every Data");
+    }
     if (hasErrors(validationErrors)) {
       setValidationErrors(validationErrors);
     } else {
@@ -111,24 +114,23 @@ const FormRoute = () => {
   return (
     <Grid container item xs={10}>
       <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-        <Typography variant="h4" gutterBottom>
-          Add Route
-        </Typography>
+        
         <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
-              <Typography>Route No.</Typography>
-              <TextField
+             
+              <TextField required
                 fullWidth
                 label="Route No"
                 name="routeno"
+                type="number"
                 value={routeno}
                 onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Typography>Route Name</Typography>
-              <TextField
+             
+              <TextField required
                 fullWidth
                 label="Route Name"
                 name="routename"

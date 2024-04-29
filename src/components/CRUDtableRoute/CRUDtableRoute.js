@@ -65,9 +65,11 @@ export default function CRUDtableRoute() {
     setSelectedRowId(null);
   };
 
-  const handleEdit = (id) => {
-    console.log(`Editing row with id ${id}`);
+  const handleEdit = (routeno) => {
+    navigate (`editroute/${routeno}`);
+    console.log("route no ", routeno);
   };
+  
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -89,8 +91,8 @@ export default function CRUDtableRoute() {
       renderCell: (params) => (
         <a
           href="#"
-          onClick={(event) => {
-            event.preventDefault();
+          onClick={(e) => {
+            e.preventDefault();
             setSelectedRowId(params.id);
             setOpenBUSSTOPLIST(true);
           }}
