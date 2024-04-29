@@ -80,7 +80,7 @@ function ScheduleCard({ busID = "REXY101" }, { routeNo = "101" }) {
                 displayEmpty
                 style={{
                   width: "250px",
-                  height: "20px",
+                  height: "40px",
                   backgroundColor: "white",
                 }}
               >

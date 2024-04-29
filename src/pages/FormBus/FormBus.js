@@ -1,20 +1,21 @@
-// FormBus.js
 import React, { useEffect, useState } from "react";
 import {
   TextField,
   Select,
   MenuItem,
   Button,
-  FormControl,
-  InputLabel,
   Typography,
   Grid,
-  Container,
 } from "@mui/material";
-import Validation from "../../components/Validation/Validation";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
-const TwoInputFieldsRow = ({ label1, label2 }) => {
+const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
+  const handleTimeChange = (e, field) => {
+    const { value } = e.target;
+    onTimeChange(value, field);
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -24,6 +25,7 @@ const TwoInputFieldsRow = ({ label1, label2 }) => {
           variant="outlined"
           fullWidth
           margin="normal"
+          onChange={(e) => handleTimeChange(e, 'arrivalTime')}
         />
       </Grid>
       <Grid item xs={6}>
@@ -33,16 +35,16 @@ const TwoInputFieldsRow = ({ label1, label2 }) => {
           variant="outlined"
           fullWidth
           margin="normal"
+          onChange={(e) => handleTimeChange(e, 'departureTime')}
         />
       </Grid>
     </Grid>
   );
 };
 
-
-
-
 function FormBus() {
+  
+  const navigate = useNavigate();
   const [additionalFieldsDatasets, setAdditionalFieldsDatasets] = useState([]);
   const [bus, setBus] = useState({
     regNo: "",
@@ -50,6 +52,8 @@ function FormBus() {
       routeno: "",
     },
   });
+  const [arrivalTimes, setArrivalTimes] = useState({});
+  const [departureTimes, setDepartureTimes] = useState({});
 
   const {
     regNo,
@@ -59,16 +63,15 @@ function FormBus() {
   const [menuOptions, setMenuOptions] = useState([]);
 
   useEffect(() => {
-
     axios
       .get("http://localhost:8080/busroutes")
       .then((response) => {
         const routes = response.data;
-        const routeNames = routes.map((route) => route.routename);
-        const busstoplist = routes.map((route) => route.busStops.map((stop) => stop.name));
-      setAdditionalFieldsDatasets(busstoplist);
-        setMenuOptions(routeNames);
-        console.log(routeNames);
+        const busstoplist = routes.map((route) =>
+          route.busStops.map((stop) => stop.name)
+        );
+        setAdditionalFieldsDatasets(busstoplist);
+        setMenuOptions(routes);
       })
       .catch((error) => {
         console.error("Error fetching menu options:", error);
@@ -86,15 +89,9 @@ function FormBus() {
   const handleChangeSelectOption = (e) => {
     const selectedOptionIndex = e.target.value;
     setSelectedValue(selectedOptionIndex);
-    
-    // Get the selected route object from menuOptions
     const selectedRoute = menuOptions[selectedOptionIndex];
-    
-    // Access routeno from the selected route object
     const selectedRouteNo = selectedRoute ? selectedRoute.routeno : "";
-    
-    console.log("selectedRouteNo is", selectedRouteNo);
-    
+
     setBus((prevBus) => ({
       ...prevBus,
       busroute: {
@@ -102,31 +99,65 @@ function FormBus() {
         routeno: selectedRouteNo,
       },
     }));
-    
+
     setShowAdditionalFields(
       selectedOptionIndex !== "" &&
-      additionalFieldsDatasets[selectedOptionIndex] &&
-      additionalFieldsDatasets[selectedOptionIndex].length > 0
+        additionalFieldsDatasets[selectedOptionIndex] &&
+        additionalFieldsDatasets[selectedOptionIndex].length > 0
     );
   };
-  
-  
-  
-  
 
+  const handleTimeChange = (time, field, stopName) => {
+    if (field === 'arrivalTime') {
+      setArrivalTimes(prevTimes => ({ ...prevTimes, [stopName]: time }));
+    } else if (field === 'departureTime') {
+      setDepartureTimes(prevTimes => ({ ...prevTimes, [stopName]: time }));
+    }
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-console.log("posting json is",bus);
+
     try {
-      const addbus = await axios.post(
+      // First, add the bus
+      const { data: addedBus } = await axios.post(
         "http://localhost:8080/bus",
         bus
       );
-     
+
+      // Get the selected route
+      const selectedRoute = menuOptions[selectedValue];
+
+      // Create an array to store schedule data
+      const schedules = additionalFieldsDatasets[selectedValue].map((stopName) => {
+        const stop = selectedRoute.busStops.find(stop => stop.name === stopName);
+
+        console.log("Selected Route:", selectedRoute);
+console.log("Bus Stops:", stop);
+
+
+        return {
+          bus: { id: addedBus.id, regNo: addedBus.regNo },
+          busStop: { stopID: stop.stopID, name: stopName }, // Ensure stop exists
+          arrivalTime: arrivalTimes[stopName],
+          departureTime: departureTimes[stopName],
+        };
+      });
+      
+      console.log("schedules:", schedules);
+      
+      // Post all schedules to the server
+      await Promise.all(
+        schedules.map(async (scheduleData) => {
+          console.log("posting json is", scheduleData);
+          await axios.post("http://localhost:8080/schedule", scheduleData);
+        })
+      );
     } catch (error) {
-      console.error("Error adding bus:", error);
+      console.error("Error adding bus or schedule:", error);
     }
-    
+
+    navigate("/admin/routeschedule/busmanagement");
   };
 
   return (
@@ -139,6 +170,7 @@ console.log("posting json is",bus);
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                required
                 fullWidth
                 label="Bus Reg. No"
                 name="regNo"
@@ -148,6 +180,7 @@ console.log("posting json is",bus);
             </Grid>
             <Grid item xs={12}>
               <Select
+                required
                 fullWidth
                 label="Select Route"
                 name="selectedValue"
@@ -160,7 +193,7 @@ console.log("posting json is",bus);
                 </MenuItem>
                 {menuOptions.map((option, index) => (
                   <MenuItem key={index} value={index}>
-                    {option}
+                    {option.routename}
                   </MenuItem>
                 ))}
               </Select>
@@ -183,7 +216,12 @@ console.log("posting json is",bus);
                             <Typography variant="subtitle1">{text}</Typography>
                           </td>
                           <td>
-                            <TwoInputFieldsRow label1="Arrival time" label2="Departure time"/>
+                            <TwoInputFieldsRow
+  label1="Arrival time"
+  label2="Departure time"
+  onTimeChange={(time, field) => handleTimeChange(time, field, text)}
+/>
+
                           </td>
                         </tr>
                       )
