@@ -59,9 +59,9 @@ const FormRoute = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
-    if(stops == []){
-      console.log("Fill Every Data");
-    }
+    // if(stops == []){
+    //   console.log("Fill Every Data");
+    // }
     if (hasErrors(validationErrors)) {
       setValidationErrors(validationErrors);
     } else {
@@ -86,7 +86,9 @@ const FormRoute = () => {
         console.error("Error adding route:", error);
       }
     }
-  if (!hasErrors(validationErrors)){navigate("/admin/routeschedule/routemanagement")}
+    if (!hasErrors(validationErrors)) {
+      navigate("/admin/routeschedule/routemanagement");
+    }
   };
 
   const validateForm = () => {
@@ -114,12 +116,11 @@ const FormRoute = () => {
   return (
     <Grid container item xs={10}>
       <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-        
         <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
-             
-              <TextField required
+              <TextField
+                required
                 fullWidth
                 label="Route No"
                 name="routeno"
@@ -129,8 +130,8 @@ const FormRoute = () => {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-             
-              <TextField required
+              <TextField
+                required
                 fullWidth
                 label="Route Name"
                 name="routename"
@@ -154,6 +155,7 @@ const FormRoute = () => {
                         stops: updatedStops,
                       }));
                     }}
+                    sx={{ marginTop: 2 }}
                   />
                   <Button
                     variant="outlined"
@@ -168,7 +170,7 @@ const FormRoute = () => {
                 variant="outlined"
                 color="primary"
                 onClick={handleAddStop}
-                style={{ marginRight: "10px" }}
+                style={{ marginRight: "10px", marginTop: "20px" }}
               >
                 Add Stop
               </Button>
