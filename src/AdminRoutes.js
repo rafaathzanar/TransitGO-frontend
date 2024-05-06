@@ -13,6 +13,7 @@ import FormBus from "./pages/FormBus/FormBus";
 import FormRoute from "./pages/FormRoute/FormRoute";
 import FormAddEmployee from "./pages/FormAddEmployee/FormAddEmployee";
 import EditRoute from "./pages/FormRoute/EditRoute";
+import EditBus from "./pages/FormBus/EditBus";
 
 function AdminRoutes() {
   return (
@@ -26,11 +27,12 @@ function AdminRoutes() {
             <Route path="routemanagement">
               <Route index element={<RouteManagement />} />
               <Route path="addroute" element={<FormRoute />} />
-              <Route path="editroute/:id" element={<EditRoute/>}/>
+              <Route path="editroute/:id" element={<EditRoute />} />
             </Route>
             <Route path="busmanagement">
               <Route index element={<BusManagement />} />
               <Route path="addbus" element={<FormBus />} />
+              <Route path="editbus/:id" element={<EditBus />} />
             </Route>
             <Route path="employees"></Route>
           </Route>

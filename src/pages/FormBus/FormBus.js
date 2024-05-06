@@ -25,7 +25,7 @@ const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
           variant="outlined"
           fullWidth
           margin="normal"
-          onChange={(e) => handleTimeChange(e, 'arrivalTime')}
+          onChange={(e) => handleTimeChange(e, "arrivalTime")}
         />
       </Grid>
       <Grid item xs={6}>
@@ -35,7 +35,7 @@ const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
           variant="outlined"
           fullWidth
           margin="normal"
-          onChange={(e) => handleTimeChange(e, 'departureTime')}
+          onChange={(e) => handleTimeChange(e, "departureTime")}
         />
       </Grid>
     </Grid>
@@ -43,7 +43,6 @@ const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
 };
 
 function FormBus() {
-  
   const navigate = useNavigate();
   const [additionalFieldsDatasets, setAdditionalFieldsDatasets] = useState([]);
   const [bus, setBus] = useState({
@@ -108,13 +107,13 @@ function FormBus() {
   };
 
   const handleTimeChange = (time, field, stopName) => {
-    if (field === 'arrivalTime') {
-      setArrivalTimes(prevTimes => ({ ...prevTimes, [stopName]: time }));
-    } else if (field === 'departureTime') {
-      setDepartureTimes(prevTimes => ({ ...prevTimes, [stopName]: time }));
+    if (field === "arrivalTime") {
+      setArrivalTimes((prevTimes) => ({ ...prevTimes, [stopName]: time }));
+    } else if (field === "departureTime") {
+      setDepartureTimes((prevTimes) => ({ ...prevTimes, [stopName]: time }));
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -129,23 +128,26 @@ function FormBus() {
       const selectedRoute = menuOptions[selectedValue];
 
       // Create an array to store schedule data
-      const schedules = additionalFieldsDatasets[selectedValue].map((stopName) => {
-        const stop = selectedRoute.busStops.find(stop => stop.name === stopName);
+      const schedules = additionalFieldsDatasets[selectedValue].map(
+        (stopName) => {
+          const stop = selectedRoute.busStops.find(
+            (stop) => stop.name === stopName
+          );
 
-        console.log("Selected Route:", selectedRoute);
-console.log("Bus Stops:", stop);
+          console.log("Selected Route:", selectedRoute);
+          console.log("Bus Stops:", stop);
 
+          return {
+            bus: { id: addedBus.id, regNo: addedBus.regNo },
+            busStop: { stopID: stop.stopID, name: stopName }, // Ensure stop exists
+            arrivalTime: arrivalTimes[stopName],
+            departureTime: departureTimes[stopName],
+          };
+        }
+      );
 
-        return {
-          bus: { id: addedBus.id, regNo: addedBus.regNo },
-          busStop: { stopID: stop.stopID, name: stopName }, // Ensure stop exists
-          arrivalTime: arrivalTimes[stopName],
-          departureTime: departureTimes[stopName],
-        };
-      });
-      
       console.log("schedules:", schedules);
-      
+
       // Post all schedules to the server
       await Promise.all(
         schedules.map(async (scheduleData) => {
@@ -217,11 +219,12 @@ console.log("Bus Stops:", stop);
                           </td>
                           <td>
                             <TwoInputFieldsRow
-  label1="Arrival time"
-  label2="Departure time"
-  onTimeChange={(time, field) => handleTimeChange(time, field, text)}
-/>
-
+                              label1="Arrival time"
+                              label2="Departure time"
+                              onTimeChange={(time, field) =>
+                                handleTimeChange(time, field, text)
+                              }
+                            />
                           </td>
                         </tr>
                       )
