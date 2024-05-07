@@ -8,6 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 import axios from "axios";
+import { useNavigate } from "react-router";
 export default function CRUDtableRoute({}) {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -15,6 +16,8 @@ export default function CRUDtableRoute({}) {
   const [busRoutes, setBusRoutes] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadBuses();
@@ -64,7 +67,7 @@ export default function CRUDtableRoute({}) {
 
   // Function to handle row edit
   const handleEdit = (id) => {
-    console.log(`Editing row with id ${id}`);
+    navigate(`editbus/${id}`);
   };
 
   // Function to handle search input change

@@ -1,44 +1,39 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  TextField,
-  Button,
-  Grid,
-  Typography,
-  Snackbar,
-} from "@mui/material";
+import { TextField, Button, Grid, Typography } from "@mui/material";
 
 const EditRoute = () => {
-  const { routeno } = useParams();
+  const { id } = useParams();
+  console.log("id", id);
   const navigate = useNavigate();
 
   const [route, setRoute] = useState({
     routeNo: "",
     routename: "",
-    stops: [],
+    busStops: [],
   });
-  
 
   useEffect(() => {
-  console.log("Route No:", routeno);
+    fetchRouteData();
+  }, []);
+
   const fetchRouteData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/busroute/${route.routeNo}`);
-      const { routeno, routename, stops } = response.data;
-      setRoute({ routeNo: routeno, routename, stops });
+      console.log("Route No:", id);
+      console.log("route no form param is : ", id);
+      const response = await axios.get(`http://localhost:8080/busroute/${id}`);
+      console.log("response ", response.data);
+      setRoute(response.data);
     } catch (error) {
       console.error("Error fetching route data:", error);
     }
   };
-  
 
-  if (routeno) {
-    fetchRouteData();
-  }
-}, [routeno]);
+  useEffect(() => {
+    console.log("Setted route ", route);
+  }, [route]); // This will log whenever `route` changes
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRoute((prevData) => ({
@@ -50,7 +45,7 @@ const EditRoute = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8080/busroute/${routeno}`, route);
+      await axios.put(`http://localhost:8080/busroute/${id}`, route);
       navigate("/admin/routeschedule/routemanagement");
     } catch (error) {
       console.error("Error updating route:", error);
@@ -59,13 +54,13 @@ const EditRoute = () => {
 
   return (
     <Grid container item xs={10}>
-      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+      <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
         <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
               <TextField
+                required
                 fullWidth
-                label="Route No"
                 name="routeno"
                 type="number"
                 value={route.routeno}
@@ -75,6 +70,7 @@ const EditRoute = () => {
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField
+                required
                 fullWidth
                 label="Route Name"
                 name="routename"
@@ -83,24 +79,29 @@ const EditRoute = () => {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Typography>Stops</Typography>
-              {route.stops.map((stop, index) => (
-                <div key={index}>
-                  <TextField
-                    fullWidth
-                    label={`Stop ${index + 1}`}
-                    value={stop}
-                    onChange={(e) => {
-                      const updatedStops = [...route.stops];
-                      updatedStops[index] = e.target.value;
-                      setRoute((prevData) => ({
-                        ...prevData,
-                        stops: updatedStops,
-                      }));
-                    }}
-                  />
-                </div>
-              ))}
+              <Typography>Bus Stops</Typography>
+              {route.busStops &&
+                route.busStops.map((stop, index) => (
+                  <div key={index}>
+                    <TextField
+                      fullWidth
+                      label={`Stop ${index + 1}`}
+                      value={stop.name || ""} // Ensure the value is defined or set it to an empty string
+                      onChange={(e) => {
+                        const updatedbusStops = [...route.busStops];
+                        updatedbusStops[index] = {
+                          ...updatedbusStops[index],
+                          name: e.target.value,
+                        };
+                        setRoute((prevData) => ({
+                          ...prevData,
+                          busStops: updatedbusStops,
+                        }));
+                      }}
+                      sx={{ marginTop: 2 }}
+                    />
+                  </div>
+                ))}
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary">

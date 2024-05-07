@@ -19,6 +19,7 @@ export default function CRUDtableRoute() {
   const [openBUSSTOPLIST, setOpenBUSSTOPLIST] = useState(false);
   const [routes, setRoutes] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     loadRoutes();
   }, []);
@@ -27,9 +28,9 @@ export default function CRUDtableRoute() {
     try {
       const result = await axios.get("http://localhost:8080/busroutes");
 
-      const routesWithIds = result.data.map((route, index) => ({
+      const routesWithIds = result.data.map((route) => ({
         ...route,
-        id: index + 1,
+        id: route.routeno.toString(), // Using routeno as unique id
       }));
       setRoutes(routesWithIds);
       setFilteredRows(routesWithIds);
@@ -45,8 +46,6 @@ export default function CRUDtableRoute() {
     setSelectedRowId(id);
     setSelectedRouteNo(routeno);
     setOpen(true);
-    console.log("idd no  is ", id);
-    console.log("route no  is ", routeno);
   };
 
   const handleConfirmDelete = async (routeno) => {
@@ -56,7 +55,7 @@ export default function CRUDtableRoute() {
     } catch (error) {
       console.error("Error deleting route:", error.message);
     }
-    console.log("route no ", routeno, "has been deleted");
+    console.log("Route number ", routeno, "has been deleted");
     handleClose();
   };
 
@@ -66,10 +65,8 @@ export default function CRUDtableRoute() {
   };
 
   const handleEdit = (routeno) => {
-    navigate (`editroute/${routeno}`);
-    console.log("route no ", routeno);
+    navigate(`editroute/${routeno}`);
   };
-  
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -134,7 +131,7 @@ export default function CRUDtableRoute() {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleEdit(params.id)}
+            onClick={() => handleEdit(params.row.routeno)}
           >
             Edit
           </Button>
