@@ -1,22 +1,32 @@
-
-import React from "react";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from "../../UI/Button/Button";
 
 import "./DelayItem.css";
-import { Table } from "@mui/material";
 
 const DelayItem = (props) => {
-  //const [deleteText, setDeleteText] = useState('');
-  
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const deleteHandler = () => {
-    //setDeleteText('(Deleted!)');
+    setOpen(true);
+  };
+
+  const confirmDeleteHandler = () => {
     props.onDelete(props.id);
+    handleClose();
   };
 
   const editHandler = () => {
-    //setDeleteText('(Deleted!)');
     props.onEdit(props.id);
   };
 
@@ -34,6 +44,25 @@ const DelayItem = (props) => {
           </div>
         </div>
       </td>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this announcement?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={confirmDeleteHandler} autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </table>
   );
 };
