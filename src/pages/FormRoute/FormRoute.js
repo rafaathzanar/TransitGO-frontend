@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   TextField,
   Button,
@@ -11,72 +12,90 @@ import {
   DialogActions,
   Snackbar,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 
 const FormRoute = () => {
-  const [formData, setFormData] = useState({
-    routeNo: "",
-    from: "",
-    end: "",
+  const [route, setRoute] = useState({
+    routeno: "",
+    routename: "",
     stops: [],
   });
+  const navigate = useNavigate();
+
+  const { routeno, routename, stops } = route;
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const [validationErrors, setValidationErrors] = useState({
-    routeNo: false,
-    from: false,
-    end: false,
-    stops: false,
+    routeno: false,
+    routename: false,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setRoute((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   const handleAddStop = () => {
-    setFormData((prevData) => ({
+    setRoute((prevData) => ({
       ...prevData,
       stops: [...prevData.stops, ""],
     }));
   };
 
-  const handleRemoveStop = () => {
-    if (formData.stops.length > 0) {
-      const updatedStops = [...formData.stops];
-      updatedStops.pop();
-
-      setFormData((prevData) => ({
-        ...prevData,
-        stops: updatedStops,
-      }));
-    }
+  const handleRemoveStop = (index) => {
+    const updatedStops = [...stops];
+    updatedStops.splice(index, 1);
+    setRoute((prevData) => ({
+      ...prevData,
+      stops: updatedStops,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate the form
     const validationErrors = validateForm();
+    // if(stops == []){
+    //   console.log("Fill Every Data");
+    // }
     if (hasErrors(validationErrors)) {
       setValidationErrors(validationErrors);
     } else {
-      // Form is valid, proceed with submission
-      setOpenDialog(true);
-      setOpenSnackbar(true);
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/busroute",
+          route
+        );
+        if (response.status === 200) {
+          setOpenDialog(true);
+          setOpenSnackbar(true);
+        }
+        for (const stop of stops) {
+          await axios.post("http://localhost:8080/busstop", {
+            name: stop,
+            busroute: {
+              routeno,
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error adding route:", error);
+      }
+    }
+    if (!hasErrors(validationErrors)) {
+      navigate("/admin/routeschedule/routemanagement");
     }
   };
 
   const validateForm = () => {
     const errors = {
-      routeNo: formData.routeNo.trim() === "",
-      from: formData.from.trim() === "",
-      end: formData.end.trim() === "",
-      stops: formData.stops.some((stop) => stop.trim() === ""),
+      routeno: route.routeno.trim() === "",
+      routename: route.routename.trim() === "",
+      stops: route.stops.some((stop) => stop.trim() === ""),
     };
 
     return errors;
@@ -87,7 +106,7 @@ const FormRoute = () => {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    navigate("/admin/routeschedule/routemanagement/");
   };
 
   const handleCloseSnackbar = () => {
@@ -97,73 +116,63 @@ const FormRoute = () => {
   return (
     <Grid container item xs={10}>
       <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-        <Typography variant="h4" gutterBottom>
-          Add Route
-        </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
-              <Typography>Route No.</Typography>
               <TextField
+                required
                 fullWidth
                 label="Route No"
-                name="routeNo"
-                value={formData.routeNo}
-                onChange={handleChange}
+                name="routeno"
+                type="number"
+                value={routeno}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Typography>From</Typography>
               <TextField
+                required
                 fullWidth
-                label="From- Bus Station"
-                name="from"
-                value={formData.from}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography>End</Typography>
-              <TextField
-                fullWidth
-                label="End- Bus Station"
-                name="end"
-                value={formData.end}
-                onChange={handleChange}
+                label="Route Name"
+                name="routename"
+                value={routename}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
               <Typography>Stops</Typography>
-              {formData.stops.map((stop, index) => (
-                <TextField
-                  key={index}
-                  fullWidth
-                  label={`Stop ${index + 1}`}
-                  value={stop}
-                  onChange={(e) => {
-                    const updatedStops = [...formData.stops];
-                    updatedStops[index] = e.target.value;
-                    setFormData((prevData) => ({
-                      ...prevData,
-                      stops: updatedStops,
-                    }));
-                  }}
-                />
+              {stops.map((stop, index) => (
+                <div key={index}>
+                  <TextField
+                    fullWidth
+                    label={`Stop ${index + 1}`}
+                    value={stop}
+                    onChange={(e) => {
+                      const updatedStops = [...stops];
+                      updatedStops[index] = e.target.value;
+                      setRoute((prevData) => ({
+                        ...prevData,
+                        stops: updatedStops,
+                      }));
+                    }}
+                    sx={{ marginTop: 2 }}
+                  />
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleRemoveStop(index)}
+                  >
+                    Delete Stop
+                  </Button>
+                </div>
               ))}
               <Button
                 variant="outlined"
                 color="primary"
                 onClick={handleAddStop}
-                style={{ marginRight: "10px" }}
+                style={{ marginRight: "10px", marginTop: "20px" }}
               >
                 Add Stop
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleRemoveStop}
-              >
-                Delete Stop
               </Button>
             </Grid>
             <Grid item xs={12}>
@@ -174,7 +183,6 @@ const FormRoute = () => {
           </Grid>
         </form>
 
-        {/* Validation Error Snackbar */}
         <Snackbar
           open={hasErrors(validationErrors)}
           autoHideDuration={3000}
@@ -182,7 +190,6 @@ const FormRoute = () => {
           message="Please fill in all required fields."
         />
 
-        {/* Success Dialog */}
         <Dialog open={openDialog} onClose={handleCloseDialog}>
           <DialogTitle>Route Added Successfully</DialogTitle>
           <DialogContent>Your route has been added successfully.</DialogContent>
@@ -193,7 +200,6 @@ const FormRoute = () => {
           </DialogActions>
         </Dialog>
 
-        {/* Success Snackbar */}
         <Snackbar
           open={openSnackbar}
           autoHideDuration={3000}

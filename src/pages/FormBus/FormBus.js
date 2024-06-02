@@ -1,20 +1,21 @@
-// FormBus.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Select,
   MenuItem,
   Button,
-  FormControl,
-  InputLabel,
   Typography,
   Grid,
-  Container,
 } from "@mui/material";
-import Validation from "../../components/Validation/Validation";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
-// Custom component for a row with two input fields
-const TwoInputFieldsRow = ({ label1, label2 }) => {
+const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
+  const handleTimeChange = (e, field) => {
+    const { value } = e.target;
+    onTimeChange(value, field);
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -24,6 +25,7 @@ const TwoInputFieldsRow = ({ label1, label2 }) => {
           variant="outlined"
           fullWidth
           margin="normal"
+          onChange={(e) => handleTimeChange(e, "arrivalTime")}
         />
       </Grid>
       <Grid item xs={6}>
@@ -33,99 +35,136 @@ const TwoInputFieldsRow = ({ label1, label2 }) => {
           variant="outlined"
           fullWidth
           margin="normal"
+          onChange={(e) => handleTimeChange(e, "departureTime")}
         />
       </Grid>
     </Grid>
   );
 };
 
-const additionalFieldsDatasets = [
-  [],
-  [
-    "Matara",
-    "Godagama Interchange",
-    "Southern Expressway",
-    "Kottawa Interchange",
-    "Makumbura",
-    "Kottawa",
-    "Pannipitiya",
-    "Thalawathugoda",
-    "Battaramulla",
-    "Rajagiriya",
-    "Borella",
-    "Colombo Bus Stand",
-  ],
-  [
-    "Colombo",
-    "Peliyagoda",
-    "Kadawatha Interchange",
-    "Mirigama Interchange",
-    "Kurunegala Interchange",
-    "Galagedara",
-    "Kandy",
-  ],
-  [
-    "Colombo",
-    "Nugegoda",
-    "Maharagama",
-    "Pannipitiya",
-    "Kottawa",
-    "Makumbura",
-    "Southern Expressway",
-    "Mattala",
-    "Thanamalwila",
-    "Wellawaya",
-    "Buttala",
-    "Monaragala",
-  ],
-];
-
 function FormBus() {
-  const [formData, setFormData] = useState({
-    busId: "",
-    busRegNo: "",
-    selectedValue: "",
+  const navigate = useNavigate();
+  const [additionalFieldsDatasets, setAdditionalFieldsDatasets] = useState([]);
+  const [bus, setBus] = useState({
+    regNo: "",
+    busroute: {
+      routeno: "",
+    },
   });
+  const [arrivalTimes, setArrivalTimes] = useState({});
+  const [departureTimes, setDepartureTimes] = useState({});
+
+  const {
+    regNo,
+    busroute: { routeno },
+  } = bus;
   const [selectedValue, setSelectedValue] = useState("");
+  const [menuOptions, setMenuOptions] = useState([]);
 
-  const [formErrors, setFormErrors] = useState({
-    busId: false,
-    busRegNo: false,
-    selectedValue: false,
-  });
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/busroutes")
+      .then((response) => {
+        const routes = response.data;
+        const busstoplist = routes.map((route) =>
+          route.busStops.map((stop) => stop.name)
+        );
+        setAdditionalFieldsDatasets(busstoplist);
+        setMenuOptions(routes);
+      })
+      .catch((error) => {
+        console.error("Error fetching menu options:", error);
+      });
+  }, []);
+
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
-
   const handleChange = (e) => {
-    const selectedOption = e.target.value; // Change 'event' to 'e'
-    setSelectedValue(selectedOption);
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setFormErrors({ ...formErrors, [name]: false });
+    setBus((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const handleChangeSelectOption = (e) => {
+    const selectedOptionIndex = e.target.value;
+    setSelectedValue(selectedOptionIndex);
+    const selectedRoute = menuOptions[selectedOptionIndex];
+    const selectedRouteNo = selectedRoute ? selectedRoute.routeno : "";
+
+    setBus((prevBus) => ({
+      ...prevBus,
+      busroute: {
+        ...prevBus.busroute,
+        routeno: selectedRouteNo,
+      },
+    }));
+
     setShowAdditionalFields(
-      selectedOption !== "" &&
-        additionalFieldsDatasets[selectedOption].length > 0
+      selectedOptionIndex !== "" &&
+        additionalFieldsDatasets[selectedOptionIndex] &&
+        additionalFieldsDatasets[selectedOptionIndex].length > 0
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const errors = {};
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        errors[key] = true;
-      }
-    });
-
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
+  const handleTimeChange = (time, field, stopName) => {
+    if (field === "arrivalTime") {
+      setArrivalTimes((prevTimes) => ({ ...prevTimes, [stopName]: time }));
+    } else if (field === "departureTime") {
+      setDepartureTimes((prevTimes) => ({ ...prevTimes, [stopName]: time }));
     }
-    console.log(formData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // First, add the bus
+      const { data: addedBus } = await axios.post(
+        "http://localhost:8080/bus",
+        bus
+      );
+
+      // Get the selected route
+      const selectedRoute = menuOptions[selectedValue];
+
+      // Create an array to store schedule data
+      const schedules = additionalFieldsDatasets[selectedValue].map(
+        (stopName) => {
+          const stop = selectedRoute.busStops.find(
+            (stop) => stop.name === stopName
+          );
+
+          console.log("Selected Route:", selectedRoute);
+          console.log("Bus Stops:", stop);
+
+          return {
+            bus: { id: addedBus.id, regNo: addedBus.regNo },
+            busStop: { stopID: stop.stopID, name: stopName }, // Ensure stop exists
+            arrivalTime: arrivalTimes[stopName],
+            departureTime: departureTimes[stopName],
+          };
+        }
+      );
+
+      console.log("schedules:", schedules);
+
+      // Post all schedules to the server
+      await Promise.all(
+        schedules.map(async (scheduleData) => {
+          console.log("posting json is", scheduleData);
+          await axios.post("http://localhost:8080/schedule", scheduleData);
+        })
+      );
+    } catch (error) {
+      console.error("Error adding bus or schedule:", error);
+    }
+
+    navigate("/admin/routeschedule/busmanagement");
   };
 
   return (
     <Grid container item xs={10}>
-      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+      <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
         <Typography variant="h4" gutterBottom>
           Add Bus
         </Typography>
@@ -133,48 +172,33 @@ function FormBus() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                fullWidth
-                label="Bus ID"
-                name="busId"
-                value={formData.busId}
-                onChange={handleChange}
-                error={formErrors.busId}
-                helperText={formErrors.busId && "Bus ID is required"}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
+                required
                 fullWidth
                 label="Bus Reg. No"
-                name="busRegNo"
-                value={formData.busRegNo}
+                name="regNo"
+                value={bus.regNo}
                 onChange={handleChange}
-                error={formErrors.busRegNo}
-                helperText={formErrors.busRegNo && "Bus Reg. No is required"}
               />
             </Grid>
             <Grid item xs={12}>
               <Select
+                required
                 fullWidth
                 label="Select Route"
                 name="selectedValue"
-                value={formData.selectedValue}
-                onChange={handleChange}
-                error={formErrors.selectedValue}
+                value={selectedValue}
+                onChange={handleChangeSelectOption}
                 displayEmpty
               >
                 <MenuItem value="" disabled>
                   Select Route
                 </MenuItem>
-                <MenuItem value="1">Matara-Colombo</MenuItem>
-                <MenuItem value="2">Colombo-Kandy</MenuItem>
-                <MenuItem value="3">Colombo-Monaragala</MenuItem>
+                {menuOptions.map((option, index) => (
+                  <MenuItem key={index} value={index}>
+                    {option.routename}
+                  </MenuItem>
+                ))}
               </Select>
-              {formErrors.selectedValue && (
-                <Typography variant="caption" color="error">
-                  Route selection is required
-                </Typography>
-              )}
             </Grid>
           </Grid>
 
@@ -194,7 +218,13 @@ function FormBus() {
                             <Typography variant="subtitle1">{text}</Typography>
                           </td>
                           <td>
-                            <TwoInputFieldsRow />
+                            <TwoInputFieldsRow
+                              label1="Arrival time"
+                              label2="Departure time"
+                              onTimeChange={(time, field) =>
+                                handleTimeChange(time, field, text)
+                              }
+                            />
                           </td>
                         </tr>
                       )

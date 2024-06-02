@@ -19,7 +19,7 @@
 
 .form-control textarea:focus {
   outline: none;
-  background: hsl(0, 93%, 70%);
+  background: hsl(0, 2%, 73%);
   border-color:  hsl(224, 69%, 24%);
 }
 
@@ -37,5 +37,17 @@
   float: right;
  margin-top: -20px;
  padding-bottom: 20px;
+}
+
+
+
+@media screen and (max-width: 600px) {
+  .button-text {
+    color: transparent;
+  }
+  .but-add{
+    size: 10px;
+  }
+  
 }
 

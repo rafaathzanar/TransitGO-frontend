@@ -2,48 +2,70 @@ import React, { useState } from "react";
 
 import Button from "../../UI/Button/Button";
 import "./DelayInput.css";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import AddIcon from "@mui/icons-material/Add";
+import Add from "@mui/icons-material/Add";
 
-const DelayInput = (props) => {
+const DelayInput = (onAddGoal) => {
+  let navigate = useNavigate();
+
   const [enteredValue, setEnteredValue] = useState("");
   const [isValid, setIsValid] = useState(true);
 
   const delayInputChangeHandler = (event) => {
-    if (event.target.value.trim().length > 0) {
-      setIsValid(true);
-    }
-    setEnteredValue(event.target.value);
+    const inputText = event.target.value;
+    setEnteredValue(inputText);
+    setIsValid(inputText.trim().length > 0);
   };
 
-  const formSubmitHandler = (event) => {
+  const formSubmitHandler = async (event) => {
     event.preventDefault();
-    if (enteredValue.trim().length === 0) {
-      setIsValid(false);
+    if (enteredValue.trim() === "") {
       return;
     }
-    props.onAddGoal(enteredValue);
+    try {
+      const response = await axios.post("http://localhost:8080/announcement", {
+        details: enteredValue,
+      });
+
+      setEnteredValue("");
+      //navigate("/admin")
+      // const newDelay = enteredValue;
+      // onAddGoal= newDelay;
+      window.location.reload();
+
+      console.log("Entered value after submission:", enteredValue);
+    } catch (error) {
+      console.error("Error adding delay:", error);
+    }
   };
 
-    const [showRules, setShowRules] = useState(false);
-  
-    const toggleRules = () => {
-      setShowRules(!showRules);
-    };
+  const [showRules, setShowRules] = useState(false);
+
+  const toggleRules = () => {
+    setShowRules(!showRules);
+  };
 
   return (
-    <div >
-      
+    <div>
       <div className="on">
-      <Button  onClick={toggleRules} >
-        + Announcement/Delay
-      </Button>
+        <Button onClick={toggleRules} className="but-add">
+          <Add  onClick={toggleRules}></Add>
+          <span className="button-text">Announcement/Delay</span>
+
+        </Button>
       </div>
-     
 
       {showRules ? (
         <div>
           <form onSubmit={formSubmitHandler}>
             <div className={`form-control ${!isValid ? "invalid" : ""}`}>
-              <textarea type="text" onChange={delayInputChangeHandler} />
+              <textarea
+                value={enteredValue}
+                type="text"
+                onChange={delayInputChangeHandler}
+              />
             </div>
             <Button type="submit">Submit Post</Button>
           </form>

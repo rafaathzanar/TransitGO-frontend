@@ -46,10 +46,12 @@ function AdminRoutes() {
             <Route path="routemanagement">
               <Route index element={<RouteManagement />} />
               <Route path="addroute" element={<FormRoute />} />
+              <Route path="editroute/:id" element={<EditRoute />} />
             </Route>
             <Route path="busmanagement">
               <Route index element={<BusManagement />} />
               <Route path="addbus" element={<FormBus />} />
+              <Route path="editbus/:id" element={<EditBus />} />
             </Route>
             <Route path="employees"></Route>
           </Route>
