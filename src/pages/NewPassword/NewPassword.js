@@ -22,7 +22,7 @@ function NewPassword(){
                <LoginButton buttonTitle='Save and Login'></LoginButton>
         </div>
       </div>
-        </div>
+      </div>
     );
 }
 

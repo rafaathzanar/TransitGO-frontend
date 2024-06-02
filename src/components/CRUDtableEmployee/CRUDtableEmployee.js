@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -7,38 +7,87 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
+import axios from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { usePagination } from "@mui/lab";
+import { Token } from "@mui/icons-material";
 
 export default function CRUDtableEmployee({ searchData }) {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      employeeId: "EMP001",
-      employeeName: "John Doe",
-      currentBusId: "BUS001",
-    },
-    {
-      id: 2,
-      employeeId: "EMP002",
-      employeeName: "Jane Smith",
-      currentBusId: "BUS002",
-    },
-    // Add more employee data as needed
-  ]);
-
+  const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
+  const {employeeId} = useParams();
   const [filteredRows, setFilteredRows] = useState(rows); // New state for filtered rows
   const [searchValue, setSearchValue] = useState(""); // New state for search input value
 
-  // Function to handle row deletion
-  const handleDelete = (id = null) => {
-    setSelectedRowId(id);
-    setOpen(true);
-  };
+  const [userData, setUserData] = useState({
+    fname: '',
+    lname: '',
+    email: '',
+    uname: ''
+  })
+  
+  
+  //load user information every time the page is open
+  useEffect(()=>{
+    loadUsers();
+  },[]);
+
+  useEffect(()=>{
+    handleEdit(employeeId);
+  },[employeeId]);
+
+ 
+
+  //to load the infromations
+  const loadUsers = async()=>{
+    try{
+      const token = localStorage.getItem('token');
+      const result = await axios.get("http://localhost:8080/admin/users",{
+      headers: {Authorization: `Bearer ${token}`}
+    });
+    console.log(result.data);
+    const userArray = result.data.userList || [];
+    const transformedRows = userArray
+    .filter((user)=>user.type === "employee")
+    .map((user, index)=>({
+      id: index+1,
+      employeeId: user.id,
+      employeeName: user.email,
+      currentBusId: user.busid
+    }));
+    console.log(transformedRows);
+    setRows(transformedRows);
+    setFilteredRows(transformedRows);
+    }
+    catch(error){
+      console.error("Error fetching user data:",error);
+    }
+  }
+
+//to delete a user by id
+  const deleteUser = async (employeeid)=>{
+    try{
+      const confirmDelete = window.confirm("Are you sure you want to delete this user ?");
+      const token = localStorage.getItem('token');
+      if (confirmDelete){
+      const response = await axios.delete(`http://localhost:8080/admin/delete/${employeeid}`,{
+      headers: {Authorization: `Bearer ${token}`}
+    });
+    loadUsers();
+      }
+    }catch(error){
+      console.error("Error deleting the user :",error);
+    }
+  }
+
+
+  
 
   // Function to confirm row deletion
   const handleConfirmDelete = () => {
-    const updatedRows = rows.filter((row) => row.id !== selectedRowId);
+    const updatedRows = rows.filter((row) => row.employeeId !== selectedRowId);
     setRows(updatedRows);
     setFilteredRows(updatedRows); // Update filteredRows
     handleClose();
@@ -51,9 +100,22 @@ export default function CRUDtableEmployee({ searchData }) {
   };
 
   // Function to handle row edit
-  const handleEdit = (id) => {
-    console.log(`Editing row with id ${id}`);
+  
+  //to get a user by id
+  const handleEdit = async(employeeId) =>{
+    
+    try{
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`http://localhost:8080/admin/get-user/${employeeId}`,{
+        headers: {Authorization: `Bearer ${token}`}
+      });
+      const {fname, lname, email, uname} = response.User;
+      setUserData({fname, lname, email, uname});
+    }catch(error){
+      console.log("Error fetching user data :", error)
+    }
   };
+   
 
   // Function to handle search input change
   const handleSearchChange = (e) => {
@@ -80,17 +142,19 @@ export default function CRUDtableEmployee({ searchData }) {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => deleteUser(params.row.employeeId)}
           >
             Delete
           </Button>
-          <Button
+          <Link
             variant="outlined"
             color="primary"
-            onClick={() => handleEdit(params.row.id)}
-          >
+            onClick={() => handleEdit(params.row.employeeId)}
+            to={`/edituser/${params.row.employeeId}`}
+          > 
             Edit
-          </Button>
+          </Link>
+          
         </div>
       ),
     },
@@ -120,7 +184,7 @@ export default function CRUDtableEmployee({ searchData }) {
           },
         }}
       />
-
+ 
       <Dialog
         open={open}
         onClose={handleClose}

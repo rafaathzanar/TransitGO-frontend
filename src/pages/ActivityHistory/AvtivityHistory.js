@@ -11,10 +11,7 @@ function ActivityHistory(){
         {desc: ' ThirdDataThirdDataThirdData'}
       ]
        
-      const handleDelete = (index) => {
-        const updateActivity = [...activityData];
-        
-      }
+     
    
    
     return(
@@ -35,7 +32,7 @@ function ActivityHistory(){
                  <ActivityHistoryTable activityData={activityData}></ActivityHistoryTable>
             </div>
         </div>
-      </div>
+      </div>  
     );
 }
 

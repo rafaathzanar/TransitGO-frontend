@@ -3,47 +3,47 @@
     margin: 0;
 }
 
-.general-user-profile{
+.general-user{
     display: grid;
     grid-template-columns:1fr 4fr;
     grid-template-areas: 
-    "nav-bar main";
+    "profilenavbar profilemain";
     height: 100vh;
     max-width: 100%;
 }
 
-.nav-bar{
-    grid-area: nav-bar;
+.profilenavbar{
+    grid-area: profilenavbar;
 }
 
-.main{
-    grid-area: main;
+.profilemain{
+    grid-area: profilemain;
     display: grid;
     grid-template-rows: 1fr 6fr;
     grid-template-areas:
-    "main-header"
-    "main-subject";
+    "profiletop"
+    "profilesubject";
     gap: 2%;
     padding: 3%;
 }
 
-.main-header{
-    grid-area: main-header;
+.profiletop{
+    grid-area: profiletop;
     display: grid;
     grid-template-columns:1fr 1fr ;
     grid-template-areas:
-    "main-profile main-notification";
+    "profileicon profilenotification";
 }
 
-.main-profile{
-    grid-area: main-profile;
+.profileicon{
+    grid-area: profileicon;
 }
 
-.main-notification{
-    grid-area: main-notification;
+.profilenotification{
+    grid-area: profilenotification;
     text-align: right;
 }
 
-.main-subject{
-    grid-area: main-subject;
+.profilesubject{
+    grid-area: profilesubject;
 }

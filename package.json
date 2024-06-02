@@ -15,9 +15,11 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.8",
     "bootstrap": "^5.3.2",
     "date-fns": "^3.3.1",
     "dayjs": "^1.11.10",
+    "jwt-decode": "^4.0.0",
     "material-icons": "^1.13.12",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
@@ -39,7 +41,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "globals": {
+      "Link": "readonly"
+    }
   },
   "browserslist": {
     "production": [
@@ -54,6 +59,6 @@
     ]
   },
   "devDependencies": {
-    "react-router-dom": "^6.21.3"
+    "react-router-dom": "^6.23.0"
   }
 }

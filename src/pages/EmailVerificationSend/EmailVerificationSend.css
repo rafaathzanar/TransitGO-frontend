@@ -1,0 +1,51 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.verifyEmail{
+    display: grid;
+    grid-template-rows: 1fr 9fr;
+    grid-template-areas: 
+    "logo" 
+    "main" ;
+    height: 100vh;
+    background-color:#F1F3F6 ;
+    padding: 2%;
+}
+
+.logo{
+    grid-area: logo;
+}
+
+.main{
+    grid-area: main;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: 
+    "tick"
+    "heading"
+    "subject";
+    padding: 10%;
+    justify-content: center;
+    background-color: white;
+    margin: 5%;
+    row-gap: 2%;
+}
+
+.tick{
+    grid-area: tick;
+}
+
+.heading{
+    grid-area: heading;
+    color: #FA6B6B;
+    
+}
+
+.subject{
+    grid-area: subject;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #132968;
+}
