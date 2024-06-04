@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+//ScheduleSearchBar.js
+import React, { useEffect, useState } from "react";
 import {
   Autocomplete,
   TextField,
@@ -7,38 +8,32 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import { useState } from "react";
 import axios from "axios";
 
+const ScheduleSearchBar = ({ onSearch }) => {
+  const [busStops, setBusStops] = useState([]);
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
 
-const ScheduleSearchBar = () => {
-  const [Busstops,setBusstops] = useState();
   useEffect(() => {
+    const loadBusStops = async () => {
+      try {
+        const busStopData = await axios.get("http://localhost:8080/busstops");
+        const busStopNames = busStopData.data.map((stop) => ({
+          label: stop.name.trim(),
+        }));
+        setBusStops(busStopNames);
+      } catch (error) {
+        console.error("Error loading routes:", error.message);
+      }
+    };
     loadBusStops();
   }, []);
 
-
-  const loadBusStops=async () =>{
-  try {
-    const busStopData = await axios.get("http://localhost:8080/busstops");
-    const busStopNames = busStopData.data.map((stop) => ({
-      label: stop.name.trim(),
-    }));
-    setBusstops(busStopNames);
-  
-  } catch (error) {
-    console.error("Error loading routes:", error.message);
-  }
+  const handleSearch = () => {
+    onSearch(from, to);
   };
 
-
-
-
-
-  
-  const fromOptions = Busstops;
-
-  const toOptions =Busstops;
   return (
     <Container style={{ paddingTop: 80 }}>
       <Paper elevation={3} style={{ padding: 10, margin: 10 }}>
@@ -48,46 +43,30 @@ const ScheduleSearchBar = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          {/* From Field */}
           <Grid item>
             <Autocomplete
               style={{ width: 200 }}
-              options={fromOptions} // Add your options here
+              options={busStops}
               getOptionLabel={(option) => option.label}
+              onChange={(event, value) => setFrom(value?.label || "")}
               renderInput={(params) => (
                 <TextField {...params} label="From:" variant="outlined" />
               )}
             />
           </Grid>
-
-          {/* To Field */}
           <Grid item>
             <Autocomplete
               style={{ width: 200 }}
-              options={toOptions} // Add your options here
+              options={busStops}
               getOptionLabel={(option) => option.label}
+              onChange={(event, value) => setTo(value?.label || "")}
               renderInput={(params) => (
                 <TextField {...params} label="To:" variant="outlined" />
               )}
             />
           </Grid>
-
-          {/* Date Input Field */}
           <Grid item>
-            <TextField
-              label="Date"
-              type="date"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              autoComplete="on"
-            />
-          </Grid>
-
-          {/* Search Button */}
-          <Grid item>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleSearch}>
               Search
             </Button>
           </Grid>
