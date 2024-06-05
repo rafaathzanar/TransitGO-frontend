@@ -30,9 +30,6 @@ const DelayInput = (onAddGoal) => {
       });
 
       setEnteredValue("");
-      //navigate("/admin")
-      // const newDelay = enteredValue;
-      // onAddGoal= newDelay;
       window.location.reload();
 
       console.log("Entered value after submission:", enteredValue);

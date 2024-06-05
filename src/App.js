@@ -13,10 +13,13 @@ import MyLayout from "./components/MyLayout";
 import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
 import Dummy from "./dummy";
+import HeaderBar from "./components/HeaderBar/HeaderBar";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
       <BrowserRouter>
+      <HeaderBar />
+
         <Routes>
           <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path="/*" element={<PageRoutes />} />
