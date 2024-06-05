@@ -6,6 +6,7 @@ import {
   Button,
   Typography,
   Grid,
+  Container,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -51,15 +52,17 @@ function FormBus() {
       routeno: "",
     },
   });
-  const [arrivalTimes, setArrivalTimes] = useState({});
-  const [departureTimes, setDepartureTimes] = useState({});
-
-  const {
-    regNo,
-    busroute: { routeno },
-  } = bus;
-  const [selectedValue, setSelectedValue] = useState("");
+  const [arrivalTimesUp, setArrivalTimesUp] = useState({});
+  const [departureTimesUp, setDepartureTimesUp] = useState({});
+  const [arrivalTimesDown, setArrivalTimesDown] = useState({});
+  const [departureTimesDown, setDepartureTimesDown] = useState({});
   const [menuOptions, setMenuOptions] = useState([]);
+
+  // const {
+  //   regNo,
+  //   busroute: { routeno },
+  // } = bus;
+  const [selectedValue, setSelectedValue] = useState("");
 
   useEffect(() => {
     axios
@@ -106,11 +109,28 @@ function FormBus() {
     );
   };
 
-  const handleTimeChange = (time, field, stopName) => {
-    if (field === "arrivalTime") {
-      setArrivalTimes((prevTimes) => ({ ...prevTimes, [stopName]: time }));
-    } else if (field === "departureTime") {
-      setDepartureTimes((prevTimes) => ({ ...prevTimes, [stopName]: time }));
+  const handleTimeChange = (time, field, stopName, direction) => {
+    if (direction === "up") {
+      if (field === "arrivalTime") {
+        setArrivalTimesUp((prevTimes) => ({ ...prevTimes, [stopName]: time }));
+      } else if (field === "departureTime") {
+        setDepartureTimesUp((prevTimes) => ({
+          ...prevTimes,
+          [stopName]: time,
+        }));
+      }
+    } else if (direction === "down") {
+      if (field === "arrivalTime") {
+        setArrivalTimesDown((prevTimes) => ({
+          ...prevTimes,
+          [stopName]: time,
+        }));
+      } else if (field === "departureTime") {
+        setDepartureTimesDown((prevTimes) => ({
+          ...prevTimes,
+          [stopName]: time,
+        }));
+      }
     }
   };
 
@@ -127,34 +147,44 @@ function FormBus() {
       // Get the selected route
       const selectedRoute = menuOptions[selectedValue];
 
-      // Create an array to store schedule data
-      const schedules = additionalFieldsDatasets[selectedValue].map(
+      // Create an array to store schedule data for both directions
+      const schedulesUp = additionalFieldsDatasets[selectedValue].map(
         (stopName) => {
           const stop = selectedRoute.busStops.find(
             (stop) => stop.name === stopName
           );
 
-          console.log("Selected Route:", selectedRoute);
-          console.log("Bus Stops:", stop);
-
           return {
             bus: { id: addedBus.id, regNo: addedBus.regNo },
-            busStop: { stopID: stop.stopID, name: stopName }, // Ensure stop exists
-            arrivalTime: arrivalTimes[stopName],
-            departureTime: departureTimes[stopName],
+            busStop: { stopID: stop.stopID, name: stopName },
+            arrivalTime: arrivalTimesUp[stopName],
+            departureTime: departureTimesUp[stopName],
+            direction: "up",
           };
         }
       );
 
-      console.log("schedules:", schedules);
+      const schedulesDown = additionalFieldsDatasets[selectedValue]
+        .reverse()
+        .map((stopName) => {
+          const stop = selectedRoute.busStops.find(
+            (stop) => stop.name === stopName
+          );
+
+          return {
+            bus: { id: addedBus.id, regNo: addedBus.regNo },
+            busStop: { stopID: stop.stopID, name: stopName },
+            arrivalTime: arrivalTimesDown[stopName],
+            departureTime: departureTimesDown[stopName],
+            direction: "down",
+          };
+        });
 
       // Post all schedules to the server
-      await Promise.all(
-        schedules.map(async (scheduleData) => {
-          console.log("posting json is", scheduleData);
-          await axios.post("http://localhost:8080/schedule", scheduleData);
-        })
-      );
+      for (const scheduleData of [...schedulesUp, ...schedulesDown]) {
+        console.log("schedule data", scheduleData);
+        await axios.post("http://localhost:8080/schedule", scheduleData);
+      }
     } catch (error) {
       console.error("Error adding bus or schedule:", error);
     }
@@ -163,89 +193,136 @@ function FormBus() {
   };
 
   return (
-    <Grid container item xs={10}>
-      <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-        <Typography variant="h4" gutterBottom>
-          Add Bus
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Bus Reg. No"
-                name="regNo"
-                value={bus.regNo}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Select
-                required
-                fullWidth
-                label="Select Route"
-                name="selectedValue"
-                value={selectedValue}
-                onChange={handleChangeSelectOption}
-                displayEmpty
-              >
-                <MenuItem value="" disabled>
-                  Select Route
-                </MenuItem>
-                {menuOptions.map((option, index) => (
-                  <MenuItem key={index} value={index}>
-                    {option.routename}
+    <Container>
+      <Grid container item xs={10}>
+        <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+          <Typography variant="h4" gutterBottom>
+            Add Bus
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Bus Reg. No"
+                  name="regNo"
+                  value={bus.regNo}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Select
+                  required
+                  fullWidth
+                  label="Select Route"
+                  name="selectedValue"
+                  value={selectedValue}
+                  onChange={handleChangeSelectOption}
+                  display
+                  Empty
+                >
+                  <MenuItem value="" disabled>
+                    Select Route
                   </MenuItem>
-                ))}
-              </Select>
+                  {menuOptions.map((option, index) => (
+                    <MenuItem key={index} value={index}>
+                      {option.routename}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
             </Grid>
-          </Grid>
 
-          {showAdditionalFields && (
-            <>
-              <div>
-                <table>
-                  <tbody>
-                    <tr>
-                      <th>Bus Stops</th>
-                      <th>Arrival & Departure Times</th>
-                    </tr>
-                    {additionalFieldsDatasets[selectedValue].map(
-                      (text, index) => (
-                        <tr key={index}>
-                          <td>
-                            <Typography variant="subtitle1">{text}</Typography>
-                          </td>
-                          <td>
-                            <TwoInputFieldsRow
-                              label1="Arrival time"
-                              label2="Departure time"
-                              onTimeChange={(time, field) =>
-                                handleTimeChange(time, field, text)
-                              }
-                            />
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
+            {showAdditionalFields && (
+              <>
+                <Typography variant="h6" gutterBottom>
+                  Up Direction
+                </Typography>
+                <div>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <th>Bus Stops</th>
+                        <th>Arrival & Departure Times</th>
+                      </tr>
+                      {additionalFieldsDatasets[selectedValue].map(
+                        (text, index) => (
+                          <tr key={index}>
+                            <td>
+                              <Typography variant="subtitle1">
+                                {text}
+                              </Typography>
+                            </td>
+                            <td>
+                              <TwoInputFieldsRow
+                                label1="Arrival time"
+                                label2="Departure time"
+                                onTimeChange={(time, field) =>
+                                  handleTimeChange(time, field, text, "up")
+                                }
+                              />
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
 
-          <Button
-            sx={{ marginTop: "20px" }}
-            variant="contained"
-            color="primary"
-            type="submit"
-          >
-            Submit
-          </Button>
-        </form>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  style={{ marginTop: "2rem" }}
+                >
+                  Down Direction
+                </Typography>
+                <div>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <th>Bus Stops</th>
+                        <th>Arrival & Departure Times</th>
+                      </tr>
+                      {additionalFieldsDatasets[selectedValue]
+                        .slice()
+                        .reverse()
+                        .map((text, index) => (
+                          <tr key={index}>
+                            <td>
+                              <Typography variant="subtitle1">
+                                {text}
+                              </Typography>
+                            </td>
+                            <td>
+                              <TwoInputFieldsRow
+                                label1="Arrival time"
+                                label2="Departure time"
+                                onTimeChange={(time, field) =>
+                                  handleTimeChange(time, field, text, "down")
+                                }
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+
+            <Button
+              sx={{ marginTop: "20px" }}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </form>
+        </Grid>
       </Grid>
-    </Grid>
+    </Container>
   );
 }
 
