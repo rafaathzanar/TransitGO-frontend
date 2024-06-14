@@ -8,7 +8,7 @@ function RouteManagement() {
   const navigate = useNavigate();
   return (
     <Grid container item xs={10}>
-      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+      <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
         <div>
           <CommonButton
             variant="contained"
