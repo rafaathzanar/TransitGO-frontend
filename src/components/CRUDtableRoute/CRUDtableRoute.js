@@ -1,3 +1,4 @@
+//CRUDtableRoute.js
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
@@ -169,13 +170,20 @@ export default function CRUDtableRoute() {
         <DialogContent>
           <List>
             {selectedRowId !== null &&
-              routes
-                .find((row) => row.id === selectedRowId)
-                ?.buses.map((bus) => (
-                  <ListItem key={bus.id}>
-                    <ListItemText primary={bus.regNo} />
-                  </ListItem>
-                ))}
+              (routes.find((row) => row.id === selectedRowId)?.buses.length >
+              0 ? (
+                routes
+                  .find((row) => row.id === selectedRowId)
+                  ?.buses.map((bus) => (
+                    <ListItem key={bus.id}>
+                      <ListItemText primary={bus.regNo} />
+                    </ListItem>
+                  ))
+              ) : (
+                <ListItem>
+                  <ListItemText primary="No buses are currently available in the route" />
+                </ListItem>
+              ))}
           </List>
         </DialogContent>
         <DialogActions>
@@ -192,7 +200,8 @@ export default function CRUDtableRoute() {
             {selectedRowId !== null &&
               routes
                 .find((row) => row.id === selectedRowId)
-                ?.busStops.map((stop) => (
+                ?.busStops.sort((a, b) => a.orderIndex - b.orderIndex) // Sort busStops by orderIndex
+                .map((stop) => (
                   <ListItem key={stop.id}>
                     <ListItemText primary={stop.name} />
                   </ListItem>

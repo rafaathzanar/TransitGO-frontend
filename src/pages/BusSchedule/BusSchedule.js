@@ -8,18 +8,21 @@ function BusSchedule() {
   const [busSchedules, setBusSchedules] = useState([]);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [direction, setDirection] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSearch = async (fromStop, toStop) => {
+  const handleSearch = async (fromStop, toStop, direction) => {
     setFrom(fromStop);
+    setDirection(direction);
     setTo(toStop);
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get(`http://localhost:8080/bus/search`, {
-        params: { from: fromStop, to: toStop },
+        params: { from: fromStop, to: toStop, direction: direction },
       });
+      console.log("response in BusSchedule bus/search First ", response);
       console.log("response.data in BusSchedule First ", response.data);
       setBusSchedules(response.data);
     } catch (error) {
@@ -44,6 +47,7 @@ function BusSchedule() {
           routeNo={bus.routeNo}
           fromStop={from}
           toStop={to}
+          direction={direction}
         />
       ))}
     </div>
