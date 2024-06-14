@@ -19,6 +19,7 @@ export default function CRUDtableRoute({}) {
   const [filteredRows, setFilteredRows] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [routeChangesDetected, setRouteChangesDetected] = useState({});
+  const [busStatus, setBusStatus] = useState({}); // State to hold bus status
 
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ export default function CRUDtableRoute({}) {
           busId: bus.id,
           busRegNo: bus.regNo,
           routeNo: route.routeno,
+          status: bus.status, // Initialize status
         }))
       );
 
@@ -51,34 +53,20 @@ export default function CRUDtableRoute({}) {
               `http://localhost:8080/bussched/${bus.busId}`
             );
             const schedules = schedulesResponse.data;
-            console.log(
-              "schedules by bus ID",
-              bus.busId,
-              "is ",
-              schedulesResponse
-            );
 
             const route = routes.find((route) =>
               route.buses.some((b) => b.id === bus.busId)
             );
 
-            console.log("route is ", route);
-
             if (route) {
               const routeStops = route.busStops.map((stop) => stop.stopID);
-              console.log("routestops", routeStops);
-
               const scheduleStops = [
                 ...new Set(
                   schedules.map((schedule) => schedule.busStop.stopID)
                 ),
               ];
 
-              console.log("schedule stops", scheduleStops);
-
               const routeChanges = !arraysEqual(routeStops, scheduleStops);
-
-              console.log("routeChangesss", routeChanges);
 
               changesDetected[bus.busId] = routeChanges;
             }
@@ -147,10 +135,43 @@ export default function CRUDtableRoute({}) {
     setFilteredRows(filtered);
   };
 
+  const handleStatusChange = async (busId, newStatus) => {
+    try {
+      await axios.put(`http://localhost:8080/busStatus/${busId}`, {
+        status: newStatus,
+      });
+      loadBuses(); // Reload buses after status change
+    } catch (error) {
+      console.error("Error changing bus status:", error.message);
+    }
+  };
+
   const columns = [
     { field: "busId", headerName: "Bus Id", width: 200 },
     { field: "busRegNo", headerName: "Bus Reg No", width: 200 },
     { field: "routeNo", headerName: "Bus Route No", width: 200 },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color={
+            params.value === "up"
+              ? "success"
+              : params.value === "down"
+              ? "warning"
+              : "error"
+          }
+          onClick={() =>
+            handleStatusChange(params.row.busId, getNextStatus(params.value))
+          }
+        >
+          {params.value}
+        </Button>
+      ),
+    },
     {
       field: "routeChanges",
       headerName: "Route Changes",
@@ -186,6 +207,19 @@ export default function CRUDtableRoute({}) {
       ),
     },
   ];
+
+  const getNextStatus = (currentStatus) => {
+    switch (currentStatus) {
+      case "up":
+        return "down";
+      case "down":
+        return "off";
+      case "off":
+        return "up";
+      default:
+        return "up"; // Default to "up" if current status is undefined
+    }
+  };
 
   return (
     <div
