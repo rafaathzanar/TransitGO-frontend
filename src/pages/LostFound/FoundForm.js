@@ -1,41 +1,16 @@
-import React from "react";
-import MyForm from "../../components/MyForm";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import ContainedButton from "../../components/ContainedButton";
-import OutlinedButton from "../../components/OutlinedButton";
-import { useNavigate } from "react-router";
+import React, { useState } from "react";
+import MyForm from "../../components/LostAndFound/MyForm";
 
-function FoundForm() {
-  const navigate = useNavigate();
+export default function LostForm() {
+
+
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <MyForm heading="Report Found Item" />
+   
+     
+        <MyForm lostorfound={"Lost"} url={`/lostandfound/lostfoundreport2`} heading="Report Found Item" APIurl="http://localhost:8080/found" navigateURL="/lostandfound/founditem"/>
+      
 
-      {/* <Grid
-        item
-        xs={6}
-        alignItems="center"
-        display="flex"
-        justifyContent="flex-start"
-        style={{ marginLeft: 10 }}
-      >
-        <ContainedButton
-          btnName="Found"
-          onClick={() => {
-            navigate("founditem");
-          }}
-        />
-        <OutlinedButton
-          btnName="Lost"
-          o
-          onClick={() => {
-            navigate("lostitem");
-          }}
-        />
-      </Grid> */}
-    </div>
   );
 }
 
-export default FoundForm;
+

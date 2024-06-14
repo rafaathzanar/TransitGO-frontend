@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from 'react';
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -7,13 +7,14 @@ import FormLabel from "@mui/material/FormLabel";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import LinearProgress from "@mui/material/LinearProgress"; // Import the LinearProgress component
+import LinearProgress from "@mui/material/LinearProgress";
 
-export default function Reviews(props) {
-  const [value, setValue] = React.useState("0");
+export default function Reviews({ heading, onRadioChange }) {
+  const [value, setValue] = React.useState("");
 
   const handleChange = (event) => {
     setValue(event.target.value);
+    onRadioChange(event.target.value);
   };
 
   return (
@@ -25,8 +26,8 @@ export default function Reviews(props) {
         onChange={handleChange}
       >
         <FormLabel id="demo-controlled-radio-buttons-group">
-          <Typography variant="h4">{props.heading}</Typography>
-        </FormLabel>{" "}
+          <Typography variant="h4">{heading}</Typography>
+        </FormLabel>
         <br />
         <Card
           sx={{
@@ -40,61 +41,36 @@ export default function Reviews(props) {
           <CardContent sx={{ backgroundColor: "#e6f2f5" }}>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <FormControlLabel
-                value="veryHigh"
-                control={
-                  <Radio
-                    checked={value === "veryHigh"}
-                    onChange={handleChange}
-                  />
-                }
+                value="Very High"
+                control={<Radio />}
                 label={<Typography variant="h5">Very High</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress
-                variant="determinate"
-                value={value === "veryHigh" ? 100 : 0}
-              />
+              <LinearProgress variant="determinate" value={value === "Very High" ? 100 : 0} />
 
               <FormControlLabel
                 value="High"
-                control={
-                  <Radio checked={value === "High"} onChange={handleChange} />
-                }
+                control={<Radio />}
                 label={<Typography variant="h5">High</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress
-                variant="determinate"
-                value={value === "High" ? 100 : 0}
-              />
+              <LinearProgress variant="determinate" value={value === "High" ? 100 : 0} />
 
               <FormControlLabel
                 value="Low"
-                control={
-                  <Radio checked={value === "Low"} onChange={handleChange} />
-                }
+                control={<Radio />}
                 label={<Typography variant="h5">Low</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress
-                variant="determinate"
-                value={value === "Low" ? 100 : 0}
-              />
+              <LinearProgress variant="determinate" value={value === "Low" ? 100 : 0} />
+
               <FormControlLabel
-                value="veryLow"
-                control={
-                  <Radio
-                    checked={value === "veryLow"}
-                    onChange={handleChange}
-                  />
-                }
+                value="Very Low"
+                control={<Radio />}
                 label={<Typography variant="h5">Very Low</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress
-                variant="determinate"
-                value={value === "veryLow" ? 100 : 0}
-              />
+              <LinearProgress variant="determinate" value={value === "Very Low" ? 100 : 0} />
             </div>
           </CardContent>
         </Card>
@@ -102,3 +78,4 @@ export default function Reviews(props) {
     </FormControl>
   );
 }
+

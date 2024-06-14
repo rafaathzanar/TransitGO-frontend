@@ -1,134 +1,98 @@
-import React, { useState } from "react";
-import DescriptionCardList from "../../components/DescriptionCardList";
+import React, { useState, useEffect } from "react";
 import SearchFilter from "../../components/SearchFilter";
-import IconImg from "../../components/IconImg";
-import img4 from "../../images/lost.png";
-import Typography from "@mui/material/Typography";
-import HeadingBar from "../../components/HeadingBar";
-import { Container, Grid } from "@mui/material"; // Import Grid from MUI
-import { useEffect } from "react";
-import { Description } from "@mui/icons-material";
+import DescriptionCard from "../../components/LostAndFound/DescriptionCard";
+import axios from "axios";
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const LostItem = (props) => {
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [existingData, setExistingData] = useState([
-    {
-      id: 1,
-      Uname: "Kusal",
-      numb: "075-1234567",
-      bus: "Colombo-Kandy",
-      desc: "I lost a wallet on this route today morning",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 2,
-      Uname: "Smith",
-      numb: "074-5123456",
-      bus: "Galle-Matale",
-      desc: "I have lost a bag",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 3,
-      Uname: "Dias",
-      numb: "071-6823456",
-      bus: "colombo-Jaffna",
-      desc: "I lost my umbrella",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    // Other existing data
-  ]);
 
-  const [dynamicData, setDynamicData] = useState([
-    {
-      id: 4,
-      Uname: "Mohamed",
-      numb: "070-7437458",
-      bus: "Kaduruwela-Colombo",
-      desc: "I missed my umbrella today",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 5,
-      Uname: "John",
-      numb: "077-7478458",
-      bus: "Colombo-Kurunegale",
-      desc: "I have lost my watch on this route yesterday",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 6,
-      Uname: "John Doe",
-      numb: "077-7478458",
-      bus: "Colombo-Kurunegale",
-      desc: "I have lost my  a bag yesterday",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 7,
-      Uname: "Chamitha",
-      numb: "076-1234567",
-      bus: "Colombo-Kandy",
-      desc: "I lost a wallet.if anyone found please contact me through above number",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    // Other dynamic data
-  ]);
-
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-  };
-
-  // Merge existingData and dynamicData
-  const allData = [...existingData, ...dynamicData];
-
-  // Filter data based on the search term
-  const filteredData = allData.filter((item) =>
-    Object.values(item).some((value) => {
-      if (typeof value === "string") {
-        return value.toLowerCase().includes(searchTerm.toLowerCase());
-      }
-      return false;
-    })
-  );
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Call handleResize on component mount and window resize
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    loadItems();
+  }, []);
 
-    // Cleanup function to remove event listener on unmount
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []); // Empty dependency array to run only once on mount
+  const loadItems = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/losts");
+      const sortedItems = response.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+      setItems(sortedItems); //sort by date time
+    } catch (error) {
+      console.error('Error loading items:', error);
+    }
+  };
 
-  // ... rest of your component code
+  const deleteItem = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/lost/${id}`);
+      loadItems();
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
 
-  // Define the handleResize function outside the component
-  const handleResize = () => {
-    // ... (content of handleResize function remains unchanged)
+  const handleSearch = (term) => {
+    setSearchTerm(term); // Update the search term state
+    const filtered = items.filter((item) => {
+      // Ensure item.name and item.item_Description are not null or undefined
+      const busDescription = item.bus_Description ? item.bus_Description.toLowerCase() : '';
+      const itemDescription = item.item_Description ? item.item_Description.toLowerCase() : '';
+      
+      return (
+        busDescription.includes(term.toLowerCase()) ||
+        itemDescription.includes(term.toLowerCase())
+      );
+    });
+    setFilteredItems(filtered);
   };
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          marginTop: 20,
-        }}
-      >
-        <h1> Reported Lost Items</h1>
-
-        <SearchFilter onSearch={handleSearch} />
+      <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", marginTop: 20 }}>
+        <h1>Reported Lost Items</h1>
+        <SearchFilter onSearch={handleSearch} /> 
       </div>
 
-      <DescriptionCardList
-        data={searchTerm ? filteredData : allData}
-        style={{ display: "flex", flexWrap: "wrap" }}
-      />
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {filteredItems.length > 0 ? (
+          filteredItems.map((item, index) => (
+            <div key={index}>
+              <DescriptionCard
+                id={item.id}
+                Uname={item.name}
+                numb={item.mobile_Number}
+                bus={item.bus_Description}
+                desc={item.item_Description}
+                dateTime={item.dateTime}
+                editLink={`/lostandfound/lostfoundreport2/${item.id}`}
+                onDelete={deleteItem}
+              />
+            </div>
+          ))
+        ) : searchTerm.length > 0 ? (
+          <p>No items found matching the search term.</p>
+        ) : (
+          items.map((item, index) => (
+            <div key={index}>
+              <DescriptionCard
+                id={item.id}
+                Uname={item.name}
+                numb={item.mobile_Number}
+                bus={item.bus_Description}
+                desc={item.item_Description}
+                dateTime={item.dateTime}
+                editLink={`/lostandfound/lostfoundreport2/${item.id}`}
+                onDelete={() => deleteItem(item.id)}
+                
+              />
+            </div>
+          ))
+        )}
+      </div>
     </>
   );
 };
