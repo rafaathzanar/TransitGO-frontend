@@ -2,18 +2,8 @@ import * as React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { Typography } from "@mui/material";
 import "./PieChartTraffic.css";
-const data = [
-  { id: 0, value: ".35", label: "Very high" },
-  { id: 1, value: ".25", label: "High" },
-  {
-    id: 2,
-    value: ".30",
-    label: "Low",
-  },
-  { id: 3, value: ".15", label: "Very Low" },
-];
 
-export default function PieActiveArc() {
+export default function PieChartTraffic({ data }) {
   return (
     <>
       <div className="pieAndTextContainer">
@@ -34,3 +24,4 @@ export default function PieActiveArc() {
     </>
   );
 }
+

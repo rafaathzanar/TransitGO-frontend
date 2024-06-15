@@ -1,99 +1,105 @@
-import React, { useState } from "react";
-import DescriptionCardList from "../../components/DescriptionCardList";
+import React, { useState, useEffect } from "react";
 import SearchFilter from "../../components/SearchFilter";
-import IconImg from "../../components/IconImg";
-import img5 from "../../images/found.png";
-import HeadingBar from "../../components/HeadingBar";
-import { Container, Grid } from "@mui/material"; // Import Grid from MUI
-import { useEffect } from "react";
+import DescriptionCard from "../../components/LostAndFound/DescriptionCard";
+import axios from "axios";
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-const LostItem = (props) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [existingData, setExistingData] = useState([
-    {
-      id: 1,
-      Uname: "Kusal",
-      numb: "075-1234567",
-      bus: "Colombo-Kandy",
-      desc: "found a  wallet on this route today morning.if it is yours,contact me",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 2,
-      Uname: "Smith",
-      numb: "074-5123456",
-      bus: "Galle-Matale",
-      desc: "found a bag",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 3,
-      Uname: "Dias",
-      numb: "071-6823456",
-      bus: "colombo-Jaffna",
-      desc: "found an  umbrella",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    // Other existing data
-  ]);
+const FoundItem = (props) => {
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
 
-  const [dynamicData, setDynamicData] = useState([
-    {
-      id: 4,
-      Uname: "Mohamed",
-      numb: "070-7437458",
-      bus: "Kaduruwela-Colombo",
-      desc: "found a backpack.if you think it might belongs to you please let me know",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
-    {
-      id: 5,
-      Uname: "John",
-      numb: "077-7478458",
-      bus: "Colombo-Kurunegale",
-      desc: "a watch was founded",
-      dateTime: "2024.01.01 at 7.00 PM",
-    },
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-    // Other dynamic data
-  ]);
+  useEffect(() => {
+    loadItems();
+  }, []);
 
-  const handleSearch = (term) => {
-    setSearchTerm(term);
+  const loadItems = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/founds");
+      const sortedItems = response.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+      setItems(sortedItems);//sort by date time
+    } catch (error) {
+      console.error('Error loading items:', error);
+    }
   };
 
-  // Merge existingData and dynamicData
-  const allData = [...existingData, ...dynamicData];
+  const deleteItem = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/found/${id}`);
+      loadItems(); // Reload items after deletion
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
 
-  // Filter data based on the search term
-  const filteredData = allData.filter((item) =>
-    Object.values(item).some((value) => {
-      if (typeof value === "string") {
-        return value.toLowerCase().includes(searchTerm.toLowerCase());
-      }
-      return false;
-    })
-  );
-
+  const handleSearch = (term) => {
+    setSearchTerm(term); // Update the search term state
+    const filtered = items.filter((item) => {
+      // Ensure item.name and item.item_Description are not null or undefined
+      const itemName = item.name ? item.name.toLowerCase() : '';
+      const itemDescription = item.item_Description ? item.item_Description.toLowerCase() : '';
+      
+      return (
+        itemName.includes(term.toLowerCase()) ||
+        itemDescription.includes(term.toLowerCase())
+      );
+    });
+    setFilteredItems(filtered);
+  };
+  
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          marginTop: 20,
-        }}
-      >
-        <h1> Reported Found Items</h1>
+      <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", marginTop: 20 }}>
+        <h1>Reported Found Items</h1>
         <SearchFilter onSearch={handleSearch} />
       </div>
-      <DescriptionCardList
-        data={searchTerm ? filteredData : allData}
-        style={{ display: "flex", flexWrap: "wrap" }}
-      />
+
+      <div style={{ display: "flex", flexDirection: "column" }}>
+
+        {filteredItems.length > 0 ? (
+          // Render filtered items if there are any
+          filteredItems.map((item, index) => (
+            <div key={index}>
+              <DescriptionCard
+               id={item.id}
+               Uname={item.name}
+               numb={item.mobile_Number}
+               bus={item.bus_Description}
+               desc={item.item_Description}
+               dateTime={item.dateTime}
+               editLink={`/lostandfound/lostfoundreport/${item.id}`} // Include the edit link here
+               onDelete={deleteItem}
+              />
+              
+            </div>
+          ))
+        ) : searchTerm.length > 0 ? (
+          // Render a message when no items match the search term
+          <p>No items found matching the search term.</p>
+        ) : (
+          // Render all items if no search term is entered
+          items.map((item, index) => (
+            <div key={index}>
+              <DescriptionCard
+              id={item.id}
+              Uname={item.name}
+              numb={item.mobile_Number}
+              bus={item.bus_Description}
+              desc={item.item_Description}
+              dateTime={item.dateTime}
+              editLink={`/lostandfound/lostfoundreport/${item.id}`} // Include the edit link here
+              onDelete={()=>deleteItem(item.id)}// Passing deleteItem function as onDelete prop
+              />
+              
+            </div>
+          ))
+        )}
+      </div>
     </>
   );
 };
 
-export default LostItem;
+export default FoundItem;

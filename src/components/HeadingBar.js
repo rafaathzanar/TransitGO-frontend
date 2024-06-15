@@ -1,28 +1,28 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
+// import React from 'react';
+// import Typography from '@mui/material/Typography';
 
-function HeadingBar(props) {
+// function HeadingBar(props) {
 
       
-  return (
-    <div >
+//   return (
+//     <div >
       
-      <Typography
-           variant="h1"
+//       <Typography
+//            variant="h1"
           
-           sx={{
-             fontSize: 30,
-            fontWeight: 'bold',
-            fontFamily: 'OpenSans', 
-            color:'#020552'
-        }}>
+//            sx={{
+//              fontSize: 30,
+//             fontWeight: 'bold',
+//             fontFamily: 'OpenSans', 
+//             color:'#020552'
+//         }}>
 
-         {props.title}
+//          {props.title}
 
-        </Typography>
+//         </Typography>
 
-        </div>
-  )
-}
+//         </div>
+//   )
+// }
 
-export default HeadingBar;
+// export default HeadingBar;
