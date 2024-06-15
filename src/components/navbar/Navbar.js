@@ -11,15 +11,7 @@ import { mainNavbarItems } from "./consts/navbarItems";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const AdminfontspanStyle = {
-    color: "#000000",
-    fontSize: "16px",
-  };
-
-  const logoADMINStyle = {
-    margin: "20px",
-  };
-
+ 
   const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
   const isSmallScreen = useMediaQuery("(max-width:768px)");

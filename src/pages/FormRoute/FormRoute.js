@@ -1,169 +1,164 @@
+//FormRoute.js
 import React, { useState } from "react";
+import axios from "axios";
 import {
   TextField,
   Button,
-  Container,
   Grid,
   Typography,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Snackbar,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 
 const FormRoute = () => {
-  const [formData, setFormData] = useState({
-    routeNo: "",
-    from: "",
-    end: "",
+  const [route, setRoute] = useState({
+    routeno: "",
+    routename: "",
     stops: [],
   });
+  const navigate = useNavigate();
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const { routeno, routename, stops } = route;
 
-  const [validationErrors, setValidationErrors] = useState({
-    routeNo: false,
-    from: false,
-    end: false,
-    stops: false,
-  });
+  const [openDialog, setOpenDialog] = useState(false); // State for success dialog
+  const [stopsErrorDialog, setStopsErrorDialog] = useState(false); // State for stops validation error dialog
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setRoute((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const handleAddStop = () => {
-    setFormData((prevData) => ({
+  const handleChangeStop = (index, value) => {
+    const updatedStops = stops.map((stop, i) =>
+      i === index ? { ...stop, name: value } : stop
+    );
+    setRoute((prevData) => ({
       ...prevData,
-      stops: [...prevData.stops, ""],
+      stops: updatedStops,
     }));
   };
 
-  const handleRemoveStop = () => {
-    if (formData.stops.length > 0) {
-      const updatedStops = [...formData.stops];
-      updatedStops.pop();
-
-      setFormData((prevData) => ({
-        ...prevData,
-        stops: updatedStops,
-      }));
-    }
+  const handleAddStop = () => {
+    setRoute((prevData) => ({
+      ...prevData,
+      stops: [
+        ...prevData.stops,
+        { name: "", orderIndex: prevData.stops.length },
+      ],
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleRemoveStop = (index) => {
+    const updatedStops = stops.filter((_, i) => i !== index);
+    setRoute((prevData) => ({
+      ...prevData,
+      stops: updatedStops.map((stop, i) => ({ ...stop, orderIndex: i })),
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate the form
-    const validationErrors = validateForm();
-    if (hasErrors(validationErrors)) {
-      setValidationErrors(validationErrors);
-    } else {
-      // Form is valid, proceed with submission
-      setOpenDialog(true);
-      setOpenSnackbar(true);
+    // Check if at least two stops are added
+    if (stops.length < 2) {
+      setStopsErrorDialog(true);
+      return;
     }
-  };
 
-  const validateForm = () => {
-    const errors = {
-      routeNo: formData.routeNo.trim() === "",
-      from: formData.from.trim() === "",
-      end: formData.end.trim() === "",
-      stops: formData.stops.some((stop) => stop.trim() === ""),
-    };
+    try {
+      console.log("Response", route);
+      const response = await axios.post(
+        "http://localhost:8080/busroute",
+        route
+      );
+      if (response.status === 200) {
+        setOpenDialog(true);
+      }
 
-    return errors;
-  };
-
-  const hasErrors = (errors) => {
-    return Object.values(errors).some((error) => error);
+      // Include orderIndex for each stop
+      for (let i = 0; i < stops.length; i++) {
+        await axios.post("http://localhost:8080/busstop", {
+          name: stops[i].name,
+          orderIndex: i, // Set the orderIndex here
+          busroute: {
+            routeno,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error adding route:", error);
+    }
+    navigate("/admin/routeschedule/routemanagement");
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    navigate("/admin/routeschedule/routemanagement");
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+  const handleCloseStopsErrorDialog = () => {
+    setStopsErrorDialog(false);
   };
 
   return (
     <Grid container item xs={10}>
-      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-        <Typography variant="h4" gutterBottom>
-          Add Route
-        </Typography>
-        <form onSubmit={handleSubmit}>
+      <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
-              <Typography>Route No.</Typography>
               <TextField
+                required
                 fullWidth
                 label="Route No"
-                name="routeNo"
-                value={formData.routeNo}
-                onChange={handleChange}
+                name="routeno"
+                type="number"
+                value={routeno}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Typography>From</Typography>
               <TextField
+                required
                 fullWidth
-                label="From- Bus Station"
-                name="from"
-                value={formData.from}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography>End</Typography>
-              <TextField
-                fullWidth
-                label="End- Bus Station"
-                name="end"
-                value={formData.end}
-                onChange={handleChange}
+                label="Route Name"
+                name="routename"
+                value={routename}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
               <Typography>Stops</Typography>
-              {formData.stops.map((stop, index) => (
-                <TextField
-                  key={index}
-                  fullWidth
-                  label={`Stop ${index + 1}`}
-                  value={stop}
-                  onChange={(e) => {
-                    const updatedStops = [...formData.stops];
-                    updatedStops[index] = e.target.value;
-                    setFormData((prevData) => ({
-                      ...prevData,
-                      stops: updatedStops,
-                    }));
-                  }}
-                />
+              {stops.map((stop, index) => (
+                <div key={index}>
+                  <TextField
+                    fullWidth
+                    label={`Stop ${index + 1}`}
+                    value={stop.name}
+                    onChange={(e) => handleChangeStop(index, e.target.value)}
+                    sx={{ marginTop: 2 }}
+                  />
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleRemoveStop(index)}
+                  >
+                    Delete Stop
+                  </Button>
+                </div>
               ))}
               <Button
                 variant="outlined"
                 color="primary"
                 onClick={handleAddStop}
-                style={{ marginRight: "10px" }}
+                style={{ marginRight: "10px", marginTop: "20px" }}
               >
                 Add Stop
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleRemoveStop}
-              >
-                Delete Stop
               </Button>
             </Grid>
             <Grid item xs={12}>
@@ -174,32 +169,33 @@ const FormRoute = () => {
           </Grid>
         </form>
 
-        {/* Validation Error Snackbar */}
-        <Snackbar
-          open={hasErrors(validationErrors)}
-          autoHideDuration={3000}
-          onClose={() => setValidationErrors({})}
-          message="Please fill in all required fields."
-        />
+        {/* Stops validation error dialog */}
+        <Dialog open={stopsErrorDialog} onClose={handleCloseStopsErrorDialog}>
+          <DialogTitle>Please Add Bus Stops</DialogTitle>
+          <DialogContent>
+            <Typography variant="body1">
+              At least two stops need to be added to submit a route.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseStopsErrorDialog} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-        {/* Success Dialog */}
+        {/* Success dialog */}
         <Dialog open={openDialog} onClose={handleCloseDialog}>
           <DialogTitle>Route Added Successfully</DialogTitle>
-          <DialogContent>Your route has been added successfully.</DialogContent>
+          <DialogContent>
+            <Typography>Your route has been added successfully.</Typography>
+          </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog} color="primary">
               OK
             </Button>
           </DialogActions>
         </Dialog>
-
-        {/* Success Snackbar */}
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={3000}
-          onClose={handleCloseSnackbar}
-          message="Route Added Successfully"
-        />
       </Grid>
     </Grid>
   );

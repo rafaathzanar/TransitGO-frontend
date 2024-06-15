@@ -9,16 +9,16 @@ const RouteandSchedule = () => {
   const navigate = useNavigate();
 
   return (
-    <Grid container item xs={10}>
-      <Grid xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-        <Grid item justifyContent="center" alignItems="center" marginTop={2}>
+ 
+      <Grid container spacing={5} m={{lg :20 , sm:1, md:15}} >
+        <Grid item xs={10} md={6}lg={4} justifyContent="center" alignItems="center" marginTop={2}>
           <CardButton
             typography="Route Management"
             icon={Icon1}
             onClick={() => navigate("routemanagement")}
           />
         </Grid>
-        <Grid item justifyContent="center" alignItems="center" marginTop={2}>
+        <Grid item xs={12} lg={4} justifyContent="center" alignItems="center" marginTop={2}>
           <CardButton
             typography="Bus Management"
             icon={Icon2}
@@ -26,7 +26,7 @@ const RouteandSchedule = () => {
           />
         </Grid>
       </Grid>
-    </Grid>
+   
   );
 };
 

@@ -1,12 +1,49 @@
 .goal-listxs {
   width: 100%;
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin:0;
+  padding-bottom: 0;
 }
+
+.form-control {
+  margin: 0.5rem 0;
+}
+
+.form-control label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-control textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #ccc;
+  font: inherit;
+  line-height: 1.5rem;
+  padding: 0 0.25rem;
+}
+
+.form-control textarea:focus {
+  outline: none;
+  background: hsl(0, 93%, 70%);
+  border-color:  hsl(224, 69%, 24%);
+}
+
+.form-control.invalid textarea {
+  border-color: red;
+  background-color: aliceblue;
+}
+
+.form-control.invalid label {
+  color: red;
+}
+
+
+
 @media screen and (max-width: 600px) {
   .goal-listxs {
-    width: 100%;
+    /* width: 100%; */
     margin-top: 0;
   }
 }

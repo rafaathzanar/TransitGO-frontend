@@ -1,9 +1,11 @@
 .goal-item {
-  width: 80rem;
+  max-width: 80rem;
   background: hsla(190, 96%, 80%, 0.2);
   color: hsl(224, 69%, 24%);
   padding: 1rem 1rem;
+  padding-bottom: 1rem;
   cursor: pointer;
+  
 }
 
 .deleteicon {
@@ -29,9 +31,10 @@
 @media screen and (max-width: 600px) {
   .goal-item {
     width: 100%;
-    margin-top: 0;
+    margin-top: 5;
   }
   .tab {
     width: 100%;
+    
   }
 }

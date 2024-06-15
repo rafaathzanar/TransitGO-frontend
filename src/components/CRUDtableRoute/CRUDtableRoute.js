@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+//CRUDtableRoute.js
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -8,43 +9,54 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 import { List, ListItem, ListItemText } from "@mui/material";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 export default function CRUDtableRoute() {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
+  const [selectedRouteNo, setSelectedRouteNo] = useState(null);
   const [openBUSLIST, setOpenBUSLIST] = useState(false);
   const [openBUSSTOPLIST, setOpenBUSSTOPLIST] = useState(false);
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      routeno: "123",
-      route: "Route A",
-      busstops:
-        "Stop 1 , Stop 2, Stop 3 , Stop 4 ,Stop 5 , Stop 6,Stop 7 , Stop 8 ",
-      listofbuses: "Bus 1, Bus 2",
-    },
-    {
-      id: 2,
-      routeno: "456",
-      route: "Route B",
-      busstops: "Stop 1 , Stop 2 ",
-      listofbuses: "Bus 3, Bus 4",
-    },
-    // Add more rows here as needed
-  ]);
+  const [routes, setRoutes] = useState([]);
+  const navigate = useNavigate();
 
-  const [filteredRows, setFilteredRows] = useState(rows);
+  useEffect(() => {
+    loadRoutes();
+  }, []);
+
+  const loadRoutes = async () => {
+    try {
+      const result = await axios.get("http://localhost:8080/busroutes");
+
+      const routesWithIds = result.data.map((route) => ({
+        ...route,
+        id: route.routeno.toString(), // Using routeno as unique id
+      }));
+      setRoutes(routesWithIds);
+      setFilteredRows(routesWithIds);
+    } catch (error) {
+      console.error("Error loading routes:", error.message);
+    }
+  };
+
+  const [filteredRows, setFilteredRows] = useState(routes);
   const [searchValue, setSearchValue] = useState("");
 
-  const handleDelete = (id = null) => {
+  const handleDelete = (id, routeno) => {
     setSelectedRowId(id);
+    setSelectedRouteNo(routeno);
     setOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    const updatedRows = rows.filter((row) => row.id !== selectedRowId);
-    setRows(updatedRows);
-    setFilteredRows(updatedRows);
+  const handleConfirmDelete = async (routeno) => {
+    try {
+      await axios.delete(`http://localhost:8080/busroute/${routeno}`);
+      loadRoutes();
+    } catch (error) {
+      console.error("Error deleting route:", error.message);
+    }
+    console.log("Route number ", routeno, "has been deleted");
     handleClose();
   };
 
@@ -53,23 +65,23 @@ export default function CRUDtableRoute() {
     setSelectedRowId(null);
   };
 
-  const handleEdit = (id) => {
-    console.log(`Editing row with id ${id}`);
+  const handleEdit = (routeno) => {
+    navigate(`editroute/${routeno}`);
   };
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
-    const filtered = rows.filter(
+    const filtered = routes.filter(
       (row) =>
         row.routeno.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        row.route.toLowerCase().includes(e.target.value.toLowerCase())
+        row.routename.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredRows(filtered);
   };
 
   const columns = [
     { field: "routeno", headerName: "Route No.", width: 200 },
-    { field: "route", headerName: "Route", width: 200 },
+    { field: "routename", headerName: "Route", width: 200 },
     {
       field: "busstops",
       headerName: "Bus Stops",
@@ -77,9 +89,9 @@ export default function CRUDtableRoute() {
       renderCell: (params) => (
         <a
           href="#"
-          onClick={(event) => {
-            event.preventDefault();
-            setSelectedRowId(params.row.id);
+          onClick={(e) => {
+            e.preventDefault();
+            setSelectedRowId(params.id);
             setOpenBUSSTOPLIST(true);
           }}
         >
@@ -96,7 +108,7 @@ export default function CRUDtableRoute() {
           href="#"
           onClick={(event) => {
             event.preventDefault();
-            setSelectedRowId(params.row.id);
+            setSelectedRowId(params.id);
             setOpenBUSLIST(true);
           }}
         >
@@ -113,14 +125,14 @@ export default function CRUDtableRoute() {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => handleDelete(params.row.id, params.row.routeno)}
           >
             Delete
           </Button>
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleEdit(params.row.id)}
+            onClick={() => handleEdit(params.row.routeno)}
           >
             Edit
           </Button>
@@ -154,18 +166,24 @@ export default function CRUDtableRoute() {
         }}
       />
       <Dialog open={openBUSLIST} onClose={() => setOpenBUSLIST(false)}>
-        <DialogTitle>Current Buses Availabe In The Route</DialogTitle>
+        <DialogTitle>Buses In The Route</DialogTitle>
         <DialogContent>
           <List>
             {selectedRowId !== null &&
-              rows
-                .find((row) => row.id === selectedRowId)
-                .listofbuses.split(",")
-                .map((bus, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={bus.trim()} />
-                  </ListItem>
-                ))}
+              (routes.find((row) => row.id === selectedRowId)?.buses.length >
+              0 ? (
+                routes
+                  .find((row) => row.id === selectedRowId)
+                  ?.buses.map((bus) => (
+                    <ListItem key={bus.id}>
+                      <ListItemText primary={bus.regNo} />
+                    </ListItem>
+                  ))
+              ) : (
+                <ListItem>
+                  <ListItemText primary="No buses are currently available in the route" />
+                </ListItem>
+              ))}
           </List>
         </DialogContent>
         <DialogActions>
@@ -176,16 +194,16 @@ export default function CRUDtableRoute() {
       </Dialog>
 
       <Dialog open={openBUSSTOPLIST} onClose={() => setOpenBUSSTOPLIST(false)}>
-        <DialogTitle>Current Buses Availabe In The Route</DialogTitle>
+        <DialogTitle>Bus Stops In The Route</DialogTitle>
         <DialogContent>
           <List>
             {selectedRowId !== null &&
-              rows
+              routes
                 .find((row) => row.id === selectedRowId)
-                .busstops.split(",")
-                .map((stop, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={stop.trim()} />
+                ?.busStops.sort((a, b) => a.orderIndex - b.orderIndex) // Sort busStops by orderIndex
+                .map((stop) => (
+                  <ListItem key={stop.id}>
+                    <ListItemText primary={stop.name} />
                   </ListItem>
                 ))}
           </List>
@@ -213,7 +231,11 @@ export default function CRUDtableRoute() {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleConfirmDelete} color="secondary" autoFocus>
+          <Button
+            onClick={() => handleConfirmDelete(selectedRouteNo)}
+            color="secondary"
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>
