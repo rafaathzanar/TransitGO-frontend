@@ -1,18 +1,16 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import MyForm from "../../components/LostAndFound/MyForm";
 
-import MyForm from "../../components/MyForm";
-import { useNavigate } from "react-router-dom";
+export default function LostForm() {
 
-function LostForm() {
-  const navigate = useNavigate();
 
   return (
-    <div className="lost-form">
-      <div className="lost-form-container">
-        <MyForm heading="Report Lost Item" />
-      </div>
-    </div>
+   
+     
+        <MyForm lostorfound={"Found"} url={`/lostandfound/lostfoundreport`} heading="Report Lost Item" APIurl="http://localhost:8080/lost" navigateURL="/lostandfound/lostitem"/>
+      
+  
   );
 }
 
-export default LostForm;
+

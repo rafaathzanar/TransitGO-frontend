@@ -13,6 +13,7 @@ const ScheduleSearchBar = ({ onSearch }) => {
   const [busStops, setBusStops] = useState([]);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     const loadBusStops = async () => {
@@ -39,9 +40,9 @@ const ScheduleSearchBar = ({ onSearch }) => {
   };
 
   const handleSearch = () => {
-    if (from && to) {
+    if (from && to && date) {
       const direction = calculateDirection(from, to);
-      onSearch(from.label, to.label, direction);
+      onSearch(from.label, to.label, direction, date);
     }
   };
 
@@ -74,6 +75,18 @@ const ScheduleSearchBar = ({ onSearch }) => {
               renderInput={(params) => (
                 <TextField {...params} label="To:" variant="outlined" />
               )}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Date"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              autoComplete="on"
+              onChange={(e) => setDate(e.target.value)}
             />
           </Grid>
           <Grid item>

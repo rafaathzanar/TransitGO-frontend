@@ -69,6 +69,7 @@ function FormBus() {
     busroute: {
       routeno: "",
     },
+    status: "off",
   });
   const [arrivalTimesUp, setArrivalTimesUp] = useState({});
   const [departureTimesUp, setDepartureTimesUp] = useState({});
