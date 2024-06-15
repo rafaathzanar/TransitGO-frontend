@@ -12,6 +12,7 @@ import LostForm from "./pages/LostFound/LostForm";
 import Main from "./pages/firstpage/Main";
 import Tracking from "./pages/tracking/Tracking";
 import Form from "./pages/form/Form";
+import FormConductor from "./pages/FormConductor/FormConductor";
 function PageRoutes() {
   return (
     <>
@@ -35,6 +36,7 @@ function PageRoutes() {
           <Route index element={<Main />} />
           <Route path="tracking" element={<Tracking />} />
           <Route path="form" element={<Form />} />
+          <Route path="FormConductor" element={<FormConductor/>}/>
         </Route>
       </Routes>
     </>
