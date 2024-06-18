@@ -24,7 +24,7 @@ function ScheduleCard({
         const response = await axios.get(
           `http://localhost:8080/bus/${busID}/stops`
         ); //Schedules of the current bus
-        console.log("response.data in Schedule Card Second ", response.data);
+        console.log("fwtched scheduled for the selected bus ", response.data);
         setSchedules(response.data);
       } catch (error) {
         setError("Error fetching bus schedules.");

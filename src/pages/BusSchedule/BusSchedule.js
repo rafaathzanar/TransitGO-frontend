@@ -29,8 +29,8 @@ function BusSchedule() {
           date: date,
         },
       });
-      console.log("response in BusSchedule bus/search First ", response);
-      console.log("response.data in BusSchedule First ", response.data);
+
+      console.log("bus schedules in that date ", response.data);
       setBusSchedules(response.data);
     } catch (error) {
       setError("Error fetching bus schedules. Please try again later.");
