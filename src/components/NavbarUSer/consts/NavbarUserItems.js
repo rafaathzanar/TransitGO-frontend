@@ -10,7 +10,7 @@ export const NavbarUserItems  = [
     id: 0,
     icon: <AccountCircle />,
     label: "Profile",
-    route: "/profile",
+    route: "/GeneralUserProfile",
   },
   {
     id: 2,
@@ -34,6 +34,6 @@ export const NavbarUserItems  = [
     id: 5,
     icon: <LogoutOutlined />,
     label: "Log Out",
-    route: "/",
+    route: "/signin",
   },
 ];

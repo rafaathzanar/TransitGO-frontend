@@ -2,6 +2,7 @@ import Success from "../../components/Tick/Success";
 import "./EmailVerificationResult.css";
 import Logo from "../../components/Logo/Logo";
 import SubHeading from "../../components/SubHeading/SubHeading";
+import { Link } from "react-router-dom";
 
 function SuccessComponent(){
     return(
@@ -17,7 +18,11 @@ function SuccessComponent(){
                 <SubHeading heading="Congratulations, your Account has been verified"></SubHeading>
               </div>
               <div className="subject">
-                <h6>Click here to Login</h6>
+                <h6>
+                  <Link to={'/signin'}>
+                  Click here to LOG IN
+                  </Link>
+                  </h6>
               </div>
            </div>
         </div>

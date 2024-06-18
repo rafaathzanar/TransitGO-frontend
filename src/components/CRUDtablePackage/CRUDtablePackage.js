@@ -10,12 +10,16 @@ import SearchField from "../../components/SearchField/SearchField";
 import axios from "axios";
 
 export default function CRUDtablePackage({  }) {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  }
   const [packages, setPackages] = useState([]);   
   useEffect(() => {
     loadPackages();
   }, []);
   const loadPackages = async () => {
-    const result = await axios.get("http://localhost:8080/packages");
+    const result = await axios.get("http://localhost:8080/packages",Authorization);
     const packagessWithIds = result.data.map((pack, index) => ({
       ...pack,
       id: index + 1,

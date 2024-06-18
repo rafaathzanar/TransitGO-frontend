@@ -18,9 +18,7 @@ function NewPassword(){
            <div className="newpassword-form">
                <NewPasswordForm></NewPasswordForm>
            </div>
-           <div className="save-button">
-               <LoginButton buttonTitle='Save and Login'></LoginButton>
-        </div>
+           
       </div>
       </div>
     );

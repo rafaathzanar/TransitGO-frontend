@@ -17,6 +17,10 @@ import EmailVerificationSend from "./pages/EmailVerificationSend/EmailVerificati
 import EmailVerificationResult from "./pages/EmailVerificationResult/EmailVerificationResult";
 import SuccessComponent from "./pages/EmailVerificationResult/SuccessComponent";
 import FailComponent from "./pages/EmailVerificationResult/FailComponenet";
+import NewPassword from "./pages/NewPassword/NewPassword";
+import CRUDtablePackage from "./components/CRUDtablePackage/CRUDtablePackage";
+import RouteManagement from "./pages/Package/Package";
+
 
 
 
@@ -36,15 +40,20 @@ function App() {
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
           <Route path="/LoginBusEmployee" element={<LoginBusEmployee/>}/>
           <Route path="/LoginGeneralUser" element={<LoginGeneralUser/>}/>
-          <Route path="/EmailVerification" element={<EmailVerification/>}/>
+          
 
          <Route path="/ActivityHistory" element={<ActivityHistory/>}/>
          <Route path="/GeneralUserProfile" element={<GeneralUserProfile/>}/>
          <Route path="/edituser/:id" element={<FormEditEmployee/>}/>
          <Route path="/verifyEmail" element={<EmailVerificationSend/>}/>
-         <Route path="/verify" element={<EmailVerificationResult/>}/>
+         <Route path="/verify-email" element={<EmailVerificationResult/>}/>
          <Route path="/SuccessComponent" element={<SuccessComponent/>}/>
          <Route path="/FailComponent" element={<FailComponent/>}/>
+         <Route path="/NewPassword/:email" element={<NewPassword/>}/>
+         <Route path="/otpVerification/:email" element={<EmailVerification/>}/>
+
+         
+       
 
         </Routes>
       </BrowserRouter>

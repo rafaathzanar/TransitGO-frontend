@@ -36,11 +36,11 @@ const DelayItem = (props) => {
         {props.children}
         <div className="containerdelay">
           <div className="deleteicon">
-            <EditIcon onClick={editHandler}></EditIcon>
-            <DeleteIcon onClick={deleteHandler}></DeleteIcon>
+            {props.onEdit && <EditIcon onClick={editHandler}></EditIcon>}
+            {props.onDelete && <DeleteIcon onClick={deleteHandler}></DeleteIcon>}
           </div>
           <div className="authordelay">
-            <div>Posted by :</div>
+            <div>Posted by : </div>
           </div>
         </div>
       </td>

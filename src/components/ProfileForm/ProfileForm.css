@@ -4,7 +4,7 @@
     grid-template-areas:
     "form"
     ;
-    background-color: rgb(94, 144, 204,0.2);
+    /*background-color: rgb(94, 144, 204,0.2);*/
     border: 1px solid  #FA6B6B ;
     border-radius: 10px;
     padding: 3%;
@@ -44,15 +44,17 @@ label{
     grid-template-columns: 1fr 1fr;
     grid-template-areas: 
     "fn ln";
-    gap: 5px;
+    
 }
 
 .fn{
     grid-area: fn;
+    margin-right: 2%;
 }
 
 .ln{
     grid-area: ln;
+    margin-left: 2%;
 }
 
 .edit-and-save{

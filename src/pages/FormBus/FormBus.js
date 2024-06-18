@@ -43,6 +43,7 @@ const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
 };
 
 function FormBus() {
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [additionalFieldsDatasets, setAdditionalFieldsDatasets] = useState([]);
   const [bus, setBus] = useState({
@@ -62,8 +63,11 @@ function FormBus() {
   const [menuOptions, setMenuOptions] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     axios
-      .get("http://localhost:8080/busroutes")
+      .get("http://localhost:8080/busroutes",{
+        headers: {Authorization: `Bearer ${token}`}
+      })
       .then((response) => {
         const routes = response.data;
         const busstoplist = routes.map((route) =>
@@ -118,10 +122,13 @@ function FormBus() {
     e.preventDefault();
 
     try {
+      const token = localStorage.getItem('token');
       // First, add the bus
       const { data: addedBus } = await axios.post(
         "http://localhost:8080/bus",
-        bus
+        bus,{
+          headers: {Authorization: `Bearer ${token}`}
+        }
       );
 
       // Get the selected route
@@ -152,7 +159,9 @@ function FormBus() {
       await Promise.all(
         schedules.map(async (scheduleData) => {
           console.log("posting json is", scheduleData);
-          await axios.post("http://localhost:8080/schedule", scheduleData);
+          await axios.post("http://localhost:8080/schedule", scheduleData,{
+            headers: {Authorization: `Bearer ${token}`}
+          });
         })
       );
     } catch (error) {

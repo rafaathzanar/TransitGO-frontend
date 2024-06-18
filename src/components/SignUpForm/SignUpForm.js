@@ -18,13 +18,13 @@ const FormAddPassenger = () => {
      fname: "",
      lname: "",
      email: "",
-     username: "",
+     uname: "",
      password: "",
      confirmpassword: ""
    });
 
   
-   const{fname,lname,email,username,password,confirmpassword} = formData;
+   const{fname,lname,email,uname,password,confirmpassword} = formData;
  
    const onFormInput = (e) =>{
       setFormData({...formData,[e.target.name]:e.target.value});
@@ -35,7 +35,7 @@ const FormAddPassenger = () => {
      fname: "",
      lname: "",
      email: "",
-     username: "",
+     uname: "",
      password: "",
      confirmpassword
    });
@@ -47,7 +47,7 @@ const FormAddPassenger = () => {
      //Validate form fields
      const fnameValidation = validateFname(formData.fname);
      const lnameValidation = validateLname(formData.lname);
-     const usernameValidation = validateUsername(formData.username);
+     const usernameValidation = validateUsername(formData.uname);
      const emailValidation = validateEmail(formData.email);
      const passwordValidation = validatePassword(formData.password);
      const confirmpasswordValidation = validateConfirmpassword(formData.password,formData.confirmpassword);
@@ -61,7 +61,7 @@ const FormAddPassenger = () => {
           setFormErrors({
             fname: fnameValidation.Message,
             lname: lnameValidation.Message,
-            username: usernameValidation.Message,
+            uname: usernameValidation.Message,
             email: emailValidation.Message,
             password: passwordValidation.Message,
             confirmpassword: confirmpasswordValidation.Message
@@ -78,7 +78,7 @@ const FormAddPassenger = () => {
         fname: "",
         lname: "",
         email: "",
-        username: "",
+        uname: "",
         password: "",
         confirmpassword:""
        })
@@ -147,10 +147,10 @@ const FormAddPassenger = () => {
                  type="text" 
                  class="form-control" 
                  placeholder='Enter Your User Name' 
-                 name="username" value={formData.username}
+                 name="uname" value={formData.uname}
                  onChange={(e)=>onFormInput(e)}
-                 error={formErrors.username}/>
-                 {formErrors.username && <p className='error'>{formErrors.username}</p>}
+                 error={formErrors.uname}/>
+                 {formErrors.uname && <p className='error'>{formErrors.uname}</p>}
 
         </div>
         <div class="input">

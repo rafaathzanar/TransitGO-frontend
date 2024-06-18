@@ -15,6 +15,8 @@ import FormAddEmployee from "./pages/FormAddEmployee/FormAddEmployee";
 import ProfileForm from "./components/ProfileForm/ProfileForm";
 import axios from "axios";
 import { useState,useEffect } from "react";
+import EditRoute from "./pages/FormRoute/EditRoute";
+import EditBus from "./pages/FormBus/EditBus";
 
 function AdminRoutes() {
   console.log("Rendering LayoutAdmin");

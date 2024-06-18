@@ -9,6 +9,7 @@ import Add from "@mui/icons-material/Add";
 
 const DelayInput = (onAddGoal) => {
   let navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   const [enteredValue, setEnteredValue] = useState("");
   const [isValid, setIsValid] = useState(true);
@@ -27,6 +28,8 @@ const DelayInput = (onAddGoal) => {
     try {
       const response = await axios.post("http://localhost:8080/announcement", {
         details: enteredValue,
+      },{
+        headers: {Authorization: `Bearer ${token}`}
       });
 
       setEnteredValue("");

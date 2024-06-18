@@ -45,6 +45,7 @@
 .subject{
     grid-area: subject;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #132968;

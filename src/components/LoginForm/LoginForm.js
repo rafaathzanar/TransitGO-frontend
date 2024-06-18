@@ -57,10 +57,23 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
 
          try{
             const response = await axios.post("http://localhost:8080/api/v1/auth/authentication",formData);
+            console.log(response);
+
+            //store token, role and mail in the localstorage
             const token = response.data.token;
             const type = response.data.user.type;
-            console.log(response,type);
+            const email = response.data.user.username;
+            const lastname = response.data.user.lname;
+            const uname = response.data.user.uname;
+            const id = response.data.user.id;
+            console.log(token,type,email,lastname,uname);
             localStorage.setItem('token',token);
+            localStorage.setItem('userRole',type);
+            localStorage.setItem('username',email);
+            localStorage.setItem('lastname',lastname);
+            localStorage.setItem('uname',uname);
+            localStorage.setItem('id',id);
+
             console.log("login success",formData);
             //alert("Login Success");
             window.confirm("Login Success");

@@ -30,6 +30,10 @@ const NavbarUser = () => {
 
   const handleItemClick = (item) => {
     setSelectedItem(item.id);
+    if(item.route == "/signin"){
+      localStorage.removeItem('token');
+    }
+    console.log(item);
     navigate(item.route);
   };
 

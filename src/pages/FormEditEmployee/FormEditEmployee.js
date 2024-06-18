@@ -14,12 +14,13 @@ import { useNavigate, useParams } from "react-router";
 const FormEditEmployee = () => {
   let navigate=useNavigate();
   const {id} = useParams()
+  const token = localStorage.getItem('token');
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     username: "",
-    password: "",
+    //password: "",
     busid: "", // New state for bus selection
   });
 
@@ -31,17 +32,17 @@ const FormEditEmployee = () => {
   }
 
   useEffect(()=>{
-    loadUsers();
-  },[])
+    loadUserData();
+  },[id])
 
 
   const [formErrors, setFormErrors] = useState({
-    firstName: false,
-    lastName: false,
-    email: false,
-    username: false,
-    password: false,
-    busid: false, // New state for bus selection
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    //password: "",
+    busid: "", // New state for bus selection
   });
 
 
@@ -50,7 +51,10 @@ const FormEditEmployee = () => {
     e.preventDefault();
     try{
       console.log("json is",formData)
-    await axios.put(`http://localhost:8080/updateUser/${id}`,formData);
+    await axios.put(`http://localhost:8080/admin-user/update/${id}`,formData,{
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    window.alert("Employee Details Updated");
     navigate("/admin/employees");
     }
     catch(error){
@@ -59,11 +63,31 @@ const FormEditEmployee = () => {
   };
 
   //Load the data for the specific user
-  const loadUsers = async ()=>{
-    const result = await axios.get(`http://localhost:8080/user/${id}`,formData);
-    setFormData(result.data);
+  // const loadUsers = async ()=>{
+  //   const result = await axios.get(`http://localhost:8080/user/${id}`,formData);
+  //   setFormData(result.data);
     
-  }
+  // }
+
+  const loadUserData = async () => {
+    try {
+      const result = await axios.get(`http://localhost:8080/admin/get-user/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (result.data && result.data.user) {
+        setFormData({
+          firstName: result.data.user.fname,
+          lastName: result.data.user.lname,
+          email: result.data.user.email,
+          username: result.data.user.uname,
+          //password: "",
+          busid: result.data.user.busid || "",
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   return (
     <Container>
@@ -117,7 +141,7 @@ const FormEditEmployee = () => {
               helperText={formErrors.username && "Username is required"}
             />
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <TextField
               fullWidth
               label="Password"
@@ -128,14 +152,14 @@ const FormEditEmployee = () => {
               error={formErrors.password}
               helperText={formErrors.password && "Password is required"}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12}>
             <Select
               fullWidth
               label="Bus"
               name="busid"
-              value={formData.bus}
+              value={formData.busid}
               onChange={(e)=>onFormInput(e)}
               error={formErrors.bus}
               displayEmpty

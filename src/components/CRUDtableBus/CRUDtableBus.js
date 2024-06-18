@@ -18,13 +18,17 @@ export default function CRUDtableRoute({}) {
   const [searchValue, setSearchValue] = useState("");
 
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     loadBuses();
   }, []);
 
   const loadBuses = async () => {
-    fetch("http://localhost:8080/busroutes")
+    //const token = localStorage.getItem('token');
+    fetch("http://localhost:8080/busroutes",{
+      headers: {Authorization: `Bearer ${token}`}
+    })
       .then((response) => response.json())
       .then((data) => {
         setBusRoutes(data);
@@ -49,7 +53,9 @@ export default function CRUDtableRoute({}) {
 
   const handleConfirmDelete = async (busId) => {
     try {
-      await axios.delete(`http://localhost:8080/bus/${busId}`);
+      await axios.delete(`http://localhost:8080/bus/${busId}`,{
+        headers: {Authorization: `Bearer ${token}`}
+      });
 
       loadBuses();
     } catch (error) {

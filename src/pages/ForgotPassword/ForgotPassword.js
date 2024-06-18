@@ -19,11 +19,7 @@ function ForgotPassword() {
         <div className="forgotpassword-form">
           <ForgotPasswordEmail></ForgotPasswordEmail>
         </div>
-        <div className="send-otp-button">
-          <Link to="/EmailVerification">
-            <OTPButton title="Send OTP"></OTPButton>
-          </Link>
-        </div>
+        
       </div>
     </div>
   );

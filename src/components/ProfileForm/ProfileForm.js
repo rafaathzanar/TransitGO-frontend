@@ -129,7 +129,7 @@ function ProfileForm({profileInfo, setProfileInfo}){
         </div>
         <div className='other-option'>
            <div className='option'>
-             <Link to='/LoginGeneralUser'>Change Password</Link>
+             <Link to='/forgotpassword'>Change Password</Link>
            </div>
         </div>
         <div className='edit-and-save'>

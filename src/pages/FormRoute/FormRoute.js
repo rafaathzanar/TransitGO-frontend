@@ -62,13 +62,16 @@ const FormRoute = () => {
     // if(stops == []){
     //   console.log("Fill Every Data");
     // }
+    const token = localStorage.getItem('token');
     if (hasErrors(validationErrors)) {
       setValidationErrors(validationErrors);
     } else {
       try {
         const response = await axios.post(
           "http://localhost:8080/busroute",
-          route
+          route,{
+            headers: {Authorization: `Bearer ${token}`}
+          }
         );
         if (response.status === 200) {
           setOpenDialog(true);
@@ -80,6 +83,8 @@ const FormRoute = () => {
             busroute: {
               routeno,
             },
+          },{
+            headers: {Authorization: `Bearer ${token}`}
           });
         }
       } catch (error) {

@@ -16,25 +16,24 @@
     row-gap: 1%;
  }
 
- .activity{
+ /*.activity{
     display: flex;
+    flex-direction: row;
     justify-content:space-between;
     align-items: center;
     padding: 2%;
     border-radius: 10px;
-    background-color: white;
-    box-shadow: 0px 10px 10px rgb(250, 107, 107, 0.2);
+    background-color: rgba(149, 156, 164, 0.2);
+    max-width: 100%;
     margin-top: 2%;
  }
 
- .activity:hover{
-    background-color:#132968 ;
-    color: white;
- }
+ 
 
  .desc{
-   width: 100%;
+   width: 50%;
  }
+
 
  .status{
    background-color: white;
@@ -59,4 +58,37 @@
  
  .dlt-btn{
    color: red;
+ }*/
+
+ .activity{
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-areas:
+  "desc action" ;
+  column-gap: 2%;
+  background-color: rgba(149, 156, 164, 0.2);
+    max-width: 100%;
+    margin-top: 2%;
+    border-radius: 10px;
+    padding: 1%;
+ }
+
+ .activity:hover{
+  background-color:#132968 ;
+  color: white;
+}
+ 
+.action Button:hover{
+  color: white;
+}
+
+ .desc{
+  grid-area: desc;
+ }
+
+ .action{
+  grid-area: action;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
  }

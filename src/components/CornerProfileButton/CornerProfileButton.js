@@ -24,6 +24,10 @@ const CornerProfileButton = () => {
   };
 
   const handleMenuItemClick = (route) => {
+    if (route === "/signin"){
+      localStorage.removeItem('token');
+      navigate(`${route}`);
+    }
     navigate(`${route}`);
     // Perform actions based on the clicked menu item, e.g., navigate to a route
     console.log(`Navigating to ${route}`);
