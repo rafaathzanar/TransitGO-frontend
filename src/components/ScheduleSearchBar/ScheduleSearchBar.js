@@ -14,6 +14,10 @@ const ScheduleSearchBar = ({ onSearch }) => {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
   const [date, setDate] = useState("");
+  const [fromError, setFromError] = useState(false);
+  const [toError, setToError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [sameStopError, setSameStopError] = useState(false);
 
   useEffect(() => {
     const loadBusStops = async () => {
@@ -40,10 +44,17 @@ const ScheduleSearchBar = ({ onSearch }) => {
   };
 
   const handleSearch = () => {
-    if (from && to && date) {
-      const direction = calculateDirection(from, to);
-      onSearch(from.label, to.label, direction, date);
+    setFromError(!from);
+    setToError(!to);
+    setDateError(!date);
+    setSameStopError(from && to && from.label === to.label);
+
+    if (!from || !to || !date || (from && to && from.label === to.label)) {
+      return;
     }
+
+    const direction = calculateDirection(from, to);
+    onSearch(from.label, to.label, direction, date);
   };
 
   return (
@@ -60,9 +71,21 @@ const ScheduleSearchBar = ({ onSearch }) => {
               style={{ width: 200 }}
               options={busStops}
               getOptionLabel={(option) => option.label}
-              onChange={(event, value) => setFrom(value)}
+              onChange={(event, value) => {
+                setFrom(value);
+                setFromError(false);
+                setSameStopError(false);
+              }}
               renderInput={(params) => (
-                <TextField {...params} label="From:" variant="outlined" />
+                <TextField
+                  {...params}
+                  label="From:"
+                  variant="outlined"
+                  error={fromError || sameStopError}
+                  helperText={
+                    fromError ? "From stop is required" : sameStopError
+                  }
+                />
               )}
             />
           </Grid>
@@ -71,9 +94,25 @@ const ScheduleSearchBar = ({ onSearch }) => {
               style={{ width: 200 }}
               options={busStops}
               getOptionLabel={(option) => option.label}
-              onChange={(event, value) => setTo(value)}
+              onChange={(event, value) => {
+                setTo(value);
+                setToError(false);
+                setSameStopError(false);
+              }}
               renderInput={(params) => (
-                <TextField {...params} label="To:" variant="outlined" />
+                <TextField
+                  {...params}
+                  label="To:"
+                  variant="outlined"
+                  error={toError || sameStopError}
+                  helperText={
+                    toError
+                      ? "To stop is required"
+                      : sameStopError
+                      ? "From and To are same"
+                      : ""
+                  }
+                />
               )}
             />
           </Grid>
@@ -86,7 +125,12 @@ const ScheduleSearchBar = ({ onSearch }) => {
               }}
               variant="outlined"
               autoComplete="on"
-              onChange={(e) => setDate(e.target.value)}
+              error={dateError}
+              helperText={dateError ? "Date is required" : ""}
+              onChange={(e) => {
+                setDate(e.target.value);
+                setDateError(false);
+              }}
             />
           </Grid>
           <Grid item>

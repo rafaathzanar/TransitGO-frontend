@@ -6,65 +6,64 @@ import moment from "moment";
 
 const BusTimeTable = () => {
   const { busId } = useParams();
-  const [monthlyStatus, setMonthlyStatus] = useState([]);
-  const [currentMonth] = useState(moment()); // No need for updating currentMonth
+  const [weeklyStatus, setWeeklyStatus] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(moment());
 
   useEffect(() => {
-    loadMonthlyStatus();
-  }, []);
+    loadWeeklyStatus();
+  }, [currentMonth]);
 
-  const loadMonthlyStatus = async () => {
-    const firstDay = moment(currentMonth).startOf("month");
-    const lastDay = moment(currentMonth).endOf("month");
+  const loadWeeklyStatus = async () => {
+    const startOfWeek = moment(currentMonth).startOf("week"); // Sunday of the current week
+    const endOfWeek = moment(currentMonth).endOf("week"); // Saturday of the current week
 
-    // Calculate the number of days in the month
-    const daysInMonth = lastDay.diff(firstDay, "days") + 1;
+    const daysInWeek = 7; // We are only interested in 7 days
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/bus/${busId}/bustimetable?startDate=${firstDay.format(
+        `http://localhost:8080/bus/${busId}/bustimetable?startDate=${startOfWeek.format(
           "YYYY-MM-DD"
-        )}&endDate=${lastDay.format("YYYY-MM-DD")}`
+        )}&endDate=${endOfWeek.format("YYYY-MM-DD")}`
       );
       console.log("API Response:", response.data);
-      setMonthlyStatus(
+      setWeeklyStatus(
         response.data.length
           ? response.data
-          : generateDefaultMonthlyStatus(daysInMonth, firstDay)
+          : generateDefaultWeeklyStatus(daysInWeek, startOfWeek)
       );
     } catch (error) {
-      console.error("Error fetching monthly status:", error);
-      setMonthlyStatus(generateDefaultMonthlyStatus(daysInMonth, firstDay));
+      console.error("Error fetching weekly status:", error);
+      setWeeklyStatus(generateDefaultWeeklyStatus(daysInWeek, startOfWeek));
     }
   };
 
-  const generateDefaultMonthlyStatus = (daysInMonth, firstDay) => {
-    return Array.from({ length: daysInMonth }).map((_, index) => {
-      const date = moment(firstDay).add(index, "days").format("YYYY-MM-DD");
+  const generateDefaultWeeklyStatus = (daysInWeek, startOfWeek) => {
+    return Array.from({ length: daysInWeek }).map((_, index) => {
+      const date = moment(startOfWeek).add(index, "days").format("YYYY-MM-DD");
       return { date, status: "off" };
     });
   };
 
   const handleStatusChange = (date, status) => {
-    const newStatus = monthlyStatus.map((day) => {
+    const newStatus = weeklyStatus.map((day) => {
       if (day.date === date) {
         return { ...day, status };
       }
       return day;
     });
 
-    setMonthlyStatus(newStatus);
+    setWeeklyStatus(newStatus);
   };
 
-  const saveMonthlyStatus = async () => {
+  const saveWeeklyStatus = async () => {
     try {
       await axios.post(
         `http://localhost:8080/bus/${busId}/bustimetable`,
-        monthlyStatus
+        weeklyStatus
       );
-      alert("Monthly status saved successfully");
+      alert("Weekly status saved successfully");
     } catch (error) {
-      console.error("Error saving monthly status:", error);
+      console.error("Error saving weekly status:", error);
     }
   };
 
@@ -115,17 +114,17 @@ const BusTimeTable = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Monthly Schedule for Bus {busId} - {currentMonth.format("MMMM YYYY")}
+        Weekly Schedule for Bus {busId} - {currentMonth.format("MMMM YYYY")}
       </Typography>
       <Grid container spacing={2}>
-        {monthlyStatus.map((dayStatus) => (
+        {weeklyStatus.map((dayStatus) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={dayStatus.date}>
             {renderDayCell(dayStatus)}
           </Grid>
         ))}
       </Grid>
       <Box mt={3} textAlign="center">
-        <Button variant="contained" color="primary" onClick={saveMonthlyStatus}>
+        <Button variant="contained" color="primary" onClick={saveWeeklyStatus}>
           Save Schedule
         </Button>
       </Box>
