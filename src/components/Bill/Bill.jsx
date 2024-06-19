@@ -9,7 +9,6 @@ const Bill = ({ open, onClose, billDetails }) => {
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
     doc.addImage(logo, 'PNG', 10, 10, 50, 30);
-    doc.text("Package Bill", 20, 50);
     doc.text(`Package ID: ${billDetails.packageID}`, 20, 60);
     doc.text(`Bus Registration Number: ${billDetails.busRegNo}`, 20, 70);
     doc.text(`Departure Time: ${billDetails.departureTime}`, 20, 80);
