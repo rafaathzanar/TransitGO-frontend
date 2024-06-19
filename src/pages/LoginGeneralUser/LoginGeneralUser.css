@@ -12,27 +12,23 @@
 .Left-Form {
   grid-area: Left-Form;
   background-color: white;
-  padding: 4%;
+  padding: 2%;
+  display: grid;
+  grid-template-rows: 1fr 0.5fr 2fr 1fr;
+  grid-template-areas:
+    "logo"
+    "login-form-heading"
+    "login-form"
+    "signup";
+  gap: 0.4em;
+  padding: 3%;
 }
 
 .Right-Image {
   grid-area: Right-Image;
   background-color: #f1f3f6;
   max-width: 100%;
-  height: auto;
-}
-
-.LoginBusEmployee {
-  display: grid;
-  grid-template-rows: 1fr 1fr 2fr 1fr 1fr;
-  grid-template-areas:
-    "logo"
-    "signin-form-heading"
-    "signin-form"
-    "btn"
-    "signup";
-  gap: 0.3em;
-  padding: 5%;
+  
 }
 
 .logo {
@@ -51,12 +47,10 @@
   grid-area: signup;
   width: 100%;
   height: auto;
+  margin-top: 0.5rem;
 }
 
-.btn {
-  grid-area: btn;
-  width: 100%;
-}
+
 
 @media only screen and (max-width: 1024px) {
   .App {

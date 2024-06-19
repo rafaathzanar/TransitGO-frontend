@@ -20,7 +20,7 @@
 .email-verification-form {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
 }
  
 .digit {
@@ -33,6 +33,16 @@
 .digit input{
     font-size: 20px;
     color:#1E2772 ;
+    font-weight: bold;
+}
+
+.resent-otp{
+    margin-top: 5%;
+}
+
+.resent-otp button{
+    background-color: white;
+    color: #1E2772;
     font-weight: bold;
 }
 

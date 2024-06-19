@@ -1,11 +1,16 @@
 import './SignUpButton.css';
+import { Link, link } from "react-router-dom";
 
-function SignUpButton(){
+
+const SignUpButton = ({buttonTitle}) => {
+   
     return(
         <div className='signup'>
-            <button>Sign Up Now</button>
+           
+            <button type='submit'>{buttonTitle}</button>
+           
         </div>
-    )
-}
+    );
 
+}
 export default SignUpButton;

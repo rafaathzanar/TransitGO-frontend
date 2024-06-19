@@ -3,24 +3,36 @@ import NavbarUser from '../../components/NavbarUSer/NavbarUser';
 import './GeneralUserProfile.css';
 import GeneralUserProfileIcon from '../../components/GeneralUserProfileIcon/GeneralUserProfileIcon';
 import { CircleNotifications } from '@mui/icons-material';
+import { useState } from 'react';
 
 function GeneralUserProfile(){
+    const [profileInfo, setProfileInfo] = useState({
+        fname: "",
+        lname: "",
+        email: "",
+        uname: "",
+        id: ""
+     });
+
+     const lastname =  profileInfo.uname.toUpperCase();
+
+    
     return(
-        <div className='general-user-profile'>
-          <div className='nav-bar'>
+        <div className='general-user'>
+          <div className='profilenavbar'>
             <NavbarUser></NavbarUser>
           </div>
-          <div className='main'>
-              <div className='main-header'>
-                 <div className='main-profile'>
-                     <GeneralUserProfileIcon username='UserName' pagename='PROFILE'></GeneralUserProfileIcon>
+          <div className='profilemain'>
+              <div className='profiletop'>
+                 <div className='profileicon'>
+                     <GeneralUserProfileIcon username={lastname} pagename='PROFILE'></GeneralUserProfileIcon>
                  </div>
-                 <div className='main-notification'>
+                 <div className='profilenotification'>
                      <CircleNotifications sx={{fontSize:40}}></CircleNotifications>
                  </div>
               </div>
-              <div className='main-subject'>
-                   <ProfileForm></ProfileForm> 
+              <div className='profilesubject'>
+                 <ProfileForm profileInfo={profileInfo} setProfileInfo={setProfileInfo}></ProfileForm> 
               </div>
           </div>
         </div>

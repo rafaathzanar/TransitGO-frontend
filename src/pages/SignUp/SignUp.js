@@ -1,7 +1,7 @@
 import Logo from "../../components/Logo/Logo";
 import MainImage from "../../components/MainImageBig/MainImage";
 import SignUpButton from "../../components/SignUpButton/SignUpButton";
-import SignUpForm from "../../components/SignUpForm/SignUpForm";
+import FormAddPassenger from "../../components/SignUpForm/SignUpForm";
 import SubHeading from "../../components/SubHeading/SubHeading";
 import Terms from "../../components/Terms/Terms";
 import img from "../../images/signUpImage.png";
@@ -23,13 +23,10 @@ function SignUp() {
           <SubHeading heading="Create New Account"></SubHeading>
         </div>
         <div className="signup-form">
-          <SignUpForm></SignUpForm>
+          <FormAddPassenger></FormAddPassenger>
         </div>
         <div className="option">
           <Terms></Terms>
-        </div>
-        <div className="signup-button">
-          <SignUpButton></SignUpButton>
         </div>
       </div>
     </div>

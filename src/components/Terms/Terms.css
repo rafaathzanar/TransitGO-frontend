@@ -1,9 +1,10 @@
 .terms{
     text-align: center;
     justify-content: center;
+
 }
 
-h5{
-    font-size: 15px;
+.terms h5{
+    font-size: 17px;
 }
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
   TextField,
@@ -8,50 +9,94 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import { useNavigate } from "react-router";
+import { type } from "@testing-library/user-event/dist/type";
+import { validateFname,
+         validateLname,
+         validateUsername,
+         validateEmail,
+         validatePassword} from "../../components/FormValidationSignup/FormValidationSignup";
+
 
 const FormAddEmployee = () => {
+  let navigate=useNavigate();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    fname: "",
+    lname: "",
     email: "",
-    username: "",
+    uname: "",
     password: "",
-    role: "",
-    department: "",
-    bus: "", // New state for bus selection
+    busid: "" // New state for bus selection
   });
+
+  const{fname,lname,email,uname,password,bus} = formData;
+
+  const onFormInput = (e) =>{
+     setFormData({...formData,[e.target.name]:e.target.value});
+    
+  }
+
 
   const [formErrors, setFormErrors] = useState({
-    firstName: false,
-    lastName: false,
-    email: false,
-    username: false,
-    password: false,
-    role: false,
-    department: false,
-    bus: false, // New state for bus selection
+    fname: "",
+    lname: "",
+    email: "",
+    uname: "",
+    password: "",
+    busid: "" // New state for bus selection
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setFormErrors({ ...formErrors, [name]: false });
-  };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    const errors = {};
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        errors[key] = true;
-      }
-    });
 
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
+    //Form Validation
+     const fnameValidation = validateFname(formData.fname);
+     const lnameValidation = validateLname(formData.lname);
+     const usernameValidation = validateUsername(formData.uname);
+     const emailValidation = validateEmail(formData.email);
+     const passwordValidation = validatePassword(formData.password);
+
+     if (!fnameValidation.isValid ||
+      !lnameValidation.isValid ||
+      !usernameValidation.isValid ||
+      !emailValidation.isValid ||
+      !passwordValidation.isValid ){
+      setFormErrors({
+         fname: fnameValidation.Message,
+         lname: lnameValidation.Message,
+         uname: usernameValidation.Message,
+         email: emailValidation.Message,
+         password: passwordValidation.Message
+       });
+       console.log(formErrors);
+       return;
+      }
+
+
+      //to register new users
+    try{
+      const token = localStorage.getItem('token');
+      const updatedFormData ={...formData, type:"employee"};
+      console.log("json is",updatedFormData)
+      await axios.post("http://localhost:8080/api/v1/auth/register",updatedFormData,{
+        headers: {Authorization: `Bearer ${token}`}
+      });
+      window.alert("Employee Added Successfully");
+      navigate("/admin/employees");
     }
-    console.log(formData);
+    catch(error){
+      if (error.response && error.response.data){
+        setFormErrors({
+         ...formErrors,
+         email: error.response.data
+        });
+       }else{
+        console.error("Error submitting form: ",error);
+        window.alert("Something went wrong, please try again later");
+       }
+    }
   };
 
   return (
@@ -59,52 +104,53 @@ const FormAddEmployee = () => {
       <Typography variant="h4" gutterBottom>
         Add Employee
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e)=>handleSubmit(e)}>
+      <input type="hidden" name="type" value="employee" />
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               label="First Name"
-              name="firstName"
+              name="fname"
               value={formData.firstName}
-              onChange={handleChange}
-              error={formErrors.firstName}
-              helperText={formErrors.firstName && "First name is required"}
+              onChange={(e)=>onFormInput(e)}
+              error={formErrors.fname}
             />
+            {formErrors.fname && <p className='error'>{formErrors.fname}</p>}
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               label="Last Name"
-              name="lastName"
+              name="lname"
               value={formData.lastName}
-              onChange={handleChange}
-              error={formErrors.lastName}
-              helperText={formErrors.lastName && "Last name is required"}
+              onChange={(e)=>onFormInput(e)}
+              error={formErrors.lname}
             />
+            {formErrors.lname && <p className='error'>{formErrors.lname}</p>}
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
               label="Email"
-              type="email"
+              type="text"
               name="email"
               value={formData.email}
-              onChange={handleChange}
+              onChange={(e)=>onFormInput(e)}
               error={formErrors.email}
-              helperText={formErrors.email && "Email is required"}
             />
+            {formErrors.email && <p className='error'>{formErrors.email}</p>}
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
               label="Username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              error={formErrors.username}
-              helperText={formErrors.username && "Username is required"}
+              name="uname"
+              value={formData.uname}
+              onChange={(e)=>onFormInput(e)}
+              error={formErrors.uname}
             />
+            {formErrors.uname && <p className='error'>{formErrors.uname}</p>}
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -113,19 +159,19 @@ const FormAddEmployee = () => {
               type="password"
               name="password"
               value={formData.password}
-              onChange={handleChange}
+              onChange={(e)=>onFormInput(e)}
               error={formErrors.password}
-              helperText={formErrors.password && "Password is required"}
             />
+            {formErrors.password && <p className='error'>{formErrors.password}</p>}
           </Grid>
 
           <Grid item xs={12}>
             <Select
               fullWidth
               label="Bus"
-              name="bus"
+              name="busid"
               value={formData.bus}
-              onChange={handleChange}
+              onChange={(e)=>onFormInput(e)}
               error={formErrors.bus}
               displayEmpty
             >
@@ -143,7 +189,7 @@ const FormAddEmployee = () => {
             )}
           </Grid>
         </Grid>
-        <Button
+        <Button onSubmit={handleSubmit}
           sx={{ marginTop: "20px" }}
           variant="contained"
           color="primary"
