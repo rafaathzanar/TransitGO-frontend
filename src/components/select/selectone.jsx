@@ -6,11 +6,7 @@ import Select from '@mui/material/Select';
 
 
 export default function SelectVariants() {
-  // const [station, setStation] = React.useState('');
-
-  // const handleChange = (event) => {
-  //   setStation(event.target.value);
-  // };
+  
 
   const [fromStation,setFromStation]=React.useState('');
   const [toStation,setToStation]=React.useState('');
@@ -37,7 +33,9 @@ export default function SelectVariants() {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-      
+          <MenuItem value={10}>Colombo</MenuItem>
+          <MenuItem value={20}>Galle</MenuItem>
+          <MenuItem value={30}>Kandy</MenuItem>
         </Select>
       </FormControl>
       <FormControl className='second' sx={{ minWidth: 250, ml:1, mt:3}}>
@@ -53,9 +51,9 @@ export default function SelectVariants() {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Colombo</MenuItem>
-          <MenuItem value={20}>Galle</MenuItem>
-          <MenuItem value={30}>Kandy</MenuItem>
+          <MenuItem value={1}>Colombo</MenuItem>
+          <MenuItem value={2}>Galle</MenuItem>
+          <MenuItem value={3}>Kandy</MenuItem>
         </Select>
       </FormControl>
     </div>

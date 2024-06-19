@@ -9,17 +9,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { Schedule } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function CRUDtableRoute({}) {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [buses, setBuses] = useState([]);
-  const [busRoutes, setBusRoutes] = useState([]);
+  //const [busRoutes, setBusRoutes] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [routeChangesDetected, setRouteChangesDetected] = useState({});
-  const [busStatus, setBusStatus] = useState({}); // State to hold bus status
 
   const navigate = useNavigate();
 
@@ -31,7 +32,7 @@ export default function CRUDtableRoute({}) {
     try {
       const routesResponse = await axios.get("http://localhost:8080/busroutes");
       const routes = routesResponse.data;
-      setBusRoutes(routes);
+      //setBusRoutes(routes);
 
       const busesData = routes.flatMap((route) =>
         route.buses.map((bus) => ({
@@ -39,12 +40,14 @@ export default function CRUDtableRoute({}) {
           busRegNo: bus.regNo,
           routeNo: route.routeno,
           status: bus.status, // Initialize status
+          schedules: bus.schedules, // Add schedules to bus data
         }))
       );
 
       setBuses(busesData);
       setFilteredRows(busesData);
 
+      // Existing route change detection code
       const changesDetected = {};
       await Promise.all(
         busesData.map(async (bus) => {
@@ -67,7 +70,6 @@ export default function CRUDtableRoute({}) {
               ];
 
               const routeChanges = !arraysEqual(routeStops, scheduleStops);
-
               changesDetected[bus.busId] = routeChanges;
             }
           } catch (error) {
@@ -135,24 +137,13 @@ export default function CRUDtableRoute({}) {
     setFilteredRows(filtered);
   };
 
-  const handleStatusChange = async (busId, newStatus) => {
-    try {
-      await axios.put(`http://localhost:8080/busStatus/${busId}`, {
-        status: newStatus,
-      });
-      loadBuses(); // Reload buses after status change
-    } catch (error) {
-      console.error("Error changing bus status:", error.message);
-    }
-  };
-
   const columns = [
-    { field: "busId", headerName: "Bus Id", width: 200 },
-    { field: "busRegNo", headerName: "Bus Reg No", width: 200 },
-    { field: "routeNo", headerName: "Bus Route No", width: 200 },
+    { field: "busId", headerName: "Bus Id", width: 100 },
+    { field: "busRegNo", headerName: "Reg No", width: 100 },
+    { field: "routeNo", headerName: "Route No", width: 100 },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Current Status",
       width: 150,
       renderCell: (params) => (
         <Button
@@ -163,9 +154,6 @@ export default function CRUDtableRoute({}) {
               : params.value === "down"
               ? "warning"
               : "error"
-          }
-          onClick={() =>
-            handleStatusChange(params.row.busId, getNextStatus(params.value))
           }
         >
           {params.value}
@@ -184,42 +172,39 @@ export default function CRUDtableRoute({}) {
         ),
     },
     {
-      field: "actions",
-      headerName: "Actions",
-      width: 200,
+      field: "timetable",
+      headerName: "Time Table",
+      width: 100,
       renderCell: (params) => (
         <div>
-          <Button
+          <EditCalendarIcon
+            variant="outlined"
+            color="primary"
+            onClick={() => navigate(`bustimetable/${params.row.busId}`)}
+          ></EditCalendarIcon>
+        </div>
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 100,
+      renderCell: (params) => (
+        <div>
+          <DeleteIcon
             variant="outlined"
             color="primary"
             onClick={() => handleDelete(params.row.busId)}
-          >
-            Delete
-          </Button>
-          <Button
+          ></DeleteIcon>
+          <EditIcon
             variant="outlined"
             color="primary"
             onClick={() => handleEdit(params.row.busId)}
-          >
-            Edit
-          </Button>
+          ></EditIcon>
         </div>
       ),
     },
   ];
-
-  const getNextStatus = (currentStatus) => {
-    switch (currentStatus) {
-      case "up":
-        return "down";
-      case "down":
-        return "off";
-      case "off":
-        return "up";
-      default:
-        return "up"; // Default to "up" if current status is undefined
-    }
-  };
 
   return (
     <div

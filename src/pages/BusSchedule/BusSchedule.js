@@ -9,21 +9,28 @@ function BusSchedule() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [direction, setDirection] = useState("");
+  const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSearch = async (fromStop, toStop, direction) => {
+  const handleSearch = async (fromStop, toStop, direction, date) => {
     setFrom(fromStop);
     setDirection(direction);
     setTo(toStop);
+    setDate(date);
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get(`http://localhost:8080/bus/search`, {
-        params: { from: fromStop, to: toStop, direction: direction },
+        params: {
+          from: fromStop,
+          to: toStop,
+          direction: direction,
+          date: date,
+        },
       });
-      console.log("response in BusSchedule bus/search First ", response);
-      console.log("response.data in BusSchedule First ", response.data);
+
+      console.log("bus schedules in that date ", response.data);
       setBusSchedules(response.data);
     } catch (error) {
       setError("Error fetching bus schedules. Please try again later.");
