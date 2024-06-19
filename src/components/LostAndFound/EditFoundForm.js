@@ -20,6 +20,14 @@ export default function EditFoundForm(){
 
   const {id}=useParams();
 
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const  onSubmit= async(data) =>{
+   
+    await axios.put(`http://localhost:8080/found/${id}`,item);
+    navigate("/lostandfound/founditem");
+  };
+
   const[item,setItem]=useState({
            name:"",
            mobile_Number:"",
@@ -38,20 +46,13 @@ export default function EditFoundForm(){
   },[] );
 
  
-  const  onSubmit= async(data) =>{
-    await axios.put(`http://localhost:8080/found/${id}`,item);
-    navigate("/lostandfound/founditem");
-  };
+  
 
   const loadItems =async ()=>{
     const result=await axios.get(`http://localhost:8080/found/${id}`);
     setItem(result.data);
     console.log("result.data")
   }
-
-
-
-  const { handleSubmit } = useForm();
 
  
 
@@ -82,8 +83,17 @@ export default function EditFoundForm(){
                       variant="outlined"
                       placeholder="Enter your name"
                       fullWidth
+                      {...register("name", {
+                        
+                        pattern: {
+                          value: /^[A-Za-z]+$/,
+                          message: "Name should contain only alphabets"
+                        }
+                      })}
                       value={name}
-                      onChange={(e)=>onInputChange(e, "name") }  />
+                      onChange={(e)=>onInputChange(e, "name") }
+                      error={!!errors.name}
+                      helperText={errors.name?.message}  />
                   </Stack>
                 </Grid>
 
@@ -94,8 +104,19 @@ export default function EditFoundForm(){
                       
                       variant="outlined"
                       fullWidth
+                       placeholder="07xxxxxxxx"
+                       {...register("mobile_Number", {
+                        
+                        pattern: {
+                          value: /^[0-9]{10}$/,
+                          message: "Mobile Number should be 10 digits"
+                        }
+                      })}
                       value={mobile_Number}
-                      onChange={(e)=>onInputChange(e,"mobile_Number") } />
+                      onChange={(e)=>onInputChange(e,"mobile_Number") }
+                      error={!!errors.mobile_Number}
+                      helperText={errors.mobile_Number?.message}
+                       />
                   </Stack>
                 </Grid>
 
@@ -108,8 +129,17 @@ export default function EditFoundForm(){
                       required
                       variant="outlined"
                       fullWidth
+                      {...register("bus_Description", {
+                        
+                        minLength: {
+                          value: 8,
+                          message: "Bus Description must be at least 8 characters"
+                        }
+                      })}
                       value={bus_Description}
-                      onChange={(e)=>onInputChange(e,"bus_Description") } />
+                      onChange={(e)=>onInputChange(e,"bus_Description") }
+                      error={!!errors.bus_Description}
+                      helperText={errors.bus_Description?.message} />
                   </Stack>
                 </Grid>
 
@@ -122,8 +152,17 @@ export default function EditFoundForm(){
                       required
                       variant="outlined"
                       fullWidth
+                      {...register("item_Description", {
+                       
+                        minLength: {
+                          value: 5,
+                          message: "Item Description must be at least 5 characters"
+                        }
+                      })}
                       value={item_Description}
-                      onChange={(e)=>onInputChange(e,"item_Description") }/>
+                      onChange={(e)=>onInputChange(e,"item_Description") }
+                      error={!!errors.item_Description}
+                      helperText={errors.item_Description?.message}/>
                   </Stack>
                 </Grid>
 

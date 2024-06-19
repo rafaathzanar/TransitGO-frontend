@@ -1,0 +1,32 @@
+/* src/components/Bill/bill.css */
+.invoice-container {
+  padding: 20px;
+  max-width: 600px;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.company-logo {
+  width: 100px;
+  height: auto;
+}
+
+.company-details {
+  text-align: right;
+}
+
+.invoice-details {
+  margin-bottom: 20px;
+}
+
+.download-button {
+  display: block;
+  margin: 0 auto;
+}
