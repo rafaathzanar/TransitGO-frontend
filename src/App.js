@@ -21,9 +21,9 @@ import RouteManagement from "./pages/Package/Package";
 
 import ReviewRating from "./pages/ReviewRating/ReviewRating";
 import MyLayout from "./components/MyLayout";
-import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
 import Dummy from "./dummy";
+import EditCommentBox from "./components/ReviewPage/EditCommentBox";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
