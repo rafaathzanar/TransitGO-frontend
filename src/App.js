@@ -24,6 +24,8 @@ import MyLayout from "./components/MyLayout";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
 import Dummy from "./dummy";
 import EditCommentBox from "./components/ReviewPage/EditCommentBox";
+import FormAddAdmin from "./pages/FormAddAdmin/FormAddAdmin.js";
+import FormAdminSignIn from "./pages/FormAdminSignIn/FormAdminSignIn.js";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -58,6 +60,8 @@ function App() {
           <Route path="/profile" element={<GeneralUserProfile />} />
           <Route path="/activityhistory" element={<ActivityHistory />} />
           <Route path="/dummy" element={<Dummy />} />
+          <Route path="/adminAdd" element={<FormAddAdmin />} />
+          <Route path="/adminSignin" element={<FormAdminSignIn />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
