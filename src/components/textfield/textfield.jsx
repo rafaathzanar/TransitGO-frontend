@@ -4,7 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import LoginButton from "../../components/LoginButton/LoginButton";
+import LoginButton from "../LoginButton/LoginButton";
 import './textfield.css'
 import axios from "axios";
 
