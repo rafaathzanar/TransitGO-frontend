@@ -25,24 +25,34 @@ const DescriptionCard = ({ id, Uname, numb, bus, desc, dateTime, onDelete, editL
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',  }}>
-      <Card sx={{ background: "#80a8e8", border: "2px solid #FA6B6B" }} style={{ width: "80%", margin: 20 }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Card sx={{ background: "linear-gradient(#9fe8fc,#e1f6fc,#edf3f5 )", border: "1px solid #fa9dad", borderRadius: "60px" }} style={{ width: "80%", margin: 20 }}>
         <CardContent>
-          <Typography variant="body1">
-            <strong>Name:</strong> {Uname}
-          </Typography>
-          <Typography variant="body1">
-            <strong>Contact Number:</strong> {numb}
-          </Typography>
-          <Typography variant="body1">
-            <strong>Bus Description:</strong> {bus}
-          </Typography>
-          <Typography variant="body1">
-            <strong>Item Description:</strong> {desc}
-          </Typography>
-          <Typography variant="body2">
-            <strong>Posted On:</strong> {new Date(dateTime).toLocaleString()}
-          </Typography>
+          {Uname && (
+            <Typography variant="body1">
+              <strong>Name:</strong> {Uname}
+            </Typography>
+          )}
+          {numb && (
+            <Typography variant="body1">
+              <strong>Contact Number:</strong> {numb}
+            </Typography>
+          )}
+          {bus && (
+            <Typography variant="body1">
+              <strong>Bus Description:</strong> {bus}
+            </Typography>
+          )}
+          {desc && (
+            <Typography variant="body1">
+              <strong>Item Description:</strong> {desc}
+            </Typography>
+          )}
+          {dateTime && (
+            <Typography variant="body2">
+              <strong>Posted On:</strong> {new Date(dateTime).toLocaleString()}
+            </Typography>
+          )}
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
             <Link to={editLink}>
               <IconButton aria-label="edit">
