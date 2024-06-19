@@ -12,6 +12,8 @@ const LostItem = (props) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     loadItems();
   }, []);
@@ -53,7 +55,7 @@ const LostItem = (props) => {
   return (
     <>
       <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", marginTop: 20 }}>
-        <h1>Reported Lost Items</h1>
+       <h1 style={{ color: "#071d40", fontFamily: "fantasy", fontSize: "50px",  }}>Reported Lost Items</h1>
         <SearchFilter onSearch={handleSearch} /> 
       </div>
 
