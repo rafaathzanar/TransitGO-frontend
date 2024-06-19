@@ -15,7 +15,7 @@ const MyForm = (props) => {
 
   const [errorMsg, setErrorMsg] = useState(""); // state to hold error messages
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const {handleSubmit, setValue } = useForm();
 
   const onSubmit = async (data) => {
     try {
@@ -24,7 +24,10 @@ const MyForm = (props) => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         // Backend validation error
-        setErrorMsg(error.response.data.Mobile_Number || "Invalid mobile number.Please check!!!");
+        setErrorMsg(error.response.data.Mobile_Number || error.response.data.Name ||error.response.data.Bus_Description ||error.response.data.Item_Description);
+
+       
+      
       } else {
         // Other types of errors
         setErrorMsg("An error occurred. Please try again later.");
@@ -34,7 +37,13 @@ const MyForm = (props) => {
 
   const onInputChange = (e, fieldName) => {
     setValue(fieldName, e.target.value); // use setValue from react-hook-form
+
+    if (fieldName === "mobile_Number" || fieldName === "name") {
+      setErrorMsg(""); // Clear the error message when the mobile number field get changes after error
+    }
   };
+
+  
 
   return (
     <div>
@@ -64,6 +73,8 @@ const MyForm = (props) => {
                    
                     onChange={(e) => onInputChange(e, "name")}
                   />
+
+
                  
                 </Grid>
                 <Grid item xs={12}>
@@ -75,6 +86,8 @@ const MyForm = (props) => {
                   
                     onChange={(e) => onInputChange(e, "mobile_Number")}
                   />
+
+             
                  
                 </Grid>
                 <Grid item xs={12}>
@@ -84,20 +97,11 @@ const MyForm = (props) => {
                     minRows={2.5}
                     variant="outlined"
                     fullWidth
-                    {...register("bus_Description", {
-                      required: "Bus description is required",
-                      minLength: {
-                        value: 8,
-                        message: "Bus description must be at least 8 characters",
-                      },
-                    })}
+                   
+                      required
                     onChange={(e) => onInputChange(e, "bus_Description")}
                   />
-                  {errors.bus_Description && (
-                    <Typography color="error">
-                      {errors.bus_Description.message}
-                    </Typography>
-                  )}
+                  
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -106,20 +110,11 @@ const MyForm = (props) => {
                     minRows={2.5}
                     variant="outlined"
                     fullWidth
-                    {...register("item_Description", {
-                      required: "Item description is required",
-                      minLength: {
-                        value: 5,
-                        message: "Item description must be at least 5 characters",
-                      },
-                    })}
+                   
+                      required
                     onChange={(e) => onInputChange(e, "item_Description")}
                   />
-                  {errors.item_Description && (
-                    <Typography color="error">
-                      {errors.item_Description.message}
-                    </Typography>
-                  )}
+                 
                 </Grid>
                 <Grid item xs={12}>
                   <Button
@@ -132,15 +127,18 @@ const MyForm = (props) => {
                   </Button>
                 </Grid>
               </Grid>
-              <br />
-              <Link to={props.url} style={{ fontSize: "29px", float: 'right', textDecoration: 'none' }}>
-                Want to report {props.lostorfound} item??
-              </Link>
+
               {errorMsg && (
                 <Typography color="error" align="center">
                   {errorMsg}
                 </Typography>
               )}
+
+              <br />
+              <Link to={props.url} style={{ fontSize: "20px", float: 'right', textDecoration: 'none' }}>
+                 Report {props.lostorfound} Items Here
+              </Link>
+             
             </CardContent>
           </Card>
         </Box>
