@@ -13,7 +13,8 @@ import MyLayout from "./components/MyLayout";
 import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
 import Dummy from "./dummy";
-import HeaderBar from "./components/HeaderBar/HeaderBar";
+import EditCommentBox from './components/ReviewPage/EditCommentBox';
+
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -25,7 +26,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
-          <Route path="/reviews" element={<MyLayout />} />
+          <Route path="/reviews" element={<ReviewRating />} />
+          <Route path="/reviews/:id" element={<EditCommentBox />} />
           <Route path="/profile" element={<GeneralUserProfile />} />
           <Route path="/activityhistory" element={<ActivityHistory />} />
           <Route path="/dummy" element={<Dummy />} />

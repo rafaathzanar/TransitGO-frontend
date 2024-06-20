@@ -1,4 +1,3 @@
-//ScheduleSearchBar.js
 import React, { useEffect, useState } from "react";
 import {
   Autocomplete,
@@ -12,8 +11,13 @@ import axios from "axios";
 
 const ScheduleSearchBar = ({ onSearch }) => {
   const [busStops, setBusStops] = useState([]);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
+  const [date, setDate] = useState("");
+  const [fromError, setFromError] = useState(false);
+  const [toError, setToError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [sameStopError, setSameStopError] = useState(false);
 
   useEffect(() => {
     const loadBusStops = async () => {
@@ -21,17 +25,36 @@ const ScheduleSearchBar = ({ onSearch }) => {
         const busStopData = await axios.get("http://localhost:8080/busstops");
         const busStopNames = busStopData.data.map((stop) => ({
           label: stop.name.trim(),
+          orderIndex: stop.orderIndex,
         }));
         setBusStops(busStopNames);
       } catch (error) {
-        console.error("Error loading routes:", error.message);
+        console.error("Error loading bus stops:", error.message);
       }
     };
     loadBusStops();
   }, []);
 
+  const calculateDirection = (fromStop, toStop) => {
+    if (fromStop.orderIndex < toStop.orderIndex) {
+      return "up";
+    } else {
+      return "down";
+    }
+  };
+
   const handleSearch = () => {
-    onSearch(from, to);
+    setFromError(!from);
+    setToError(!to);
+    setDateError(!date);
+    setSameStopError(from && to && from.label === to.label);
+
+    if (!from || !to || !date || (from && to && from.label === to.label)) {
+      return;
+    }
+
+    const direction = calculateDirection(from, to);
+    onSearch(from.label, to.label, direction, date);
   };
 
   return (
@@ -48,9 +71,21 @@ const ScheduleSearchBar = ({ onSearch }) => {
               style={{ width: 200 }}
               options={busStops}
               getOptionLabel={(option) => option.label}
-              onChange={(event, value) => setFrom(value?.label || "")}
+              onChange={(event, value) => {
+                setFrom(value);
+                setFromError(false);
+                setSameStopError(false);
+              }}
               renderInput={(params) => (
-                <TextField {...params} label="From:" variant="outlined" />
+                <TextField
+                  {...params}
+                  label="From:"
+                  variant="outlined"
+                  error={fromError || sameStopError}
+                  helperText={
+                    fromError ? "From stop is required" : sameStopError
+                  }
+                />
               )}
             />
           </Grid>
@@ -59,10 +94,43 @@ const ScheduleSearchBar = ({ onSearch }) => {
               style={{ width: 200 }}
               options={busStops}
               getOptionLabel={(option) => option.label}
-              onChange={(event, value) => setTo(value?.label || "")}
+              onChange={(event, value) => {
+                setTo(value);
+                setToError(false);
+                setSameStopError(false);
+              }}
               renderInput={(params) => (
-                <TextField {...params} label="To:" variant="outlined" />
+                <TextField
+                  {...params}
+                  label="To:"
+                  variant="outlined"
+                  error={toError || sameStopError}
+                  helperText={
+                    toError
+                      ? "To stop is required"
+                      : sameStopError
+                      ? "From and To are same"
+                      : ""
+                  }
+                />
               )}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Date"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              autoComplete="on"
+              error={dateError}
+              helperText={dateError ? "Date is required" : ""}
+              onChange={(e) => {
+                setDate(e.target.value);
+                setDateError(false);
+              }}
             />
           </Grid>
           <Grid item>

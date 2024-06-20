@@ -1,3 +1,4 @@
+//ScheduleCard.js
 import React, { useEffect, useState } from "react";
 import busImg from "../../logo/image 1.png";
 import { Card, CardContent } from "@mui/material";
@@ -5,7 +6,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ScheduleCard.css";
 
-function ScheduleCard({ busID, busRegNo, routeNo, fromStop, toStop }) {
+function ScheduleCard({
+  busID,
+  busRegNo,
+  routeNo,
+  fromStop,
+  toStop,
+  direction,
+}) {
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,8 +23,8 @@ function ScheduleCard({ busID, busRegNo, routeNo, fromStop, toStop }) {
       try {
         const response = await axios.get(
           `http://localhost:8080/bus/${busID}/stops`
-        );
-        console.log("response.data in Schedule Card Second ", response.data);
+        ); //Schedules of the current bus
+        console.log("fwtched scheduled for the selected bus ", response.data);
         setSchedules(response.data);
       } catch (error) {
         setError("Error fetching bus schedules.");
@@ -40,12 +48,6 @@ function ScheduleCard({ busID, busRegNo, routeNo, fromStop, toStop }) {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-
-  const direction =
-    schedules.findIndex((schedule) => schedule.busStop.name === fromStop) <
-    schedules.findIndex((schedule) => schedule.busStop.name === toStop)
-      ? "up"
-      : "down";
 
   const filteredSchedules = schedules.filter(
     (schedule) => schedule.direction === direction

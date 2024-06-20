@@ -1,5 +1,5 @@
 import React from "react";
-import CardBox from "../../components/CardBox";
+import CardBox from "../../components/LostAndFound/CardBox";
 import Typography from "@mui/material/Typography";
 import img1 from "../../images/LostAnno.png";
 import img2 from "../../images/FoundAnno.png";

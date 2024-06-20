@@ -1,6 +1,6 @@
 .card-box {
   position: relative;
-  background: url("BoxImg.png");
+  background: url("../../images/BoxImg.png");
   background-size: cover;
   background-position: center;
   margin: 20px;
@@ -9,8 +9,8 @@
   cursor: pointer;
   outline: none;
   border-radius: 20px;
-  width: 400px; /* Set the desired width */
-  height: 250px; /* Set the desired height */
+  width: 400px; /* Set the desired width of cardbox */
+  height: 300px; /* Set the desired height of cardbox */
 }
 
 .card-box-content {

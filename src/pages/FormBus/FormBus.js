@@ -1,3 +1,4 @@
+//FormBus.js
 import React, { useEffect, useState } from "react";
 import {
   TextField,
@@ -11,7 +12,14 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router";
 
-const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
+const TwoInputFieldsRow = ({
+  label1,
+  label2,
+  onTimeChange,
+  hideArrival,
+  hideDeparture,
+  error,
+}) => {
   const handleTimeChange = (e, field) => {
     const { value } = e.target;
     onTimeChange(value, field);
@@ -20,24 +28,34 @@ const TwoInputFieldsRow = ({ label1, label2, onTimeChange }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        <TextField
-          type="time"
-          label={label1}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          onChange={(e) => handleTimeChange(e, "arrivalTime")}
-        />
+        {!hideArrival && (
+          <TextField
+            type="time"
+            label={label1}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            onChange={(e) => handleTimeChange(e, "arrivalTime")}
+            required
+            error={Boolean(error?.arrivalTime)}
+            helperText={error?.arrivalTime || ""}
+          />
+        )}
       </Grid>
       <Grid item xs={6}>
-        <TextField
-          type="time"
-          label={label2}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          onChange={(e) => handleTimeChange(e, "departureTime")}
-        />
+        {!hideDeparture && (
+          <TextField
+            type="time"
+            label={label2}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            onChange={(e) => handleTimeChange(e, "departureTime")}
+            required
+            error={Boolean(error?.departureTime)}
+            helperText={error?.departureTime || ""}
+          />
+        )}
       </Grid>
     </Grid>
   );
@@ -51,18 +69,16 @@ function FormBus() {
     busroute: {
       routeno: "",
     },
+    status: "off",
   });
   const [arrivalTimesUp, setArrivalTimesUp] = useState({});
   const [departureTimesUp, setDepartureTimesUp] = useState({});
   const [arrivalTimesDown, setArrivalTimesDown] = useState({});
   const [departureTimesDown, setDepartureTimesDown] = useState({});
   const [menuOptions, setMenuOptions] = useState([]);
-
-  // const {
-  //   regNo,
-  //   busroute: { routeno },
-  // } = bus;
   const [selectedValue, setSelectedValue] = useState("");
+  const [errorMessagesUp, setErrorMessagesUp] = useState({});
+  const [errorMessagesDown, setErrorMessagesDown] = useState({});
 
   useEffect(() => {
     axios
@@ -70,7 +86,9 @@ function FormBus() {
       .then((response) => {
         const routes = response.data;
         const busstoplist = routes.map((route) =>
-          route.busStops.map((stop) => stop.name)
+          route.busStops
+            .sort((a, b) => a.orderIndex - b.orderIndex)
+            .map((stop) => stop.name)
         );
         setAdditionalFieldsDatasets(busstoplist);
         setMenuOptions(routes);
@@ -134,8 +152,61 @@ function FormBus() {
     }
   };
 
+  const validateTimes = (times) => {
+    const errors = {};
+    for (let i = 0; i < times.length; i++) {
+      const { stopName, arrivalTime, departureTime } = times[i];
+
+      if (arrivalTime && departureTime && arrivalTime > departureTime) {
+        errors[stopName] = {
+          arrivalTime: "Arrival time cannot be later than departure time.",
+        };
+      }
+
+      if (i > 0) {
+        const prevTime = times[i - 1];
+        if (
+          prevTime.departureTime &&
+          arrivalTime &&
+          prevTime.departureTime > arrivalTime
+        ) {
+          errors[stopName] = {
+            ...errors[stopName],
+            arrivalTime:
+              "Arrival time cannot be earlier than previous stop's departure time.",
+          };
+        }
+      }
+    }
+    return Object.keys(errors).length ? errors : null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const upTimes = additionalFieldsDatasets[selectedValue].map((stopName) => ({
+      stopName,
+      arrivalTime: arrivalTimesUp[stopName],
+      departureTime: departureTimesUp[stopName],
+    }));
+
+    const downTimes = additionalFieldsDatasets[selectedValue]
+      .slice()
+      .reverse()
+      .map((stopName) => ({
+        stopName,
+        arrivalTime: arrivalTimesDown[stopName],
+        departureTime: departureTimesDown[stopName],
+      }));
+
+    const errorMsgUp = validateTimes(upTimes);
+    const errorMsgDown = validateTimes(downTimes);
+
+    if (errorMsgUp || errorMsgDown) {
+      setErrorMessagesUp(errorMsgUp || {});
+      setErrorMessagesDown(errorMsgDown || {});
+      return;
+    }
 
     try {
       // First, add the bus
@@ -148,8 +219,8 @@ function FormBus() {
       const selectedRoute = menuOptions[selectedValue];
 
       // Create an array to store schedule data for both directions
-      const schedulesUp = additionalFieldsDatasets[selectedValue].map(
-        (stopName) => {
+      const schedulesUp = upTimes.map(
+        ({ stopName, arrivalTime, departureTime }) => {
           const stop = selectedRoute.busStops.find(
             (stop) => stop.name === stopName
           );
@@ -157,16 +228,15 @@ function FormBus() {
           return {
             bus: { id: addedBus.id, regNo: addedBus.regNo },
             busStop: { stopID: stop.stopID, name: stopName },
-            arrivalTime: arrivalTimesUp[stopName],
-            departureTime: departureTimesUp[stopName],
+            arrivalTime,
+            departureTime,
             direction: "up",
           };
         }
       );
 
-      const schedulesDown = additionalFieldsDatasets[selectedValue]
-        .reverse()
-        .map((stopName) => {
+      const schedulesDown = downTimes.map(
+        ({ stopName, arrivalTime, departureTime }) => {
           const stop = selectedRoute.busStops.find(
             (stop) => stop.name === stopName
           );
@@ -174,11 +244,12 @@ function FormBus() {
           return {
             bus: { id: addedBus.id, regNo: addedBus.regNo },
             busStop: { stopID: stop.stopID, name: stopName },
-            arrivalTime: arrivalTimesDown[stopName],
-            departureTime: departureTimesDown[stopName],
+            arrivalTime,
+            departureTime,
             direction: "down",
           };
-        });
+        }
+      );
 
       // Post all schedules to the server
       for (const scheduleData of [...schedulesUp, ...schedulesDown]) {
@@ -219,15 +290,14 @@ function FormBus() {
                   name="selectedValue"
                   value={selectedValue}
                   onChange={handleChangeSelectOption}
-                  display
-                  Empty
+                  displayEmpty
                 >
                   <MenuItem value="" disabled>
                     Select Route
                   </MenuItem>
                   {menuOptions.map((option, index) => (
                     <MenuItem key={index} value={index}>
-                      {option.routename}
+                      {option.routeno}
                     </MenuItem>
                   ))}
                 </Select>
@@ -261,6 +331,14 @@ function FormBus() {
                                 onTimeChange={(time, field) =>
                                   handleTimeChange(time, field, text, "up")
                                 }
+                                hideArrival={index === 0}
+                                hideDeparture={
+                                  index ===
+                                  additionalFieldsDatasets[selectedValue]
+                                    .length -
+                                    1
+                                }
+                                error={errorMessagesUp[text]}
                               />
                             </td>
                           </tr>
@@ -301,6 +379,15 @@ function FormBus() {
                                 onTimeChange={(time, field) =>
                                   handleTimeChange(time, field, text, "down")
                                 }
+                                hideArrival={index === 0}
+                                hideDeparture={
+                                  index ===
+                                  additionalFieldsDatasets[selectedValue]
+                                    .slice()
+                                    .reverse().length -
+                                    1
+                                }
+                                error={errorMessagesDown[text]}
                               />
                             </td>
                           </tr>
