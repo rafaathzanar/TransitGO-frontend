@@ -11,23 +11,19 @@ function LoginBusEmployee() {
   return (
     <div className="App">
       <div className="Left-Form">
-        `
         <div className="LoginBusEmployee">
           <div className="logo">
             <Logo></Logo>
           </div>
-          <div className="login-form-heading">
+          <div className="form-heading">
             <SubHeading heading="Login to Your Account"></SubHeading>
           </div>
           <div className="login-form">
             <LoginForm
-              userNameTitle="Employee ID or User Name"
-              userNamePlaceholder="Enter Your Employee Id or User Name"
+              userNameTitle="Email"
+              userNamePlaceholder="Enter Your Email"
               loginAs="Login as Customer?"
             ></LoginForm>
-          </div>
-          <div className="btn">
-            <LoginButton buttonTitle='Login Now'></LoginButton>
           </div>
         </div>
       </div>
