@@ -18,8 +18,6 @@ function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
       <BrowserRouter>
-      <HeaderBar />
-
         <Routes>
           <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path="/*" element={<PageRoutes />} />

@@ -13,7 +13,7 @@ function HomePage() {
   const navigate = useNavigate();
   return (
     <div style={{ backgroundColor: "D4D7DB" }}>
-      {/* <HeaderBar></HeaderBar> */}
+      <HeaderBar></HeaderBar>
       <div
         style={{
           display: "flex",
