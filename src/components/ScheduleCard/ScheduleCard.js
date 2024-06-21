@@ -52,16 +52,19 @@ function ScheduleCard({
   const filteredSchedules = schedules.filter(
     (schedule) => schedule.direction === direction
   );
-
+  console.log("filtered Schedules", filteredSchedules);
   const fromSchedule = filteredSchedules.find(
     (schedule) => schedule.busStop.name === fromStop
   );
+  console.log("fromSchedules", fromSchedule);
+
   const toSchedule = filteredSchedules.find(
     (schedule) => schedule.busStop.name === toStop
   );
+  console.log("toSchedules", toSchedule);
 
   if (!fromSchedule || !toSchedule) {
-    return <p>No schedule available for the selected route.</p>;
+    return <p></p>;
   }
 
   const fromTime = fromSchedule.departureTime;
@@ -122,7 +125,9 @@ function ScheduleCard({
             >
               {filteredSchedules.map((schedule, index) => (
                 <option key={index}>
-                  Arrival at {schedule.busStop.name} {schedule.arrivalTime}
+                  {index === 0
+                    ? `${schedule.busStop.name} - Departure: ${schedule.departureTime}`
+                    : `${schedule.busStop.name} - Arrival: ${schedule.arrivalTime}`}
                 </option>
               ))}
             </select>

@@ -1,3 +1,4 @@
+//ScheduleSearchBar.js
 import React, { useEffect, useState } from "react";
 import {
   Autocomplete,
@@ -23,10 +24,23 @@ const ScheduleSearchBar = ({ onSearch }) => {
     const loadBusStops = async () => {
       try {
         const busStopData = await axios.get("http://localhost:8080/busstops");
-        const busStopNames = busStopData.data.map((stop) => ({
-          label: stop.name.trim(),
-          orderIndex: stop.orderIndex,
-        }));
+
+        // Use a Set to store unique bus stop names
+        const uniqueNamesSet = new Set();
+        const busStopNames = busStopData.data
+          .filter((stop) => {
+            if (uniqueNamesSet.has(stop.name.trim())) {
+              return false; // Exclude duplicate names
+            } else {
+              uniqueNamesSet.add(stop.name.trim());
+              return true; // Include unique names
+            }
+          })
+          .map((stop) => ({
+            label: stop.name.trim(),
+            orderIndex: stop.orderIndex,
+          }));
+
         setBusStops(busStopNames);
       } catch (error) {
         console.error("Error loading bus stops:", error.message);

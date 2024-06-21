@@ -38,7 +38,10 @@ export default function CRUDtablePackage({}) {
   };
 
   const deletePackage = async (packageID) => {
-    await axios.delete(`http://localhost:8080/package/${packageID}`,Authorization);
+    await axios.delete(
+      `http://localhost:8080/package/${packageID}`,
+      Authorization
+    );
     loadPackages();
   };
 
@@ -60,9 +63,6 @@ export default function CRUDtablePackage({}) {
         row.busID.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.receiverName.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.nic.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        row.paymentStatus
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase()) ||
         row.deliveryStatus.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
