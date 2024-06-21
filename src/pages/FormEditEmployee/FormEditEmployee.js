@@ -18,7 +18,11 @@ const FormEditEmployee = () => {
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
+    fname: "",
+    lname: "",
     email: "",
+    uname: "",
+    phone: "",
     uname: "",
     phone: "",
     //password: "",
@@ -26,7 +30,7 @@ const FormEditEmployee = () => {
   });
 
 
-  const{fname,lname,email,uname,password,phone,bus} = formData;
+  const{firstName,lastName,email,username,password,phone,bus} = formData;
 
   const onFormInput = (e) =>{
      setFormData({...formData,[e.target.name]:e.target.value});
@@ -40,7 +44,11 @@ const FormEditEmployee = () => {
   const [formErrors, setFormErrors] = useState({
     fname: "",
     lname: "",
+    fname: "",
+    lname: "",
     email: "",
+    uname: "",
+    phone: "",
     uname: "",
     phone: "",
     //password: "",
@@ -81,7 +89,11 @@ const FormEditEmployee = () => {
         setFormData({
           fname: result.data.user.fname,
           lname: result.data.user.lname,
+          fname: result.data.user.fname,
+          lname: result.data.user.lname,
           email: result.data.user.email,
+          uname: result.data.user.uname,
+          phone: result.data.user.phone,
           uname: result.data.user.uname,
           phone: result.data.user.phone,
           //password: "",
@@ -145,7 +157,6 @@ const FormEditEmployee = () => {
               helperText={formErrors.uname && "Username is required"}
             />
           </Grid>
-
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -154,7 +165,7 @@ const FormEditEmployee = () => {
               value={formData.phone}
               onChange={(e)=>onFormInput(e)}
               error={formErrors.phone}
-              helperText={formErrors.phone && "Phone is required"}
+              helperText={formErrors.phone && "Username is required"}
             />
           </Grid>
 

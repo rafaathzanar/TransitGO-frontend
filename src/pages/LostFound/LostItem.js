@@ -5,6 +5,10 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const LostItem = (props) => {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,7 +24,7 @@ const LostItem = (props) => {
 
   const loadItems = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/losts");
+      const response = await axios.get("http://localhost:8080/losts",Authorization);
       const sortedItems = response.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
       setItems(sortedItems); //sort by date time
     } catch (error) {
@@ -30,7 +34,7 @@ const LostItem = (props) => {
 
   const deleteItem = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/lost/${id}`);
+      await axios.delete(`http://localhost:8080/lost/${id}`, Authorization);
       loadItems();
     } catch (error) {
       console.error('Error deleting item:', error);

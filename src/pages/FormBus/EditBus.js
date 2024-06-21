@@ -6,6 +6,10 @@ import Button from "@mui/material/Button";
 import axios from "axios"; // Import Axios
 
 function EditBus() {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   const navigate = useNavigate();
   const { id } = useParams();
   const [busData, setBusData] = useState(null);
@@ -16,7 +20,7 @@ function EditBus() {
   useEffect(() => {
     // Fetch bus data by ID
     axios
-      .get(`http://localhost:8080/bus/${id}`)
+      .get(`http://localhost:8080/bus/${id}`,Authorization)
       .then((response) => {
         const data = response.data;
         setBusData(data);
@@ -92,7 +96,7 @@ function EditBus() {
         busroute: {
           routeno: busData.routeNo, // Keep the same route number
         },
-      })
+      },Authorization)
       .then((response) => {
         console.log("Bus updated successfully:", response.data);
       })
@@ -132,7 +136,7 @@ function EditBus() {
           axios.put(`http://localhost:8080/schedule/${schedule.scheduleId}`, {
             arrivalTime: schedule.arrivalTime || null,
             departureTime: schedule.departureTime || null,
-          })
+          },Authorization)
         );
       }
     });

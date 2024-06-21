@@ -13,6 +13,10 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function EditLostForm() {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   let navigate = useNavigate();
 
   const { id } = useParams();
@@ -20,7 +24,7 @@ export default function EditLostForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
-    await axios.put(`http://localhost:8080/lost/${id}`, item);
+    await axios.put(`http://localhost:8080/lost/${id}`, item, Authorization);
     navigate("/lostandfound/lostitem");
     
   };
@@ -43,7 +47,7 @@ export default function EditLostForm() {
   }, []);
 
   const loadItems = async () => {
-    const result = await axios.get(`http://localhost:8080/lost/${id}`);
+    const result = await axios.get(`http://localhost:8080/lost/${id}`, Authorization);
     setItem(result.data);
   };
 

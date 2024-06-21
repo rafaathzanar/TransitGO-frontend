@@ -15,7 +15,10 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 
 
 export default function EditFoundForm(){
-
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   let navigate=useNavigate();
 
   const {id}=useParams();
@@ -24,7 +27,7 @@ export default function EditFoundForm(){
 
   const  onSubmit= async(data) =>{
    
-    await axios.put(`http://localhost:8080/found/${id}`,item);
+    await axios.put(`http://localhost:8080/found/${id}`,item, Authorization);
     navigate("/lostandfound/founditem");
   };
 
@@ -32,7 +35,8 @@ export default function EditFoundForm(){
            name:"",
            mobile_Number:"",
            bus_Description:"",
-          item_Description:""
+          item_Description:"",
+          dateTime: ""
   })
 
   const{name,mobile_Number,bus_Description,item_Description}=item
@@ -49,7 +53,7 @@ export default function EditFoundForm(){
   
 
   const loadItems =async ()=>{
-    const result=await axios.get(`http://localhost:8080/found/${id}`);
+    const result=await axios.get(`http://localhost:8080/found/${id}`,Authorization);
     setItem(result.data);
     console.log("result.data")
   }
