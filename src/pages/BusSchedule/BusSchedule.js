@@ -1,3 +1,4 @@
+//BusSchedule.js
 import React, { useState } from "react";
 import ScheduleSearchBar from "../../components/ScheduleSearchBar/ScheduleSearchBar";
 import HeaderBar from "../../components/HeaderBar/HeaderBar";
