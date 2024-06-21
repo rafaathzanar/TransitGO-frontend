@@ -16,16 +16,17 @@ const FormEditEmployee = () => {
   const {id} = useParams()
   const token = localStorage.getItem('token');
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    fname: "",
+    lname: "",
     email: "",
-    username: "",
+    uname: "",
+    phone: "",
     //password: "",
     busid: "", // New state for bus selection
   });
 
 
-  const{firstName,lastName,email,username,password,bus} = formData;
+  const{firstName,lastName,email,username,password,phone,bus} = formData;
 
   const onFormInput = (e) =>{
      setFormData({...formData,[e.target.name]:e.target.value});
@@ -37,10 +38,11 @@ const FormEditEmployee = () => {
 
 
   const [formErrors, setFormErrors] = useState({
-    firstName: "",
-    lastName: "",
+    fname: "",
+    lname: "",
     email: "",
-    username: "",
+    uname: "",
+    phone: "",
     //password: "",
     busid: "", // New state for bus selection
   });
@@ -76,10 +78,11 @@ const FormEditEmployee = () => {
       });
       if (result.data && result.data.user) {
         setFormData({
-          firstName: result.data.user.fname,
-          lastName: result.data.user.lname,
+          fname: result.data.user.fname,
+          lname: result.data.user.lname,
           email: result.data.user.email,
-          username: result.data.user.uname,
+          uname: result.data.user.uname,
+          phone: result.data.user.phone,
           //password: "",
           busid: result.data.user.busid || "",
         });
@@ -100,22 +103,22 @@ const FormEditEmployee = () => {
             <TextField
               fullWidth
               label="First Name"
-              name="firstName"
-              value={formData.firstName}
+              name="fname"
+              value={formData.fname}
               onChange={(e)=>onFormInput(e)}
-              error={formErrors.firstName}
-              helperText={formErrors.firstName && "First name is required"}
+              error={formErrors.fname}
+              helperText={formErrors.fname && "First name is required"}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               label="Last Name"
-              name="lastName"
-              value={formData.lastName}
+              name="lname"
+              value={formData.lname}
               onChange={(e)=>onFormInput(e)}
-              error={formErrors.lastName}
-              helperText={formErrors.lastName && "Last name is required"}
+              error={formErrors.lname}
+              helperText={formErrors.lname && "Last name is required"}
             />
           </Grid>
           <Grid item xs={12}>
@@ -134,11 +137,22 @@ const FormEditEmployee = () => {
             <TextField
               fullWidth
               label="Username"
-              name="username"
-              value={formData.username}
+              name="uname"
+              value={formData.uname}
               onChange={(e)=>onFormInput(e)}
-              error={formErrors.username}
-              helperText={formErrors.username && "Username is required"}
+              error={formErrors.uname}
+              helperText={formErrors.uname && "Username is required"}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Phone"
+              name="phone"
+              value={formData.phone}
+              onChange={(e)=>onFormInput(e)}
+              error={formErrors.phone}
+              helperText={formErrors.phone && "Username is required"}
             />
           </Grid>
           {/* <Grid item xs={12}>

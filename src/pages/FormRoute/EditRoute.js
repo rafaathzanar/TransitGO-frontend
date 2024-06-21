@@ -19,6 +19,10 @@ import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 
 const EditRoute = () => {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   const { id } = useParams();
   const navigate = useNavigate();
   const [deleteConfirmationBar, setDeleteConfirmationBar] = useState(false);
@@ -37,7 +41,8 @@ const EditRoute = () => {
 
   const fetchRouteData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/busroute/${id}`);
+      const response = await axios.get(`http://localhost:8080/busroute/${id}`,Authorization);
+      console.log(response);
       // Ensure busStops are sorted by orderIndex
       response.data.busStops.sort((a, b) => a.orderIndex - b.orderIndex);
       setRoute(response.data);
@@ -69,7 +74,7 @@ const EditRoute = () => {
     try {
       // Update the route details
       console.log("route", route);
-      await axios.put(`http://localhost:8080/busroute/${id}`, route);
+      await axios.put(`http://localhost:8080/busroute/${id}`, route,Authorization);
       navigate("/admin/routeschedule/routemanagement");
     } catch (error) {
       console.error("Error updating route:", error);
@@ -85,7 +90,7 @@ const EditRoute = () => {
     console.log("stopID for deletion ", stopId);
     if (name === "") {
       try {
-        await axios.delete(`http://localhost:8080/busstop/${stopId}`);
+        await axios.delete(`http://localhost:8080/busstop/${stopId}`,Authorization);
 
         setRoute((prevData) => ({
           ...prevData,
@@ -105,7 +110,7 @@ const EditRoute = () => {
 
   const handleDeleteStopConfirmation = async () => {
     try {
-      await axios.delete(`http://localhost:8080/busstop/${deletingStopID}`);
+      await axios.delete(`http://localhost:8080/busstop/${deletingStopID}`,Authorization);
       setRoute((prevData) => ({
         ...prevData,
         busStops: prevData.busStops.filter(
@@ -135,7 +140,7 @@ const EditRoute = () => {
       const response = await axios.post("http://localhost:8080/busstop", {
         ...newStop,
         busroute: { routeno: route.routeno },
-      });
+      }, Authorization);
       console.log("Posting new stop", response);
       const createdStop = response.data;
       const updatedBusStopsWithId = [

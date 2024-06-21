@@ -4,6 +4,7 @@ import { Form } from "react-router-dom";
 
 
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const phoneRegex = /^\d{10}$/;
 
 export const validateFname = (fname) => {
     if (!fname.trim()){
@@ -55,6 +56,16 @@ export const validateConfirmpassword = (password,confirmpassword)=> {
     }
     else if (confirmpassword !== password){
         return { isValid: false, Message: "Password does not match." };
+    }
+    return { isValid: true, Message: "" };
+}
+
+export const validatePhoneNumber = (phone) => {
+    if (!phone.trim()) {
+        return { isValid: false, Message: "Phone number is required." };
+    }
+    else if (!phoneRegex.test(phone)) {
+        return { isValid: false, Message: "Invalid phone number. It must be 10 digits long." };
     }
     return { isValid: true, Message: "" };
 }

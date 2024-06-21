@@ -14,6 +14,10 @@ import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function CRUDtableRoute({}) {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [buses, setBuses] = useState([]);
@@ -23,7 +27,6 @@ export default function CRUDtableRoute({}) {
   const [routeChangesDetected, setRouteChangesDetected] = useState({});
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     loadBuses();

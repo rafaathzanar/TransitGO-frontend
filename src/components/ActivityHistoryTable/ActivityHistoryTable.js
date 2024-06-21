@@ -43,10 +43,15 @@ export const ActivityHistoryTable = () => {
     if (type === "Announcement"){
       const response = await axios.delete(`http://localhost:8080/announcement/${activityid}`,Authorization);
       console.log(response);
+    }else if (type === "Lost Item"){
+      const response = await axios.delete(`http://localhost:8080/lost/${activityid}`,Authorization);
+      console.log(response);
+    }else if(type === "Found Item") {
+      const response = await axios.delete(`http://localhost:8080/found/${activityid}`,Authorization);
+      console.log(response);
     }else if (type === "Package"){
-      console.log("Package")
-    }else {
-      console.log("Lost and Found");
+      const response = await axios.delete(`http://localhost:8080/package/${activityid}`,Authorization);
+      console.log(response);
     }
     loadActivityLogs();
     window.alert("Activity Deleted");
@@ -62,12 +67,42 @@ export const ActivityHistoryTable = () => {
   }
 
   const handleSaveEdit = async (activity) => {
-   console.log(editDescription);
+   
+   const type = activity.activityType;
     try{
-      console.log(activity.activityId);
-      const response = await axios.put(`http://localhost:8080/announcement/${activity.activityId}`,{
-       details: editDescription
-      }, Authorization);
+      if (type === "Lost Item"){
+        const itemResponse = await axios.get(`http://localhost:8080/lost/${activity.activityId}`, Authorization);
+        console.log(itemResponse);
+        const updatedLostFound = {
+          ...itemResponse.data,
+          item_Description: editDescription,
+          dateTime: itemResponse.data.dateTime || new Date().toISOString()
+        };
+        const response = await axios.put(`http://localhost:8080/lost/${activity.activityId}`,
+           updatedLostFound,
+           Authorization);
+         console.log(response);
+      }else if (type === "Found Item"){
+        const itemResponse = await axios.get(`http://localhost:8080/found/${activity.activityId}`, Authorization);
+        console.log(itemResponse);
+        const updatedLostFound = {
+          ...itemResponse.data,
+          item_Description: editDescription,
+          dateTime: itemResponse.data.dateTime || new Date().toISOString()
+        };
+        const response = await axios.put(`http://localhost:8080/found/${activity.activityId}`,
+           updatedLostFound,
+           Authorization);
+         console.log(response);
+      }else if (type === "Package"){
+        const response = await axios.put(`http://localhost:8080/package/${activity.activityId}`,{
+          details: editDescription
+         }, Authorization);
+         console.log(response);
+      }else{
+        console.log("No Response Found");
+      }
+      
       loadActivityLogs();
       setIsEditing(null);
       window.alert("Activity Updated");

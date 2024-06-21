@@ -38,7 +38,7 @@ export default function CRUDtablePackage({}) {
   };
 
   const deletePackage = async (packageID) => {
-    await axios.delete(`http://localhost:8080/package/${packageID}`);
+    await axios.delete(`http://localhost:8080/package/${packageID}`,Authorization);
     loadPackages();
   };
 
