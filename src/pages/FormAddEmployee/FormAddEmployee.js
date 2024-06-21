@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Container,
@@ -21,7 +21,9 @@ import {
 } from "../../components/FormValidationSignup/FormValidationSignup";
 
 const FormAddEmployee = () => {
+  const token = localStorage.getItem("token");
   let navigate = useNavigate();
+  const [buses, setBuses] = useState([]);
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -50,6 +52,21 @@ const FormAddEmployee = () => {
     busid: "", // New state for bus selection
   });
 
+  useEffect(() => {
+    loadBuses();
+  }, []);
+
+  const loadBuses = async () => {
+    try {
+      const busesResponse = await axios.get("http://localhost:8080/buses", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const buses = busesResponse.data;
+      setBuses(buses);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -213,9 +230,11 @@ const FormAddEmployee = () => {
               <MenuItem value="" disabled>
                 Select Bus
               </MenuItem>
-              <MenuItem value="bus1">Bus 1</MenuItem>
-              <MenuItem value="bus2">Bus 2</MenuItem>
-              <MenuItem value="bus3">Bus 3</MenuItem>
+              {buses.map((bus, index) => (
+                <MenuItem key={index} value={bus.id}>
+                  {bus.regNo}
+                </MenuItem>
+              ))}
             </Select>
             {formErrors.bus && (
               <Typography variant="caption" color="error">
