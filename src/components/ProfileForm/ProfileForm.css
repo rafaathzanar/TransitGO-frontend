@@ -76,7 +76,7 @@ label{
       grid-area: save;
   }
 
-  button {
+  .edit-and-save button {
         background-color: #FA6B6B;
         color: white;
         padding: 10px;
