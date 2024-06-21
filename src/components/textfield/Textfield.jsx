@@ -16,7 +16,7 @@ function Textfield() {
     payment: "",
     receivedDate: "",
     start: "",
-    status: "",
+    status: "Booked",
     receiverName: "",
     receiverContact: "",
     receiverNIC: ""
@@ -50,7 +50,19 @@ function Textfield() {
   const fetchBusStops = async () => {
     try {
       const response = await axios.get("http://localhost:8080/busstops",Authorization);
-      setBusStops(response.data);
+      // Use a Set to store unique bus stop names
+      const uniqueNamesSet = new Set();
+      const busStopNames = response.data
+        .filter((stop) => {
+          if (uniqueNamesSet.has(stop.name.trim())) {
+            return false; // Exclude duplicate names
+          } else {
+            uniqueNamesSet.add(stop.name.trim());
+            return true; // Include unique names
+          }
+        })
+        ;
+      setBusStops(busStopNames);
     } catch (error) {
       console.error("Error fetching bus stops:", error);
     }
@@ -69,24 +81,48 @@ function Textfield() {
       },Authorization);
 
       const buses = response.data;
+      
       const busesWithSchedules = await Promise.all(
         buses.map(async (bus) => {
-          const scheduleResponse = await axios.get(`http://localhost:8080/bus/${bus.id}/stops`,Authorization);
-          const schedules = scheduleResponse.data;
-          const fromStopSchedule = schedules.find(
-            (schedule) => schedule.busStop.name === start && schedule.direction === direction
-          );
-          const routeResponse = await axios.get(`http://localhost:8080/busroute/${bus.routeNo}`,Authorization);
-          const routeName = routeResponse.data.routename;
-
-          return {
-            ...bus,
-            routeName,
-            fromStopDepartureTime: fromStopSchedule ? (fromStopSchedule.departureTime === null ? fromStopSchedule.arrivalTime : fromStopSchedule.departureTime) : 'N/A'
-          };
+          try {
+            const scheduleResponse = await axios.get(`http://localhost:8080/bus/${bus.id}/stops`, Authorization);
+            const schedules = scheduleResponse.data;
+      
+            const filteredSchedules = schedules.filter(
+              (schedule) => schedule.direction === direction
+            );
+      
+            const fromStopSchedule = filteredSchedules.find(
+              (schedule) => schedule.busStop.name === start 
+            );
+      
+            const toStopSchedule = filteredSchedules.find(
+              (schedule) => schedule.busStop.name === destination
+            );
+      
+            if (!fromStopSchedule || !toStopSchedule) {
+              return null; // If either schedule is not found, return null
+            }
+      
+            const routeResponse = await axios.get(`http://localhost:8080/busroute/${bus.routeNo}`, Authorization);
+            const routeName = routeResponse.data.routename;
+      
+            return {
+              ...bus,
+              routeName,
+              fromStopDepartureTime: fromStopSchedule.departureTime === null ? fromStopSchedule.arrivalTime : fromStopSchedule.departureTime
+            };
+          } catch (error) {
+            console.error(`Error processing bus with ID ${bus.id}:`, error);
+            return null;
+          }
         })
       );
-      setAvailableBuses(busesWithSchedules);
+      
+      const filteredBusesWithSchedules = busesWithSchedules.filter(bus => bus !== null);
+      
+      setAvailableBuses(filteredBusesWithSchedules);
+      
     } catch (error) {
       console.error("Error fetching available buses:", error);
     }
@@ -274,7 +310,7 @@ function Textfield() {
               ) : (
                 availableBuses.map((bus) => (
                   <MenuItem key={bus.id} value={bus.id}>
-                    {`${bus.regNo} - ${bus.routeName} - Time of Departure From ${start} - ${bus.fromStopDepartureTime}`}
+                    {`${bus.regNo}: ${bus.routeName}: Departure From ${start} - ${bus.fromStopDepartureTime}`}
                   </MenuItem>
                 ))
               )}

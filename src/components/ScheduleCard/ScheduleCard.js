@@ -53,6 +53,7 @@ function ScheduleCard({
     (schedule) => schedule.direction === direction
   );
   console.log("filtered Schedules", filteredSchedules);
+
   const fromSchedule = filteredSchedules.find(
     (schedule) => schedule.busStop.name === fromStop
   );

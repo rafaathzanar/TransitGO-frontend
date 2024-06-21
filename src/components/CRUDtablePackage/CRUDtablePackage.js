@@ -26,11 +26,12 @@ export default function CRUDtablePackage({}) {
         "http://localhost:8080/packages",
         Authorization
       );
-      const packagessWithIds = result.data.map((pack, index) => ({
+      const packagessWithIds = result.data.map((pack) => ({
         ...pack,
-        id: index + 1,
+        id: pack.packageID.toString(),
       }));
       setPackages(packagessWithIds);
+      console.log("package with ids", packagessWithIds);
       setFilteredRows(packagessWithIds);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -73,12 +74,11 @@ export default function CRUDtablePackage({}) {
     { field: "packageID", headerName: "ID", width: 50 },
     { field: "start", headerName: "From", width: 120 },
     { field: "destination", headerName: "To", width: 100 },
-    { field: "busID", headerName: "Bus Id", width: 110 },
+    { field: "busID", headerName: "Bus Id", width: 90 },
     { field: "receivedDate", headerName: "Date", width: 130 },
     { field: "receiverName", headerName: "Receiver", width: 140 },
     { field: "receiverNIC", headerName: "NIC", width: 140 },
     { field: "receiverContact", headerName: "Contact", width: 140 },
-    { field: "payment", headerName: "Payment", width: 130 },
     { field: "status", headerName: "Delivery Status", width: 130 },
 
     {
