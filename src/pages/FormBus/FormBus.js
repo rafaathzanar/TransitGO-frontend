@@ -62,6 +62,7 @@ const TwoInputFieldsRow = ({
 };
 
 function FormBus() {
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [additionalFieldsDatasets, setAdditionalFieldsDatasets] = useState([]);
   const [bus, setBus] = useState({
@@ -81,8 +82,11 @@ function FormBus() {
   const [errorMessagesDown, setErrorMessagesDown] = useState({});
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     axios
-      .get("http://localhost:8080/busroutes")
+      .get("http://localhost:8080/busroutes", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         const routes = response.data;
         const busstoplist = routes.map((route) =>
@@ -209,10 +213,14 @@ function FormBus() {
     }
 
     try {
+      const token = localStorage.getItem("token");
       // First, add the bus
       const { data: addedBus } = await axios.post(
         "http://localhost:8080/bus",
-        bus
+        bus,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
 
       // Get the selected route
@@ -254,7 +262,9 @@ function FormBus() {
       // Post all schedules to the server
       for (const scheduleData of [...schedulesUp, ...schedulesDown]) {
         console.log("schedule data", scheduleData);
-        await axios.post("http://localhost:8080/schedule", scheduleData);
+        await axios.post("http://localhost:8080/schedule", scheduleData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       }
     } catch (error) {
       console.error("Error adding bus or schedule:", error);

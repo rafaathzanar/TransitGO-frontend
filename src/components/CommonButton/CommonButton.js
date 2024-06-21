@@ -4,7 +4,7 @@ import './CommonButton.css';
 function CommonButton({buttonTitle}){
     return(
         <div className='common'>
-            <button>{buttonTitle}</button>
+            <button type='button'>{buttonTitle}</button>
         </div>
     );
 }

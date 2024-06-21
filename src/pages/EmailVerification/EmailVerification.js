@@ -19,11 +19,9 @@ function EmailVerification() {
           <OTPVerification email="myemail@gmail.com"></OTPVerification>
         </div>
         <div className="otp-verify-button">
-          <OTPButton title="Verify"></OTPButton>
+          
         </div>
-        <div className="otp-timer">
-          <OTPTimer><h2>time</h2></OTPTimer>
-        </div>
+        
       </div>
     </div>
   );

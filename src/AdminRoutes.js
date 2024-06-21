@@ -12,11 +12,32 @@ import BusManagement from "./pages/BusManagement/BusManagement";
 import FormBus from "./pages/FormBus/FormBus";
 import FormRoute from "./pages/FormRoute/FormRoute";
 import FormAddEmployee from "./pages/FormAddEmployee/FormAddEmployee";
+import ProfileForm from "./components/ProfileForm/ProfileForm";
+import axios from "axios";
+import { useState,useEffect } from "react";
 import EditRoute from "./pages/FormRoute/EditRoute";
 import EditBus from "./pages/FormBus/EditBus";
 import BusTimeTable from "./pages/BusTimeTable/BusTimeTable";
 
 function AdminRoutes() {
+  console.log("Rendering LayoutAdmin");
+  const [profileInfo, setProfileInfo] = useState({});
+
+  const fetchProfileInfo = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get("http://localhost:8080/user/profile", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProfileInfo(response.data);
+    } catch (error) {
+      console.log("Error Fetching admin profile information: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfileInfo();
+  }, []);
   return (
     <>
       <LayoutAdmin></LayoutAdmin>
@@ -48,6 +69,8 @@ function AdminRoutes() {
           </Route>
 
           <Route path="packagetransfer" element={<Package />} />
+
+          <Route path="ProfileForm" element={<ProfileForm profileInfo={profileInfo} setProfileInfo={setProfileInfo}/>}/>
         </Routes>
       </div>
     </>

@@ -10,6 +10,10 @@ import SearchField from "../../components/SearchField/SearchField";
 import axios from "axios";
 
 export default function CRUDtablePackage({}) {
+  const token = localStorage.getItem("token");
+  const Authorization = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
   const [packages, setPackages] = useState([]);
 
   useEffect(() => {
@@ -18,7 +22,10 @@ export default function CRUDtablePackage({}) {
 
   const loadPackages = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/packages");
+      const result = await axios.get(
+        "http://localhost:8080/packages",
+        Authorization
+      );
       const packagessWithIds = result.data.map((pack, index) => ({
         ...pack,
         id: index + 1,
@@ -31,7 +38,10 @@ export default function CRUDtablePackage({}) {
   };
 
   const deletePackage = async (packageID) => {
-    await axios.delete(`http://localhost:8080/package/${packageID}`);
+    await axios.delete(
+      `http://localhost:8080/package/${packageID}`,
+      Authorization
+    );
     loadPackages();
   };
 
@@ -47,6 +57,7 @@ export default function CRUDtablePackage({}) {
     setSearchValue(e.target.value);
     const filtered = packages.filter(
       (row) =>
+        row.packageID.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.from.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.to.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.busID.toLowerCase().includes(e.target.value.toLowerCase()) ||

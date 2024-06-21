@@ -5,6 +5,10 @@ import { Button, Box, Grid, Typography, Container } from "@mui/material";
 import moment from "moment";
 
 const BusTimeTable = () => {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   const { busId } = useParams();
   const [weeklyStatus, setWeeklyStatus] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(moment());
@@ -23,7 +27,8 @@ const BusTimeTable = () => {
       const response = await axios.get(
         `http://localhost:8080/bus/${busId}/bustimetable?startDate=${startOfWeek.format(
           "YYYY-MM-DD"
-        )}&endDate=${endOfWeek.format("YYYY-MM-DD")}`
+        )}&endDate=${endOfWeek.format("YYYY-MM-DD")}`,
+        Authorization
       );
       console.log("API Response:", response.data);
       setWeeklyStatus(
@@ -59,7 +64,8 @@ const BusTimeTable = () => {
     try {
       await axios.post(
         `http://localhost:8080/bus/${busId}/bustimetable`,
-        weeklyStatus
+        weeklyStatus,
+        Authorization
       );
       alert("Weekly status saved successfully");
     } catch (error) {

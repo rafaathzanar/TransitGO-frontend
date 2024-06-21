@@ -6,6 +6,10 @@ import './textfield.css';
 import Bill from '../../components/Bill/Bill';
 
 function Textfield() {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  }
   const [pack, setPack] = useState({
     busID: "",
     destination: "",
@@ -45,7 +49,7 @@ function Textfield() {
 
   const fetchBusStops = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/busstops");
+      const response = await axios.get("http://localhost:8080/busstops",Authorization);
       setBusStops(response.data);
     } catch (error) {
       console.error("Error fetching bus stops:", error);
@@ -62,17 +66,17 @@ function Textfield() {
           direction: direction,
           date: receivedDate,
         },
-      });
+      },Authorization);
 
       const buses = response.data;
       const busesWithSchedules = await Promise.all(
         buses.map(async (bus) => {
-          const scheduleResponse = await axios.get(`http://localhost:8080/bus/${bus.id}/stops`);
+          const scheduleResponse = await axios.get(`http://localhost:8080/bus/${bus.id}/stops`,Authorization);
           const schedules = scheduleResponse.data;
           const fromStopSchedule = schedules.find(
             (schedule) => schedule.busStop.name === start && schedule.direction === direction
           );
-          const routeResponse = await axios.get(`http://localhost:8080/busroute/${bus.routeNo}`);
+          const routeResponse = await axios.get(`http://localhost:8080/busroute/${bus.routeNo}`,Authorization);
           const routeName = routeResponse.data.routename;
 
           return {
@@ -159,7 +163,7 @@ function Textfield() {
     if (hasError) return;
 
     try {
-      const response = await axios.post("http://localhost:8080/package", pack);
+      const response = await axios.post("http://localhost:8080/package", pack,Authorization);
       const packageID = response.data.packageID;
       const selectedBus = availableBuses.find(bus => bus.id === busID);
 

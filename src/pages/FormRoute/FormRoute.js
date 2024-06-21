@@ -64,7 +64,7 @@ const FormRoute = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const token = localStorage.getItem("token");
     // Check if at least two stops are added
     if (stops.length < 2) {
       setStopsErrorDialog(true);
@@ -75,7 +75,10 @@ const FormRoute = () => {
       console.log("Response", route);
       const response = await axios.post(
         "http://localhost:8080/busroute",
-        route
+        route,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
       if (response.status === 200) {
         setOpenDialog(true);
@@ -83,13 +86,19 @@ const FormRoute = () => {
 
       // Include orderIndex for each stop
       for (let i = 0; i < stops.length; i++) {
-        await axios.post("http://localhost:8080/busstop", {
-          name: stops[i].name,
-          orderIndex: i, // Set the orderIndex here
-          busroute: {
-            routeno,
+        await axios.post(
+          "http://localhost:8080/busstop",
+          {
+            name: stops[i].name,
+            orderIndex: i, // Set the orderIndex here
+            busroute: {
+              routeno,
+            },
           },
-        });
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
       }
     } catch (error) {
       console.error("Error adding route:", error);

@@ -27,7 +27,7 @@ label{
     grid-template-columns: 1fr 1fr;
     grid-template-areas: 
     "fn ln";
-    gap: 5px;
+    gap: 0px;
 }
 
 .fn{
@@ -38,3 +38,9 @@ label{
     grid-area: ln;
 }
 
+.error{
+    font-size: 13px;
+    color: #ca0303;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+}
