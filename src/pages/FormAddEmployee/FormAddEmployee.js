@@ -15,6 +15,8 @@ import { validateFname,
          validateLname,
          validateUsername,
          validateEmail,
+         validatePhoneNumber,
+         validatePhoneNumber,
          validatePassword} from "../../components/FormValidationSignup/FormValidationSignup";
 
 
@@ -26,10 +28,13 @@ const FormAddEmployee = () => {
     email: "",
     uname: "",
     password: "",
+    phone: "",
+    phone: "",
     busid: "" // New state for bus selection
   });
 
-  const{fname,lname,email,uname,password,bus} = formData;
+  const{fname,lname,email,uname,password,phone,bus} = formData;
+  const{fname,lname,email,uname,password,phone,bus} = formData;
 
   const onFormInput = (e) =>{
      setFormData({...formData,[e.target.name]:e.target.value});
@@ -43,6 +48,8 @@ const FormAddEmployee = () => {
     email: "",
     uname: "",
     password: "",
+    phone: "",
+    phone: "",
     busid: "" // New state for bus selection
   });
 
@@ -57,17 +64,21 @@ const FormAddEmployee = () => {
      const usernameValidation = validateUsername(formData.uname);
      const emailValidation = validateEmail(formData.email);
      const passwordValidation = validatePassword(formData.password);
+     const phoneValidation = validatePhoneNumber(formData.phone);
+     const phoneValidation = validatePhoneNumber(formData.phone);
 
      if (!fnameValidation.isValid ||
       !lnameValidation.isValid ||
       !usernameValidation.isValid ||
       !emailValidation.isValid ||
+      !phoneValidation.isValid ||
       !passwordValidation.isValid ){
       setFormErrors({
          fname: fnameValidation.Message,
          lname: lnameValidation.Message,
          uname: usernameValidation.Message,
          email: emailValidation.Message,
+         phone : phoneValidation.Message,
          password: passwordValidation.Message
        });
        console.log(formErrors);
@@ -155,6 +166,17 @@ const FormAddEmployee = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
+              label="Phone"
+              name="phone"
+              value={formData.phone}
+              onChange={(e)=>onFormInput(e)}
+              error={formErrors.phone}
+            />
+            {formErrors.phone && <p className='error'>{formErrors.phone}</p>}
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
               label="Password"
               type="password"
               name="password"
@@ -163,6 +185,19 @@ const FormAddEmployee = () => {
               error={formErrors.password}
             />
             {formErrors.password && <p className='error'>{formErrors.password}</p>}
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Phone"
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={(e)=>onFormInput(e)}
+              error={formErrors.phone}
+            />
+            {formErrors.phone && <p className='error'>{formErrors.phone}</p>}
           </Grid>
 
           <Grid item xs={12}>

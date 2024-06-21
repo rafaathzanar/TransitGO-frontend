@@ -11,6 +11,10 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const MyForm = (props) => {
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  };
   let navigate = useNavigate();
 
   const [errorMsg, setErrorMsg] = useState(""); // state to hold error messages
@@ -19,7 +23,7 @@ const MyForm = (props) => {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post(props.APIurl, data); // use data from useForm
+      await axios.post(props.APIurl, data, Authorization); // use data from useForm
       navigate(props.navigateURL);
     } catch (error) {
       if (error.response && error.response.status === 400) {
