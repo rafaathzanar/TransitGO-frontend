@@ -3,217 +3,250 @@ import TextField from "@mui/material/TextField";
 import { useNavigate, useParams } from "react-router";
 import { Divider, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
 import axios from "axios"; // Import Axios
-
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
 
 function EditBus() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [busData, setBusData] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [edittable, setEdittable] = useState(false);
-  const [routeChangeStatus, setRouteChangeStatus] = useState(false);
-  const [editedRouteNo, setEditedRouteNo] = useState("");
-  const [updatedRoute, setUpdatedRoute] = useState(null);
+  const [busStops, setBusStops] = useState([]);
   const [editedSchedules, setEditedSchedules] = useState([]);
-  const [arrivalTimes, setArrivalTimes] = useState({});
-  const [departureTimes, setDepartureTimes] = useState({});
+  const [editedRegNo, setEditedRegNo] = useState("");
 
   useEffect(() => {
     // Fetch bus data by ID
-    fetch(`http://localhost:8080/bus/${id}`)
-      .then((response) => response.json())
-      .then((data) => setBusData(data))
-      .catch((error) => console.error("Error fetching bus data:", error));
+    axios
+      .get(`http://localhost:8080/bus/${id}`)
+      .then((response) => {
+        const data = response.data;
+        setBusData(data);
+        setEditedRegNo(data.regNo); // Initialize with the current regNo
+
+        // Fetch bus stops from the bus route
+        return axios.get(`http://localhost:8080/route/${data.routeNo}/stops`);
+      })
+      .then((response) => {
+        const stops = response.data;
+        setBusStops(stops);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
   }, [id]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleRegNoChange = (e) => {
+    setEditedRegNo(e.target.value);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleRouteNoChange = (e) => {
-    setEditedRouteNo(e.target.value);
-  };
-
-  const handleRouteNoConfirmation = () => {
-    setEdittable(true);
-    setOpen(false);
-  };
-
-  const handleTimeChange = (time, field, scheduleId) => {
-    // Find the index of the edited schedule
+  const handleTimeChange = (time, field, stopId, direction) => {
     const editedScheduleIndex = editedSchedules.findIndex(
-      (schedule) => schedule.scheduleId === scheduleId
+      (schedule) =>
+        schedule.busStop.stopID === stopId && schedule.direction === direction
     );
 
-    // Create a copy of the current editedSchedules array
     const updatedEditedSchedules = [...editedSchedules];
 
     if (editedScheduleIndex === -1) {
-      // If the schedule is not already edited, create a new entry
+      const originalSchedule = busData.schedules.find(
+        (s) => s.busStop.stopID === stopId && s.direction === direction
+      );
+
       updatedEditedSchedules.push({
-        scheduleId,
+        scheduleId: originalSchedule ? originalSchedule.scheduleId : null, // Preserve the original scheduleId
+        busStop: {
+          stopID: stopId,
+        },
+        direction: direction,
         arrivalTime:
           field === "arrivalTime"
             ? time
-            : busData.schedules.find(
-                (schedule) => schedule.scheduleId === scheduleId
-              ).arrivalTime,
+            : originalSchedule
+            ? originalSchedule.arrivalTime
+            : "",
         departureTime:
           field === "departureTime"
             ? time
-            : busData.schedules.find(
-                (schedule) => schedule.scheduleId === scheduleId
-              ).departureTime,
+            : originalSchedule
+            ? originalSchedule.departureTime
+            : "",
       });
     } else {
-      // If the schedule is already edited, update the corresponding field
       const updatedSchedule = {
         ...updatedEditedSchedules[editedScheduleIndex],
         [field]: time,
       };
 
-      // Keep the existing value if the field is not being changed
-      if (time === "" && field === "arrivalTime") {
-        updatedSchedule.arrivalTime = busData.schedules.find(
-          (schedule) => schedule.scheduleId === scheduleId
-        ).arrivalTime;
-      } else if (time === "" && field === "departureTime") {
-        updatedSchedule.departureTime = busData.schedules.find(
-          (schedule) => schedule.scheduleId === scheduleId
-        ).departureTime;
-      }
-
       updatedEditedSchedules[editedScheduleIndex] = updatedSchedule;
     }
 
-    // Update the state with the new edited schedules
     setEditedSchedules(updatedEditedSchedules);
-  };
-
-  const handleSubmitRouteNoChange = () => {
-    axios
-      .put(`http://localhost:8080/bus/${id}`, {
-        regNo: busData.regNo,
-        id: id,
-        busroute: {
-          routeno: editedRouteNo,
-        },
-      })
-      .then((response) => {
-        console.log("Route number updated successfully:", response.data);
-        setRouteChangeStatus(true);
-
-        // Fetch updated bus route data to get new bus stops
-        axios
-          .get("http://localhost:8080/busroutes")
-          .then((response) => {
-            console.log("Response data:", response.data);
-
-            const routes = response.data;
-
-            const updatedRoute = routes.find(
-              (route) => route.routeno === parseInt(editedRouteNo)
-            );
-
-            console.log("Updated route:", updatedRoute);
-
-            if (updatedRoute) {
-              setUpdatedRoute(updatedRoute);
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching updated bus route data:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error updating route number:", error);
-      });
-    setEdittable(false);
-  };
-
-  const handleCancelRouteNoChange = () => {
-    setEdittable(false); // Go back to initial state
-    setEditedRouteNo(""); // Clear edited route number
+    console.log("Updated Edited Schedules:", updatedEditedSchedules);
   };
 
   const handleSubmitEditBus = () => {
-    console.log("happening put request");
-    console.log("edited schedules", editedSchedules);
+    console.log("Submitting PUT request");
 
-    // Send PUT requests to update schedules
+    // Update bus regNo
+    axios
+      .put(`http://localhost:8080/bus/${id}`, {
+        regNo: editedRegNo,
+        id: id,
+        busroute: {
+          routeno: busData.routeNo, // Keep the same route number
+        },
+      })
+      .then((response) => {
+        console.log("Bus updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating bus:", error);
+      });
+
+    // Prepare promises array for scheduling operations
+    const promises = [];
+
+    // Iterate over editedSchedules to handle new and updated schedules
     editedSchedules.forEach((schedule) => {
-      axios
-        .put(`http://localhost:8080/schedule/${schedule.scheduleId}`, {
-          arrivalTime: schedule.arrivalTime,
-          departureTime: schedule.departureTime,
-        })
-        .then((response) => {
-          console.log("Schedule updated successfully:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error updating schedule:", error);
-        });
-    });
-    navigate("/admin/routeschedule/busmanagement");
-  };
+      if (!schedule.scheduleId) {
+        // Post new schedule
+        console.log("Creating new schedule:", schedule);
 
-  const handlebusStopTimeChange = (time, field, stopId) => {
-    if (field === "arrivalTime") {
-      setArrivalTimes((prevTimes) => ({ ...prevTimes, [stopId]: time }));
-    } else if (field === "departureTime") {
-      setDepartureTimes((prevTimes) => ({ ...prevTimes, [stopId]: time }));
-    }
-  };
+        promises.push(
+          axios.post(`http://localhost:8080/schedule`, {
+            bus: {
+              regNo: editedRegNo,
+              id: id,
+            },
+            busStop: {
+              stopID: schedule.busStop.stopID,
+              name: schedule.busStop.name,
+            },
+            direction: schedule.direction,
+            arrivalTime: schedule.arrivalTime || null,
+            departureTime: schedule.departureTime || null,
+          })
+        );
+      } else {
+        // Update existing schedule
+        console.log("Updating schedule:", schedule);
 
-  const handleSubmitSetupNewSchedules = () => {
-    console.log("happening post request for new schedules");
-
-    // Iterate over updatedRoute.busStops to create schedules for each stop
-    updatedRoute.busStops.forEach((stop) => {
-      // Define the schedule data
-      const stopId = stop.stopID; // Get the stop ID
-      const stopName = stop.name; // Get the stop name
-
-      // Define the schedule data
-      const scheduleData = {
-        bus: {
-          regNo: busData.regNo,
-          id: parseInt(id),
-        },
-        busStop: {
-          stopID: stopId, // Use the stop ID here
-          name: stopName, // Use the stop name here
-        },
-        arrivalTime: arrivalTimes[stopId], // Use the stop ID to access arrival time
-        departureTime: departureTimes[stopId], // Use the stop ID to access departure time
-      };
-
-      // Send a POST request to create the schedule
-      axios
-        .post("http://localhost:8080/schedule", scheduleData)
-        .then((response) => {
-          console.log("Schedule created successfully:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error creating schedule:", error);
-        });
+        promises.push(
+          axios.put(`http://localhost:8080/schedule/${schedule.scheduleId}`, {
+            arrivalTime: schedule.arrivalTime || null,
+            departureTime: schedule.departureTime || null,
+          })
+        );
+      }
     });
 
-    navigate("/admin/routeschedule/busmanagement");
+    // Wait for all POST/PUT requests to complete
+    Promise.all(promises)
+      .then((results) => {
+        results.forEach((result) => {
+          console.log("Schedule operation result:", result.data);
+        });
+
+        // After updating schedules, navigate to the management page
+        navigate("/admin/routeschedule/busmanagement");
+      })
+      .catch((error) => {
+        console.error("Error updating schedules:", error);
+      });
+  };
+
+  const renderScheduleFields = (stop, direction, index, arr) => {
+    const isFirstStop = index === 0;
+    const isLastStop = index === arr.length - 1;
+
+    const schedule = busData.schedules.find(
+      (s) => s.busStop.stopID === stop.stopID && s.direction === direction
+    ) || { arrivalTime: "", departureTime: "" };
+
+    const hasSchedule = busData.schedules.some(
+      (s) => s.busStop.stopID === stop.stopID && s.direction === direction
+    );
+
+    return (
+      <div key={`${stop.stopID}-${direction}`}>
+        <Typography variant="subtitle1">Stop : {stop.name}</Typography>
+
+        {hasSchedule && (
+          <>
+            {!isFirstStop && (
+              <TextField
+                type="time"
+                label="Arrival Time"
+                defaultValue={schedule.arrivalTime}
+                variant="outlined"
+                margin="normal"
+                onChange={(e) =>
+                  handleTimeChange(
+                    e.target.value,
+                    "arrivalTime",
+                    stop.stopID,
+                    direction
+                  )
+                }
+              />
+            )}
+            {!isLastStop && (
+              <TextField
+                type="time"
+                label="Departure Time"
+                defaultValue={schedule.departureTime}
+                variant="outlined"
+                margin="normal"
+                onChange={(e) =>
+                  handleTimeChange(
+                    e.target.value,
+                    "departureTime",
+                    stop.stopID,
+                    direction
+                  )
+                }
+              />
+            )}
+          </>
+        )}
+
+        {!hasSchedule && (
+          <>
+            {!isFirstStop && (
+              <TextField
+                type="time"
+                label="Arrival Time"
+                defaultValue=""
+                variant="outlined"
+                margin="normal"
+                onChange={(e) =>
+                  handleTimeChange(
+                    e.target.value,
+                    "arrivalTime",
+                    stop.stopID,
+                    direction
+                  )
+                }
+              />
+            )}
+            {!isLastStop && (
+              <TextField
+                type="time"
+                label="Departure Time"
+                defaultValue=""
+                variant="outlined"
+                margin="normal"
+                onChange={(e) =>
+                  handleTimeChange(
+                    e.target.value,
+                    "departureTime",
+                    stop.stopID,
+                    direction
+                  )
+                }
+              />
+            )}
+          </>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -227,164 +260,50 @@ function EditBus() {
               variant="outlined"
               fullWidth
               margin="normal"
-              disabled={!edittable} // Disable if dialog is closed
-              onChange={handleRouteNoChange}
+              disabled
             />
 
             <TextField
               label="Reg No"
-              defaultValue={busData.regNo}
+              value={editedRegNo}
               variant="outlined"
               fullWidth
-              disabled
+              onChange={handleRegNoChange}
               margin="normal"
             />
-
-            {edittable ? (
-              <>
-                <Button variant="outlined" onClick={handleSubmitRouteNoChange}>
-                  Submit
-                </Button>
-
-                <Button variant="outlined" onClick={handleCancelRouteNoChange}>
-                  Cancel
-                </Button>
-                <p style={{ color: "alert", marginTop: "10px" }}>
-                  Schedules of the bus under the current route will be deleted
-                  after you changing the route number.
-                </p>
-              </>
-            ) : (
-              <Button variant="outlined" onClick={handleClickOpen}>
-                Edit Route No
-              </Button>
-            )}
           </form>
+
           <>
             <form>
-              {!routeChangeStatus &&
-                busData.schedules.map((schedule) => (
-                  <div key={schedule.scheduleId}>
-                    <Typography variant="subtitle1">
-                      Stop : {schedule.busStop.name}
-                    </Typography>
+              <>
+                <Typography variant="h6">Up</Typography>
+                {busStops
+                  .filter((stop) =>
+                    busData.schedules.some((s) => s.direction === "up")
+                  )
+                  .sort((a, b) => a.orderIndex - b.orderIndex)
+                  .map((stop, index, arr) =>
+                    renderScheduleFields(stop, "up", index, arr)
+                  )}
+                <Divider style={{ margin: "20px 0" }} />
+                <Typography variant="h6">Down</Typography>
+                {busStops
+                  .filter((stop) =>
+                    busData.schedules.some((s) => s.direction === "down")
+                  )
+                  .sort((a, b) => b.orderIndex - a.orderIndex)
+                  .map((stop, index, arr) =>
+                    renderScheduleFields(stop, "down", index, arr)
+                  )}
+              </>
 
-                    <TextField
-                      type="time"
-                      label="Arrival Time"
-                      defaultValue={schedule.arrivalTime}
-                      variant="outlined"
-                      margin="normal"
-                      disabled={edittable}
-                      onChange={(e) =>
-                        handleTimeChange(
-                          e.target.value,
-                          "arrivalTime",
-                          schedule.scheduleId
-                        )
-                      }
-                    />
-                    <TextField
-                      type="time"
-                      label="Departure Time"
-                      defaultValue={schedule.departureTime}
-                      variant="outlined"
-                      margin="normal"
-                      disabled={edittable}
-                      onChange={(e) =>
-                        handleTimeChange(
-                          e.target.value,
-                          "departureTime",
-                          schedule.scheduleId
-                        )
-                      }
-                    />
-                  </div>
-                ))}
-
-              {routeChangeStatus &&
-                updatedRoute &&
-                updatedRoute.busStops.map((stop) => (
-                  <div>
-                    <Divider orientation="vertical" />
-                    <p>Setting Up New Schedules For Current Bus</p>{" "}
-                    <div key={stop.stopID}>
-                      <Typography variant="subtitle1">
-                        Stop : {stop.name}
-                      </Typography>
-                      <TextField
-                        type="time"
-                        label="Arrival Time"
-                        variant="outlined"
-                        margin="normal"
-                        onChange={(e) =>
-                          handlebusStopTimeChange(
-                            e.target.value,
-                            "arrivalTime",
-                            stop.stopID
-                          )
-                        }
-                      />
-                      <TextField
-                        type="time"
-                        label="Departure Time"
-                        variant="outlined"
-                        margin="normal"
-                        onChange={(e) =>
-                          handlebusStopTimeChange(
-                            e.target.value,
-                            "departureTime",
-                            stop.stopID
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                ))}
-
-              {!routeChangeStatus && (
-                <Button variant="outlined" onClick={handleSubmitEditBus}>
-                  Submit
-                </Button>
-              )}
-              {routeChangeStatus && (
-                <Button
-                  variant="outlined"
-                  onClick={handleSubmitSetupNewSchedules}
-                >
-                  Submit
-                </Button>
-              )}
+              <Button variant="outlined" onClick={handleSubmitEditBus}>
+                Submit
+              </Button>
             </form>
           </>
         </>
       )}
-
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Change Route No?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            sx={{ color: "black" }}
-            id="alert-dialog-slide-description"
-          >
-            Are you sure you want to change the Route No? <br></br>{" "}
-            <span style={{ color: "#ff4545" }}>
-              Note : Schedules of this bus under the current route will be
-              deleted.
-            </span>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleRouteNoConfirmation}>Confirm</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }

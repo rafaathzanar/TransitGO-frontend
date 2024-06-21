@@ -8,9 +8,7 @@ import LoginGeneralUser from "./pages/LoginGeneralUser/LoginGeneralUser";
 import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import LoginBusEmployee from "./pages/LoginBusEmployee/LoginBusEmployee";
-
-import ActivityHistory from './pages/ActivityHistory/AvtivityHistory';
-import GeneralUserProfile from './pages/GeneralUserProfile/GeneralUserProfile';
+import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
 import FormEditEmployee from "./pages/FormEditEmployee/FormEditEmployee";
 import EmailVerification from "./pages/EmailVerification/EmailVerification";
 import EmailVerificationSend from "./pages/EmailVerificationSend/EmailVerificationSend";
@@ -21,12 +19,13 @@ import NewPassword from "./pages/NewPassword/NewPassword";
 import CRUDtablePackage from "./components/CRUDtablePackage/CRUDtablePackage";
 import RouteManagement from "./pages/Package/Package";
 
-
-
-
-
-
-
+import ReviewRating from "./pages/ReviewRating/ReviewRating";
+import MyLayout from "./components/MyLayout";
+import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
+import Dummy from "./dummy";
+import EditCommentBox from "./components/ReviewPage/EditCommentBox";
+import FormAddAdmin from "./pages/FormAddAdmin/FormAddAdmin.js";
+import FormAdminSignIn from "./pages/FormAdminSignIn/FormAdminSignIn.js";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -38,23 +37,31 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
-          <Route path="/LoginBusEmployee" element={<LoginBusEmployee/>}/>
-          <Route path="/LoginGeneralUser" element={<LoginGeneralUser/>}/>
-          
+          <Route path="/reviews" element={<ReviewRating />} />
+          <Route path="/reviews/:id" element={<EditCommentBox />} />
 
-         <Route path="/ActivityHistory" element={<ActivityHistory/>}/>
-         <Route path="/GeneralUserProfile" element={<GeneralUserProfile/>}/>
-         <Route path="/edituser/:id" element={<FormEditEmployee/>}/>
-         <Route path="/verifyEmail" element={<EmailVerificationSend/>}/>
-         <Route path="/verify-email" element={<EmailVerificationResult/>}/>
-         <Route path="/SuccessComponent" element={<SuccessComponent/>}/>
-         <Route path="/FailComponent" element={<FailComponent/>}/>
-         <Route path="/NewPassword/:email" element={<NewPassword/>}/>
-         <Route path="/otpVerification/:email" element={<EmailVerification/>}/>
+          <Route path="/LoginBusEmployee" element={<LoginBusEmployee />} />
+          <Route path="/LoginGeneralUser" element={<LoginGeneralUser />} />
 
-         
-       
+          <Route path="/ActivityHistory" element={<ActivityHistory />} />
+          <Route path="/GeneralUserProfile" element={<GeneralUserProfile />} />
+          <Route path="/edituser/:id" element={<FormEditEmployee />} />
+          <Route path="/verifyEmail" element={<EmailVerificationSend />} />
+          <Route path="/verify-email" element={<EmailVerificationResult />} />
+          <Route path="/SuccessComponent" element={<SuccessComponent />} />
+          <Route path="/FailComponent" element={<FailComponent />} />
+          <Route path="/NewPassword/:email" element={<NewPassword />} />
+          <Route
+            path="/otpVerification/:email"
+            element={<EmailVerification />}
+          />
 
+          <Route path="/reviews" element={<MyLayout />} />
+          <Route path="/profile" element={<GeneralUserProfile />} />
+          <Route path="/activityhistory" element={<ActivityHistory />} />
+          <Route path="/dummy" element={<Dummy />} />
+          <Route path="/adminAdd" element={<FormAddAdmin />} />
+          <Route path="/adminSignin" element={<FormAdminSignIn />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

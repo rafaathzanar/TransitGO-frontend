@@ -9,25 +9,38 @@ import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 import axios from "axios";
 
-export default function CRUDtablePackage({  }) {
-  const token = localStorage.getItem('token');
+export default function CRUDtablePackage({}) {
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
-  }
-  const [packages, setPackages] = useState([]);   
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const [packages, setPackages] = useState([]);
+
   useEffect(() => {
     loadPackages();
   }, []);
+
   const loadPackages = async () => {
-    const result = await axios.get("http://localhost:8080/packages",Authorization);
-    const packagessWithIds = result.data.map((pack, index) => ({
-      ...pack,
-      id: index + 1,
-    }));
-    setPackages (packagessWithIds);
-    setFilteredRows(packagessWithIds);
-    console.log(result.data);
-  }
+    try {
+      const result = await axios.get(
+        "http://localhost:8080/packages",
+        Authorization
+      );
+      const packagessWithIds = result.data.map((pack, index) => ({
+        ...pack,
+        id: index + 1,
+      }));
+      setPackages(packagessWithIds);
+      setFilteredRows(packagessWithIds);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const deletePackage = async (packageID) => {
+    await axios.delete(`http://localhost:8080/package/${packageID}`);
+    loadPackages();
+  };
 
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -36,28 +49,11 @@ export default function CRUDtablePackage({  }) {
   const [filteredRows, setFilteredRows] = useState(rows); // New state for filtered rows
   const [searchValue, setSearchValue] = useState(""); // New state for search input value
 
-  // Function to handle row deletion
-  const handleDelete = (id = null) => {
-    setSelectedRowId(id);
-    setOpen(true);
-  };
-
-  // Function to confirm row deletion
-  const handleConfirmDelete = () => {
-    handleClose();
-  };
-
-  // Function to close delete confirmation dialog
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedRowId(null);
-  };
-
   // Function to handle search input change
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
     const filtered = packages.filter(
-      (row) => 
+      (row) =>
         row.packageID.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.from.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.to.toLowerCase().includes(e.target.value.toLowerCase()) ||
@@ -69,6 +65,7 @@ export default function CRUDtablePackage({  }) {
           .includes(e.target.value.toLowerCase()) ||
         row.deliveryStatus.toLowerCase().includes(e.target.value.toLowerCase())
     );
+
     setFilteredRows(filtered);
   };
 
@@ -83,16 +80,17 @@ export default function CRUDtablePackage({  }) {
     { field: "receiverContact", headerName: "Contact", width: 140 },
     { field: "payment", headerName: "Payment", width: 130 },
     { field: "status", headerName: "Delivery Status", width: 130 },
+
     {
       field: "actions",
       headerName: "Actions",
-      width: 130,
+      width: 120,
       renderCell: (params) => (
         <div>
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => deletePackage(params.row.packageID)}
           >
             Delete
           </Button>
@@ -121,28 +119,6 @@ export default function CRUDtablePackage({  }) {
           },
         }}
       />
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this row?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmDelete} color="secondary" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
