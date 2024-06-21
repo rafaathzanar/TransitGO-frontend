@@ -18,7 +18,11 @@ const FormEditEmployee = () => {
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
+    fname: "",
+    lname: "",
     email: "",
+    uname: "",
+    phone: "",
     uname: "",
     phone: "",
     //password: "",
@@ -40,7 +44,11 @@ const FormEditEmployee = () => {
   const [formErrors, setFormErrors] = useState({
     fname: "",
     lname: "",
+    fname: "",
+    lname: "",
     email: "",
+    uname: "",
+    phone: "",
     uname: "",
     phone: "",
     //password: "",
@@ -76,11 +84,16 @@ const FormEditEmployee = () => {
       const result = await axios.get(`http://localhost:8080/admin/get-user/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log(result);
       if (result.data && result.data.user) {
         setFormData({
           fname: result.data.user.fname,
           lname: result.data.user.lname,
+          fname: result.data.user.fname,
+          lname: result.data.user.lname,
           email: result.data.user.email,
+          uname: result.data.user.uname,
+          phone: result.data.user.phone,
           uname: result.data.user.uname,
           phone: result.data.user.phone,
           //password: "",
@@ -155,6 +168,7 @@ const FormEditEmployee = () => {
               helperText={formErrors.phone && "Username is required"}
             />
           </Grid>
+
           {/* <Grid item xs={12}>
             <TextField
               fullWidth

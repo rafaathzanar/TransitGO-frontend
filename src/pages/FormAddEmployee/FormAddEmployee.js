@@ -16,6 +16,7 @@ import { validateFname,
          validateUsername,
          validateEmail,
          validatePhoneNumber,
+         validatePhoneNumber,
          validatePassword} from "../../components/FormValidationSignup/FormValidationSignup";
 
 
@@ -28,9 +29,11 @@ const FormAddEmployee = () => {
     uname: "",
     password: "",
     phone: "",
+    phone: "",
     busid: "" // New state for bus selection
   });
 
+  const{fname,lname,email,uname,password,phone,bus} = formData;
   const{fname,lname,email,uname,password,phone,bus} = formData;
 
   const onFormInput = (e) =>{
@@ -46,6 +49,7 @@ const FormAddEmployee = () => {
     uname: "",
     password: "",
     phone: "",
+    phone: "",
     busid: "" // New state for bus selection
   });
 
@@ -60,6 +64,7 @@ const FormAddEmployee = () => {
      const usernameValidation = validateUsername(formData.uname);
      const emailValidation = validateEmail(formData.email);
      const passwordValidation = validatePassword(formData.password);
+     const phoneValidation = validatePhoneNumber(formData.phone);
      const phoneValidation = validatePhoneNumber(formData.phone);
 
      if (!fnameValidation.isValid ||
@@ -180,6 +185,19 @@ const FormAddEmployee = () => {
               error={formErrors.password}
             />
             {formErrors.password && <p className='error'>{formErrors.password}</p>}
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Phone"
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={(e)=>onFormInput(e)}
+              error={formErrors.phone}
+            />
+            {formErrors.phone && <p className='error'>{formErrors.phone}</p>}
           </Grid>
 
           <Grid item xs={12}>
