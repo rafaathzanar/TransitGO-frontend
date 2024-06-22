@@ -5,9 +5,9 @@ import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import Typography from "@mui/material/Typography";
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import AlertDialogBox from "../AlertDialogBox";
 
@@ -28,7 +28,15 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
-const FeedbackCards = ({ id, username, profile, rate, review, createdAt, onDelete }) => {
+const FeedbackCards = ({
+  id,
+  username,
+  profile,
+  rate,
+  review,
+  createdAt,
+  onDelete,
+}) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleDeleteClick = () => {
@@ -51,7 +59,6 @@ const FeedbackCards = ({ id, username, profile, rate, review, createdAt, onDelet
         borderRadius: "0px",
         borderColor: "#f2a2a2",
         margin: "5px",
-        position: 'relative',
       }}
     >
       <CardContent
@@ -59,62 +66,54 @@ const FeedbackCards = ({ id, username, profile, rate, review, createdAt, onDelet
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          position: 'relative',
+          position: "relative",
         }}
       >
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          sx={{ position: 'absolute', top: 8, right: 8 }}
-        >
-          {createdAt ? new Date(createdAt).toLocaleString() : "Unknown date"}
+        <Typography variant="body2" color="textSecondary" component="p">
+          {username}
         </Typography>
-        <Typography variant="h3">{username}</Typography>
-
-        <img src={profile} alt={username} />
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Rating
-            name="read-only"
-            size="large"
-            value={parseFloat(rate)}
+            name="text-feedback"
+            value={rate}
             readOnly
             precision={0.5}
+            getLabelText={getLabelText}
             emptyIcon={
               <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
             }
           />
+          <Box sx={{ ml: 2 }}>{labels[rate]}</Box>
         </Box>
-        <Typography variant="body1">{review}</Typography>
-        
-
-        <div style={{ display: 'flex', marginLeft: 'auto' }}>
-          <Link to={`/reviews/${id}`}>
-            <IconButton aria-label="edit">
+        <Typography variant="body2" color="textSecondary" component="p">
+          {review}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+          sx={{ position: "absolute", bottom: 0, right: 0 }}
+        >
+          {createdAt}
+        </Typography>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Link to={`/reviewsedit/${id}`}>
+            <IconButton>
               <EditIcon />
             </IconButton>
           </Link>
-
-          <IconButton aria-label="delete" onClick={handleDeleteClick}>
+          <IconButton onClick={handleDeleteClick}>
             <DeleteIcon />
           </IconButton>
         </div>
-
-        <AlertDialogBox 
-          open={dialogOpen} 
-          onClose={handleCloseDialog} 
-          onConfirm={handleConfirmDelete} 
-        />
       </CardContent>
+      <AlertDialogBox
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmDelete}
+      />
     </Card>
   );
 };
 
 export default FeedbackCards;
-
-
