@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import axios from "axios";
 import { Typography } from "@mui/material";
 
-const CardOne = ({ busID, onSubmit }) => {
+const CardOne = ({ busID }) => {
   const token = localStorage.getItem("token");
   const [feedbacks, setFeedbacks] = useState([]);
 

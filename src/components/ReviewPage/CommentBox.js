@@ -12,7 +12,9 @@ function CommentBox({ onSubmit, busId }) {
     profile: "",
     rate: "",
     review: "",
-    busId: busId,
+    buses: {
+      busId: busId,
+    },
   });
 
   const [errors, setErrors] = useState({
@@ -53,7 +55,9 @@ function CommentBox({ onSubmit, busId }) {
           profile: "",
           rate: "",
           review: "",
-          busId: busId,
+          buses: {
+            busId: busId,
+          },
         });
         console.log("comment: ", comment);
       } catch (error) {

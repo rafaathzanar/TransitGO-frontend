@@ -5,10 +5,6 @@ import { useParams } from "react-router-dom";
 function ReviewRating() {
   const { busID } = useParams();
 
-  const handleSubmit = (commentData) => {
-    console.log("Submitted comment:", commentData);
-  };
-
   return (
     <div
       style={{
@@ -19,7 +15,7 @@ function ReviewRating() {
         borderTopRightRadius: "0px",
       }}
     >
-      <CardOne busID={busID} onSubmit={handleSubmit} />
+      <CardOne busID={busID} />
     </div>
   );
 }
