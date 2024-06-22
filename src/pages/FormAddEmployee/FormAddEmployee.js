@@ -204,7 +204,7 @@ const FormAddEmployee = () => {
             )}
           </Grid>
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <TextField
               fullWidth
               label="Phone"
@@ -215,7 +215,7 @@ const FormAddEmployee = () => {
               error={formErrors.phone}
             />
             {formErrors.phone && <p className="error">{formErrors.phone}</p>}
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12}>
             <Select

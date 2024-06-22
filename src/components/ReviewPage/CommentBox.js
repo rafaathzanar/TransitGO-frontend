@@ -5,64 +5,76 @@ import StarRating from "./StarRating";
 import { Typography } from "@mui/material";
 import axios from "axios";
 
-function CommentBox({ onSubmit, busRouteId, username }) {
+function CommentBox({ onSubmit, busId }) {
+  const token = localStorage.getItem("token");
   const [comment, setComment] = useState({
-    username: username,
+    username: localStorage.getItem("username") || "Anonymous",
     profile: "",
     rate: "",
     review: "",
-    busRouteId: busRouteId,
-  }); //to store information
+    busId: busId,
+  });
 
   const [errors, setErrors] = useState({
     rate: "",
     review: "",
   });
 
-  const { profile, rate, review } = comment; //this is the thing pass to relevant value
+  const { rate, review } = comment;
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setComment({ ...comment, [name]: value });
-  }; //this is to type and store comments
+  };
 
   const onRatingChange = (rating) => {
     setComment({ ...comment, rate: rating });
   };
 
-  const handleSubmit = async (e) => {  //to post data
-    e.preventDefault(); //to avoid weird details on the url 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (validate()) {
       try {
-        const currentDateTime = new Date().toISOString(); // Get current date and time
-        // Submit feedback
-        const response = await axios.post("http://localhost:8080/rate", {
+        const currentDateTime = new Date().toISOString();
+        const response = await axios.post(
+          "http://localhost:8080/rate",
+          { ...comment, rate: parseFloat(rate) },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        onSubmit({
           ...comment,
-          rate: parseFloat(comment.rate), // Ensure rate is a number
+          rate: parseFloat(rate),
+          createdAt: currentDateTime,
         });
-        // Call the onSubmit function passed from the parent component
-        onSubmit({ ...comment, rate: parseFloat(comment.rate), createdAt: currentDateTime });
-        // Clear the form
-        setComment({ username: username, profile: "", rate: "", review: "", busRouteId: busRouteId });
+        setComment({
+          username: localStorage.getItem("username") || "Anonymous",
+          profile: "",
+          rate: "",
+          review: "",
+          busId: busId,
+        });
+        console.log("comment: ", comment);
       } catch (error) {
         console.error("Error submitting feedback:", error);
-        if (error.response && error.response.data && error.response.data.message) {
+        if (error.response?.data?.message) {
           alert(error.response.data.message);
         }
       }
     }
   };
-  
+
   const validate = () => {
     let tempErrors = { rate: "", review: "" };
     let isValid = true;
 
-    if (!comment.rate) {
+    if (!rate) {
       tempErrors.rate = "Rating is required";
       isValid = false;
     }
 
-    if (!comment.review) {
+    if (!review) {
       tempErrors.review = "Review is required";
       isValid = false;
     }
@@ -75,12 +87,7 @@ function CommentBox({ onSubmit, busRouteId, username }) {
     <div style={{ margin: "50px" }}>
       <Typography
         variant="h4"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        sx={{ display: "flex", justifyContent: "center" }}
       >
         Review & Ratings
       </Typography>
@@ -88,29 +95,24 @@ function CommentBox({ onSubmit, busRouteId, username }) {
       <StarRating value={rate} onChange={onRatingChange} />
       {errors.rate && <Typography color="error">{errors.rate}</Typography>}
 
-      <div
-        style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-      >
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <form onSubmit={handleSubmit}>
           <TextField
             label="Comments"
             multiline
             rows={8}
             placeholder="Leave a Comment here!"
-            id="review"
             name="review"
             value={review}
             onChange={onInputChange}
             error={Boolean(errors.review)}
             helperText={errors.review}
           />
-
           <br />
           <br />
-
           <Button
             variant="contained"
-            sx={{ backgroundColor: "black", color: "white", width: "13rem", justifyContent: "center" }}
+            sx={{ backgroundColor: "black", color: "white" }}
             type="submit"
           >
             Submit

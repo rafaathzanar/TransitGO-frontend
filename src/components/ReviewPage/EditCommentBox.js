@@ -8,6 +8,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 
 function EditCommentBox() {
+  const token = localStorage.getItem("token");
   const { id } = useParams();
   const navigate = useNavigate();
   const [comment, setComment] = useState({
@@ -24,7 +25,9 @@ function EditCommentBox() {
   useEffect(() => {
     const loadComment = async () => {
       try {
-        const result = await axios.get(`http://localhost:8080/rate/${id}`);
+        const result = await axios.get(`http://localhost:8080/rate/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setComment(result.data);
       } catch (error) {
         console.error("Error loading comment:", error);
@@ -47,11 +50,17 @@ function EditCommentBox() {
   const onSubmit = async () => {
     if (validate()) {
       try {
-        await axios.put(`http://localhost:8080/rate/${id}`, {
-          ...comment,
-          rate: parseFloat(comment.rate),
-        });
-        navigate("/reviews");
+        await axios.put(
+          `http://localhost:8080/rate/${id}`,
+          {
+            ...comment,
+            rate: parseFloat(comment.rate),
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        navigate(`/reviews/${id}`);
       } catch (error) {
         console.error("Error submitting feedback:", error);
       }
@@ -93,7 +102,13 @@ function EditCommentBox() {
       <StarRating value={comment.rate} onChange={onRatingChange} />
       {errors.rate && <Typography color="error">{errors.rate}</Typography>}
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             label="Comments"
@@ -113,7 +128,12 @@ function EditCommentBox() {
 
           <Button
             variant="contained"
-            sx={{ backgroundColor: "black", color: "white", width: "13rem", justifyContent: "center" }}
+            sx={{
+              backgroundColor: "black",
+              color: "white",
+              width: "13rem",
+              justifyContent: "center",
+            }}
             type="submit"
           >
             Submit

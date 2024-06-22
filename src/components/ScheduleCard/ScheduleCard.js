@@ -99,7 +99,7 @@ function ScheduleCard({
             <p>{toStop}</p>
             <p>{toTime}</p>
           </div>
-          <Link to="/reviews">Review & Rating</Link>
+          <Link to={`/reviews/${busID}`}>Review & Rating</Link>
         </div>
         <div className="footer-bar" style={footerbarStyle}>
           <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
