@@ -14,6 +14,7 @@ const Bill = ({ open, onClose, billDetails }) => {
     doc.text(`Departure Time: ${billDetails.departureTime}`, 20, 80);
     doc.text(`Arrival Time: ${billDetails.arrivalTime}`, 20, 90);
     doc.text(`Bus Conductor Contact: ${billDetails.conductorContact}`, 20, 100);
+    doc.text(`Bus Conductor Contact: ${billDetails.conductorName}`, 20, 100);
     doc.save("bill.pdf");
   };
 
@@ -28,7 +29,7 @@ const Bill = ({ open, onClose, billDetails }) => {
             <p><strong>Package ID:</strong> {billDetails.packageID}</p>
             <p><strong>Bus Registration Number:</strong> {billDetails.busRegNo}</p>
             <p><strong>Departure Time from {billDetails.start} :</strong> {billDetails.departureTime}</p>
-            
+            <p><strong>Conductor: </strong>{billDetails.conductorName}</p>
             <p><strong>Contact:</strong> {billDetails.conductorContact}</p>
 
           <p>Please Bring the Package before the departure time.</p>

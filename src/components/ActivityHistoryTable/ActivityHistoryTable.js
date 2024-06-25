@@ -6,6 +6,8 @@ import  Button  from "@mui/material/Button";
 import LoginButton from '../LoginButton/LoginButton';
 import { ButtonToolbar } from 'react-bootstrap';
 import axios from 'axios';
+import { Typography } from '@mui/material';
+import { act } from '@testing-library/react';
 
 
 export const ActivityHistoryTable = () => {
@@ -110,6 +112,18 @@ export const ActivityHistoryTable = () => {
       console.log("Error updating the Activity");
     }
   };
+  const getStatusColor = (status) =>{
+    switch (status){
+        case 'Booked':
+           return 'red';
+        case 'Received':
+          return 'blue'; 
+        case 'Completed':
+          return 'green'; 
+        default:
+          return '#000';
+    }
+  };
 
   return (
     
@@ -119,7 +133,11 @@ export const ActivityHistoryTable = () => {
                <span className='desc'>
                   <p
                   style={{fontWeight: 'bold'}}
-                  >{activity.activityType}</p>
+                  >{activity.activityType}
+                  {activity.activityType === "Package" && (
+                    <span> - {activity.activityId}</span>
+                  )}
+                  </p>
                   {isEditing === activity.activityId ? (
                      <input 
                         style={{width: '100%', padding: '2%', borderRadius: '5px', border: 'none'}}
@@ -128,42 +146,60 @@ export const ActivityHistoryTable = () => {
                         onChange={(e) => setEditDescription(e.target.value)}
                      />
                   ):(
-                     <p>{activity.description}</p>
+                     <p>{activity.description} <br/> {activity.info} </p>
+                     
                   )}
                   <p
                   style={{color: 'red', fontSize: '13px'}}
                   >Posted On : {new Date(activity.dateTime).toLocaleString()}</p>
                </span>
-               <span className='action'>
-                   <Button 
-                   className='del'
-                   onClick={() => handleDelete(activity.activityType, activity.activityId)}>
-                     <Delete></Delete>
-                   </Button>
-                   {isEditing === activity.activityId ? (
-                     <Button
-                     className='edit' 
-                     onClick={() => handleSaveEdit(activity)}
-                     >
-                     Save
-                     </Button>
-                   ):(
-                     <Button
-                   className='edit' 
-                   onClick={() => handleEditClick(activity)}
-                   >
-                   <Edit></Edit>
-                   </Button>
-                   )
-                     
-                   }
-                   
-                   
-               </span>
-          </div>
-         )) : (
-            <p style={{textAlign:'center', fontSize: '2rem', opacity: '0.5'}}>No Activity Found</p>
-         )}
+               {activity.activityType !== 'Package' ? (
+            <span className='action'>
+              <Button
+                className='del'
+                onClick={() => handleDelete(activity.activityType, activity.activityId)}>
+                <Delete />
+              </Button>
+              {isEditing === activity.activityId ? (
+                <Button
+                  className='edit'
+                  onClick={() => handleSaveEdit(activity)}
+                >
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  className='edit'
+                  onClick={() => handleEditClick(activity)}
+                >
+                  <Edit />
+                </Button>
+              )}
+            </span>
+          ):(
+            <Typography
+              sx={{backgroundColor: getStatusColor(activity.pacStatus),
+                color: "white",
+                padding: "4px 5px",  
+                borderRadius: "5px", 
+                fontSize: "1rem", 
+                display: "inline-flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                cursor: "pointer", 
+                margin: "4px", 
+                textAlign: "center", 
+                minWidth: "50px",
+                height: "30px", 
+                lineHeight: "normal" }}
+              > 
+              {activity.pacStatus}
+              </Typography>
+          )}
+        </div>
+      )) : (
+        <p style={{ textAlign: 'center', fontSize: '2rem', opacity: '0.5' }}>No Activity Found</p>
+      )}
        </div>
   );
 }

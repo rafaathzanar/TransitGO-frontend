@@ -1,13 +1,18 @@
 import './ProfileForm.css';
 import CommonButtonEdit from '../CommonButton/CommonButton';
 import { useCallback, useContext, useEffect , useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import { Nav } from 'react-bootstrap';
 
 
 
 function ProfileForm({profileInfo, setProfileInfo}){
+   const Navigate = useNavigate();
    const [isEditing, setIsEditing] = useState(false);
+   const role = localStorage.getItem('userRole');
+   const isPassenger = role === "passenger";
    const { fname, lname, email, uname, id } = profileInfo;
     const [editData, setEditData] = useState({
        fname: '',
@@ -78,6 +83,10 @@ function ProfileForm({profileInfo, setProfileInfo}){
       }
    };
 
+  const handlePasswordVerification = () =>{
+   Navigate("/PasswordVerification");
+  }
+
    useEffect(() => {
       getProfileInfo();
    },[]);
@@ -132,12 +141,12 @@ function ProfileForm({profileInfo, setProfileInfo}){
              <Link to='/forgotpassword'>Change Password</Link>
            </div>
         </div>
-        <div className='edit-and-save'>
+        <div className={`edit-and-save ${isPassenger ? 'with-delete' : 'without-delete'}`}>
              <div className='edit'>
                 <button 
                 type='button'
                 onClick={handleEdit}
-                className={isEditing ? 'onclick' : ''}
+                id={isEditing ? 'onclick' : ''}
                 >Edit
                 </button>
              </div>
@@ -148,7 +157,15 @@ function ProfileForm({profileInfo, setProfileInfo}){
                >Save Change
                </button>
              </div>
-             
+             { role === "passenger" && (
+             <div className='delete'>
+               <button
+               onClick={handlePasswordVerification}
+               type= 'submit'
+               >Delete Account
+               </button>
+             </div>
+            )}
         </div>
         </form>
         </div>

@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 
 function ForgotPassword() {
   return (
-    <div className="forgotpassword">
+    <div 
+    className="forgotpassword">
       <div className="logo">
         <Logo></Logo>
       </div>

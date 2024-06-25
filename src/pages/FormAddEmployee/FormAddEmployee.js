@@ -31,7 +31,6 @@ const FormAddEmployee = () => {
     uname: "",
     password: "",
     phone: "",
-    phone: "",
     busid: "", // New state for bus selection
   });
 
@@ -47,7 +46,6 @@ const FormAddEmployee = () => {
     email: "",
     uname: "",
     password: "",
-    phone: "",
     phone: "",
     busid: "", // New state for bus selection
   });
@@ -202,19 +200,6 @@ const FormAddEmployee = () => {
             {formErrors.password && (
               <p className="error">{formErrors.password}</p>
             )}
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Phone"
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={(e) => onFormInput(e)}
-              error={formErrors.phone}
-            />
-            {formErrors.phone && <p className="error">{formErrors.phone}</p>}
           </Grid>
 
           <Grid item xs={12}>
