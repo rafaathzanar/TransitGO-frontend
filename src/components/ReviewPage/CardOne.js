@@ -4,75 +4,77 @@ import CommentBox from "./CommentBox";
 import FeedbackCards from "./FeedbackCards";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import { useParams } from "react-router";
 import { Typography } from "@mui/material";
 
-const CardOne = ({ busRouteId, username }) => {
+const CardOne = ({ busID }) => {
+  const token = localStorage.getItem("token");
   const [feedbacks, setFeedbacks] = useState([]);
-
-  const { id } = useParams();
-
-  const handleFeedbackSubmission = (feedback) => {
-    // Add the new feedback and sort the feedbacks array
-    const updatedFeedbacks = [feedback, ...feedbacks];
-    setFeedbacks(updatedFeedbacks);
-  };
 
   useEffect(() => {
     loadReviews();
   }, []);
 
   const loadReviews = async () => {
-    const result = await axios.get("http://localhost:8080/rates");
-    console.log(result.data);
+    try {
+      const result = await axios.get(`http://localhost:8080/rates/${busID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const formattedFeedbacks = result.data.map((feedback) => ({
-      ...feedback,
-      rate: parseFloat(feedback.rate),
-    }));
+      const formattedFeedbacks = result.data.map((feedback) => ({
+        ...feedback,
+        rate: parseFloat(feedback.rate),
+      }));
 
-    // Sort the feedbacks by createdAt date in descending order
-    const sortedFeedbacks = formattedFeedbacks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const sortedFeedbacks = formattedFeedbacks.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
 
-    setFeedbacks(sortedFeedbacks);
+      setFeedbacks(sortedFeedbacks);
+    } catch (error) {
+      console.error("Error loading reviews:", error);
+    }
+  };
+
+  const handleFeedbackSubmission = (feedback) => {
+    setFeedbacks([feedback, ...feedbacks]);
   };
 
   const deleteReviews = async (id) => {
-    await axios.delete(`http://localhost:8080/rate/${id}`);
-    loadReviews();
+    try {
+      await axios.delete(`http://localhost:8080/rate/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      loadReviews();
+    } catch (error) {
+      console.error("Error deleting review:", error);
+    }
   };
 
   return (
     <div>
       <Grid item xs={11} sm={11} md={10} lg={10} xl={10} m={6}>
         <CardContent sx={{ backgroundColor: "white", borderRadius: "25px" }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography>BusID:xxx</Typography>
-            <Typography>RouteNo:xx</Typography>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography>BusID: {busID}</Typography>
           </div>
-          <CommentBox onSubmit={handleFeedbackSubmission} busRouteId={busRouteId} username={username} />
+          <CommentBox onSubmit={handleFeedbackSubmission} busId={busID} />
         </CardContent>
       </Grid>
 
       {feedbacks.map((feedback) => (
-        <div key={feedback.id}>
-          <FeedbackCards
-            id={feedback.id}
-            username={feedback.username}
-            profile={feedback.profile}
-            rate={feedback.rate}
-            review={feedback.review}
-            createdAt={feedback.createdAt}
-            onDelete={deleteReviews}
-          />
-        </div>
+        <FeedbackCards
+          key={feedback.id}
+          id={feedback.id}
+          username={feedback.username}
+          profile={feedback.profile}
+          rate={feedback.rate}
+          review={feedback.review}
+          createdAt={feedback.createdAt}
+          onDelete={deleteReviews}
+        />
       ))}
     </div>
   );
 };
 
 export default CardOne;
-
-
-
-
