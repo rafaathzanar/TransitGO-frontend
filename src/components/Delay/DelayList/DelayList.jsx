@@ -108,7 +108,7 @@ const DelayList = () => {
         </div>
       )}
 
-      <ul className="goal-listxs">
+      <ul className="goal-list">
         {delayList.map((delay) => (
           <DelayItem
             key={delay.id}

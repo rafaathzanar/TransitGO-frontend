@@ -20,6 +20,7 @@ import CRUDtablePackage from "./components/CRUDtablePackage/CRUDtablePackage";
 import RouteManagement from "./pages/Package/Package";
 
 import ReviewRating from "./pages/ReviewRating/ReviewRating";
+import ConductorPage from "./pages/ConductorPage/ConductorPage";
 import MyLayout from "./components/MyLayout";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
 import Dummy from "./dummy";
@@ -38,6 +39,10 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
+
+//           <Route path="/reviews" element={<ConductorPage />} />
+//           <Route path="/reviews/:id" element={<EditCommentBox />} />
+
           <Route path="/reviews/:busID" element={<ReviewRating />} />
           <Route path="/reviewsedit/:id" element={<EditCommentBox />} />
 
@@ -59,6 +64,7 @@ function App() {
           />
 
           <Route path="/reviews" element={<MyLayout />} />
+
           <Route path="/profile" element={<GeneralUserProfile />} />
           <Route path="/activityhistory" element={<ActivityHistory />} />
           <Route path="/dummy" element={<Dummy />} />

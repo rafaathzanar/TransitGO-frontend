@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mobile {
+  margin-top: 5rem;
+  padding: 1rem 1rem;
+  text-align: center;
+}
+
+.mobile img {
+  max-width: 100%;
+  height: auto;
+}
+
+.ft-10 img {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto; /* Center the image horizontally */
+}
+
+.ft-30 h5 {
+  color: #132968;
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ft-30 p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.ft-30 img {
+  width: 170px; /* Set a fixed width for the store buttons */
+  margin: 1rem;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .mobile {
+    padding: 4rem 2rem;
+    text-align: left; /* Align text to the left on medium and larger screens */
+  }
+
+  .ft-10 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ft-30 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .ft-30 img {
+    width: 200px;
+  }
+}
