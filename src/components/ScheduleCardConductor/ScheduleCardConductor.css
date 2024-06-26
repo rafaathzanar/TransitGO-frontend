@@ -40,7 +40,18 @@
   max-width: 100%;
   height: auto;
 }
-
+.ConButton{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+.ConButtonST{
+  background-color: hsl(0, 93%, 70%);
+  color: aliceblue;
+  border: 0ch;
+  border-radius: 5px;
+  padding: 5px;
+}
 
 @media screen and (max-width: 1440px) {
   .schedule-card {

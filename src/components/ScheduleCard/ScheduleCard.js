@@ -17,6 +17,7 @@ function ScheduleCard({
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+ 
 
   useEffect(() => {
     const fetchSchedules = async () => {
