@@ -15,6 +15,8 @@ import FormAddEmployee from "./pages/FormAddEmployee/FormAddEmployee";
 import EditRoute from "./pages/FormRoute/EditRoute";
 import EditBus from "./pages/FormBus/EditBus";
 import BusTimeTable from "./pages/BusTimeTable/BusTimeTable";
+import StopManagement from "./pages/StopManagement/StopManagement";
+import FormStop from "./pages/FormStop/FormStop";
 
 function AdminRoutes() {
   return (
@@ -35,6 +37,11 @@ function AdminRoutes() {
               <Route path="bustimetable/:busId" element={<BusTimeTable />} />
               <Route path="addbus" element={<FormBus />} />
               <Route path="editbus/:id" element={<EditBus />} />
+            </Route>
+            <Route path="stopmanagement">
+              <Route index element={<StopManagement />} />
+              <Route path="addstop" element={<FormStop />} />
+
             </Route>
             <Route path="employees"></Route>
           </Route>

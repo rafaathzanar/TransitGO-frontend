@@ -8,17 +8,25 @@ import Icon3 from "../../logo/packimg.png";
 import Icon4 from "../../logo/announceimg.png";
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router";
+import Footer from "../../components/Footer/Footer";
+import Mobile from "../../components/Mobile/Mobile";
+import BackgroundImage from "../../images/busstand.jpg";
 
 function HomePage() {
   const navigate = useNavigate();
   return (
-    <div style={{ backgroundColor: "D4D7DB" }}>
+    <div style={{}}>
       <HeaderBar></HeaderBar>
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          backgroundImage: `url(${BackgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh",
         }}
       >
         <Grid container spacing={2} mt={15}>
@@ -80,6 +88,8 @@ function HomePage() {
           </Grid>
         </Grid>
       </div>
+      <Mobile></Mobile>
+      <Footer />
     </div>
   );
 }

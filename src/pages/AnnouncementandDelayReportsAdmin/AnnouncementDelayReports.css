@@ -1,26 +1,23 @@
-
 #goals1 {
-    width: 80rem;
-    margin: 2rem auto;
-    padding-bottom: 1rem;
-  }
-  
-  #goal-form1 {
-    max-width:80%;
-    margin: 2rem auto;
-    padding: 2rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-  }
+  width: 80rem;
+  margin: 2rem auto;
+  padding-bottom: 1rem;
+}
 
-  @media screen and (max-width: 600px) {
-    .goals1 {
-      width: 100%;
-    }
-    .goal-form1 {
-      width: 100%;
-    }
+#goal-form1 {
+  max-width: 80%;
+  margin: 2rem auto;
+  margin-top: 10rem;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .goals1 {
+    width: 100%;
   }
-  
-  
-  
+  .goal-form1 {
+    width: 100%;
+  }
+}

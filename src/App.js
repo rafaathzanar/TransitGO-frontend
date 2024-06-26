@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import LoginBusEmployee from "./pages/LoginBusEmployee/LoginBusEmployee";
 import ReviewRating from "./pages/ReviewRating/ReviewRating";
+import ConductorPage from "./pages/ConductorPage/ConductorPage";
 import MyLayout from "./components/MyLayout";
 import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
@@ -26,7 +27,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
-          <Route path="/reviews" element={<ReviewRating />} />
+          <Route path="/reviews" element={<ConductorPage />} />
           <Route path="/reviews/:id" element={<EditCommentBox />} />
           <Route path="/profile" element={<GeneralUserProfile />} />
           <Route path="/activityhistory" element={<ActivityHistory />} />
