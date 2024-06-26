@@ -31,7 +31,6 @@ const FormAddEmployee = () => {
     uname: "",
     password: "",
     phone: "",
-    phone: "",
     busid: "", // New state for bus selection
   });
 
@@ -47,7 +46,6 @@ const FormAddEmployee = () => {
     email: "",
     uname: "",
     password: "",
-    phone: "",
     phone: "",
     busid: "", // New state for bus selection
   });

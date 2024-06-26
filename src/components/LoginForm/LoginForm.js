@@ -8,6 +8,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import LoginButton from "../LoginButton/LoginButton";
 import GeneralUserProfileIcon from "../GeneralUserProfileIcon/GeneralUserProfileIcon";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "../UI/Button/Button";
 
 const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
  let navigate = useNavigate();
@@ -20,6 +26,11 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
   const [profileName, setUsername] = useState({
      username: ""
   });
+
+  const [Open, setOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState("");
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [navigateTo, setNavigateTo] = useState("");
 
   const onFormInput = (e) =>{
     setFormData({...formData,[e.target.name]:e.target.value});
@@ -51,13 +62,11 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             email: emailValidation.Message,
             password: passwordValidation.Message
            });
-           console.log(formErrors);
            return;
          }
 
          try{
             const response = await axios.post("http://localhost:8080/api/v1/auth/authentication",formData);
-            console.log(response);
 
             //store token, role and mail in the localstorage
             const token = response.data.token;
@@ -66,7 +75,7 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             const lastname = response.data.user.lname;
             const uname = response.data.user.uname;
             const id = response.data.user.id;
-            console.log(token,type,email,lastname,uname);
+            
             localStorage.setItem('token',token);
             localStorage.setItem('userRole',type);
             localStorage.setItem('username',email);
@@ -74,28 +83,35 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             localStorage.setItem('uname',uname);
             localStorage.setItem('id',id);
 
-            console.log("login success",formData);
-            //alert("Login Success");
-            window.confirm("Login Success");
-            if (type == "admin"){
-              navigate("/admin");
-            }else{
-               navigate("/GeneralUserProfile");
-            }
+
+            setDialogTitle("Success");
+            setDialogContent("Login Success");
+            setOpen(true);
+            
+            setNavigateTo(type === "admin" ? "/admin" : "/GeneralUserProfile");
+            
          }catch(error){
+          let errorMessage = "Something went wrong! Please try again later";
           if (error.response && error.response.data){
-             const errorMessage = error.response.data.Message || "Invalid Email or Password";
+              errorMessage = error.response.data.Message || "Invalid Email or Password";
              setFormErrors({
               email: errorMessage,
               password: errorMessage
             });
-           }else{
-            console.error("Error submitting form: ",error);
-            window.confirm("Something went wrong! Please try again later");
+          
+            setDialogTitle("Error");
+            setDialogContent(errorMessage);
+            setOpen(true);
            }
          }
-
   };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    if (dialogTitle === "Success") {
+      navigate(navigateTo);
+    }
+  }
  
 
   return (
@@ -150,6 +166,24 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
           <LoginButton buttonTitle="Login Now" onSubmit={(e)=>handleSubmit(e)}></LoginButton>
         </div>
       </form>
+      <Dialog
+        open={Open}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {dialogContent}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

@@ -57,25 +57,35 @@ label{
     margin-left: 2%;
 }
 
-.edit-and-save{
-    
+.edit-and-save.with-delete {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-    "edit save";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "edit save delete";
     gap: 2%;
     padding: 2%;
     margin-top: 5%;
   }
   
-  .edit{
-      grid-area: edit;
+  .edit-and-save.without-delete {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "edit save";
+    gap: 2%;
+    padding: 2%;
+    margin-top: 5%;
   }
   
-  .save{
-      grid-area: save;
+  .edit {
+    grid-area: edit;
   }
-
+  
+  .save {
+    grid-area: save;
+  }
+  
+  .delete {
+    grid-area: delete;
+  }
   .edit-and-save button {
         background-color: #FA6B6B;
         color: white;
@@ -87,7 +97,7 @@ label{
     
   }
 
-  .onclick{
+  #onclick{
     background-color: transparent;
     border: 1px solid #f0a7a7;
     color: #FA6B6B;

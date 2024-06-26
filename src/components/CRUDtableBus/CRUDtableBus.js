@@ -14,6 +14,7 @@ import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function CRUDtableRoute({}) {
+  
   const token = localStorage.getItem('token');
   const Authorization = {
     headers: {Authorization: `Bearer ${token}`}

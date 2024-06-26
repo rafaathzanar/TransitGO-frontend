@@ -26,6 +26,7 @@ import Dummy from "./dummy";
 import EditCommentBox from "./components/ReviewPage/EditCommentBox";
 import FormAddAdmin from "./pages/FormAddAdmin/FormAddAdmin.js";
 import FormAdminSignIn from "./pages/FormAdminSignIn/FormAdminSignIn.js";
+import PasswordVerificationPage from "./pages/PasswordVerificationPage/PasswordVerificationPage.js";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -51,6 +52,7 @@ function App() {
           <Route path="/SuccessComponent" element={<SuccessComponent />} />
           <Route path="/FailComponent" element={<FailComponent />} />
           <Route path="/NewPassword/:email" element={<NewPassword />} />
+          <Route path="/PasswordVerification" element={<PasswordVerificationPage/>}/>
           <Route
             path="/otpVerification/:email"
             element={<EmailVerification />}

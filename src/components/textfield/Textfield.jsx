@@ -19,7 +19,10 @@ function Textfield() {
     status: "Booked",
     receiverName: "",
     receiverContact: "",
-    receiverNIC: ""
+    receiverNIC: "",
+    employeeName: "",
+    employeePhone: "",
+    employeeId: ""
   });
 
   const [busStops, setBusStops] = useState([]);
@@ -35,7 +38,7 @@ function Textfield() {
   });
   const [billDetails, setBillDetails] = useState(null);
   const [billOpen, setBillOpen] = useState(false);
-  const { busID, destination, receivedDate, start, receiverName, receiverContact, receiverNIC } = pack;
+  const { busID, destination, receivedDate, start, receiverName, receiverContact, receiverNIC, employeeName, employeePhone } = pack;
 
   useEffect(() => {
     fetchBusStops();
@@ -183,6 +186,19 @@ function Textfield() {
 
   const onSubmitPack = async (e) => {
     e.preventDefault();
+
+    const busId = String(pack.busID);
+    const empDetail = await axios.get(`http://localhost:8080/employee/${busId}`,Authorization);
+
+    const updatedPack = {
+      ...pack,
+      employeeName: empDetail.data.user.fname + " " + empDetail.data.user.lname,
+      employeePhone: empDetail.data.user.phone,
+      employeeId: empDetail.data.user.id
+    }
+
+    console.log(updatedPack);
+
     const newErrors = {
       fromError: !start,
       toError: !destination,
@@ -199,7 +215,7 @@ function Textfield() {
     if (hasError) return;
 
     try {
-      const response = await axios.post("http://localhost:8080/package", pack,Authorization);
+      const response = await axios.post("http://localhost:8080/package", updatedPack,Authorization);
       const packageID = response.data.packageID;
       const selectedBus = availableBuses.find(bus => bus.id === busID);
 
@@ -208,7 +224,8 @@ function Textfield() {
         busRegNo: selectedBus.regNo,
         departureTime: selectedBus.fromStopDepartureTime,
         start: start,  // You can add logic to fetch the arrival time
-        conductorContact: ''
+        conductorName: updatedPack.employeeName,
+        conductorContact: updatedPack.employeePhone
       };
       setBillDetails(billInfo);
       setBillOpen(true);
@@ -222,7 +239,9 @@ function Textfield() {
         status: '',
         receiverName: '',
         receiverContact: '',
-        receiverNIC: ''
+        receiverNIC: '',
+        employeeName: '',
+        employeePhone: ''
       });
     } catch (error) {
       console.error("Error in submitting: ", error);

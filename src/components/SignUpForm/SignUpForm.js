@@ -10,6 +10,12 @@ import { validateFname,
          validatePassword,
          validateConfirmpassword } from '../FormValidationSignup/FormValidationSignup';
 import SignUpButton from '../SignUpButton/SignUpButton';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "../UI/Button/Button";
 
 
 const FormAddPassenger = () => {
@@ -22,6 +28,11 @@ const FormAddPassenger = () => {
      password: "",
      confirmpassword: ""
    });
+
+  const [Open, setOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState("");
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [navigateTo, setNavigateTo] = useState("");
 
   
    const{fname,lname,email,uname,password,confirmpassword} = formData;
@@ -82,7 +93,11 @@ const FormAddPassenger = () => {
         password: "",
         confirmpassword:""
        })
-       window.alert("Registration Successful");
+       
+       setDialogTitle("Success");
+       setDialogContent("Registration Success");
+       setOpen(true);
+
        navigate("/verifyEmail");
      }
      catch(error){
@@ -92,11 +107,16 @@ const FormAddPassenger = () => {
         email: error.response.data
        });
       }else{
-       console.error("Error submitting form: ",error);
-       window.alert("Something went wrong, please try again later.");
+         setDialogTitle("Error");
+         setDialogContent("Something went wrong, please try again later.");
+         setOpen(true);  
       }
      }
    };
+
+   const handleCloseDialog = () => {
+      setOpen(false);
+    }
 
 
     return(
@@ -192,6 +212,25 @@ const FormAddPassenger = () => {
         </div>
         <input type="hidden" name="type" value="passenger" />
        </form> 
+
+       <Dialog
+        open={Open}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {dialogContent}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
     );
 }
