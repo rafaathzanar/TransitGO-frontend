@@ -9,36 +9,42 @@ import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 import axios from "axios";
 
-
-export default function CRUDtablePackage({  }) {
-  const [packages, setPackages] = useState([]);   
-
- 
+export default function CRUDtablePackage({}) {
+  const token = localStorage.getItem("token");
+  const Authorization = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const [packages, setPackages] = useState([]);
 
   useEffect(() => {
     loadPackages();
   }, []);
 
-
   const loadPackages = async () => {
-    try{
-    const result = await axios.get("http://localhost:8080/packages");
-    const packagessWithIds = result.data.map((pack, index) => ({
-      ...pack,
-      id: index + 1,
-    }));
-    setPackages (packagessWithIds);
-    setFilteredRows(packagessWithIds);
-  }catch (error){
-    console.error("Error fetching user data:",error);
-  }
-  }
+    try {
+      const result = await axios.get(
+        "http://localhost:8080/packages",
+        Authorization
+      );
+      const packagessWithIds = result.data.map((pack) => ({
+        ...pack,
+        id: pack.packageID.toString(),
+      }));
+      setPackages(packagessWithIds);
+      console.log("package with ids", packagessWithIds);
+      setFilteredRows(packagessWithIds);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   const deletePackage = async (packageID) => {
-    await axios.delete(`http://localhost:8080/package/${packageID}`)
-    loadPackages()
-  }
-
+    await axios.delete(
+      `http://localhost:8080/package/${packageID}`,
+      Authorization
+    );
+    loadPackages();
+  };
 
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -47,21 +53,17 @@ export default function CRUDtablePackage({  }) {
   const [filteredRows, setFilteredRows] = useState(rows); // New state for filtered rows
   const [searchValue, setSearchValue] = useState(""); // New state for search input value
 
-
   // Function to handle search input change
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
     const filtered = packages.filter(
-      (row) => 
+      (row) =>
         row.packageID.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.from.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.to.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.busID.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.receiverName.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.nic.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        row.paymentStatus
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase()) ||
         row.deliveryStatus.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
@@ -72,12 +74,11 @@ export default function CRUDtablePackage({  }) {
     { field: "packageID", headerName: "ID", width: 50 },
     { field: "start", headerName: "From", width: 120 },
     { field: "destination", headerName: "To", width: 100 },
-    { field: "busID", headerName: "Bus Id", width: 110 },
+    { field: "busID", headerName: "Bus Id", width: 90 },
     { field: "receivedDate", headerName: "Date", width: 130 },
     { field: "receiverName", headerName: "Receiver", width: 140 },
     { field: "receiverNIC", headerName: "NIC", width: 140 },
     { field: "receiverContact", headerName: "Contact", width: 140 },
-    { field: "payment", headerName: "Payment", width: 130 },
     { field: "status", headerName: "Delivery Status", width: 130 },
 
     {
@@ -89,7 +90,7 @@ export default function CRUDtablePackage({  }) {
           <Button
             variant="outlined"
             color="primary"
-            onClick={()=>deletePackage(params.row.packageID)}
+            onClick={() => deletePackage(params.row.packageID)}
           >
             Delete
           </Button>
@@ -118,8 +119,6 @@ export default function CRUDtablePackage({  }) {
           },
         }}
       />
-
-      
     </div>
   );
 }

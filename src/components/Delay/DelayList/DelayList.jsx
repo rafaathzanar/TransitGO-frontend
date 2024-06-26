@@ -9,14 +9,22 @@ const DelayList = () => {
   const [delayList, setDelayList] = useState([]);
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const { id } = useParams();
+  const token = localStorage.getItem('token');
+  const userRole = localStorage.getItem('userRole');
+  const email = localStorage.getItem('username');
+  console.log(token,userRole,email);
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  }
 
   useEffect(() => {
     fetchDelays();
   }, []);
 
   const fetchDelays = async () => {
+    console.log(userRole.username);
     try {
-      const response = await axios.get("http://localhost:8080/announcements");
+      const response = await axios.get("http://localhost:8080/announcements",Authorization);
       setDelayList(response.data);
     } catch (error) {
       console.error("Error fetching delays:", error);
@@ -25,7 +33,7 @@ const DelayList = () => {
 
   const deleteDelayHandler = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/announcement/${id}`);
+      await axios.delete(`http://localhost:8080/announcement/${id}`,Authorization);
       setDelayList(delayList.filter((delay) => delay.id !== id));
     } catch (error) {
       console.error("Error deleting delay:", error);
@@ -35,7 +43,7 @@ const DelayList = () => {
   const editDelayHandler = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/announcement/${id}`
+        `http://localhost:8080/announcement/${id}`,Authorization
       );
       const existingDetails = response.data.details;
       setEditingAnnouncement({ id, details: existingDetails });
@@ -52,7 +60,7 @@ const DelayList = () => {
     try {
       await axios.put(`http://localhost:8080/announcement/${id}`, {
         details: updatedDetails,
-      });
+      },Authorization);
       setEditingAnnouncement(null);
       fetchDelays();
     } catch (error) {
@@ -105,8 +113,9 @@ const DelayList = () => {
           <DelayItem
             key={delay.id}
             id={delay.id}
-            onDelete={deleteDelayHandler}
-            onEdit={editDelayHandler}
+            //onDelete={deleteDelayHandler}
+            onDelete = {(userRole === "admin" || delay.createdBy === email) ? deleteDelayHandler : null}
+            onEdit={(userRole === "admin" || delay.createdBy === email) ? editDelayHandler : null}
           >
             {delay.details}
           </DelayItem>

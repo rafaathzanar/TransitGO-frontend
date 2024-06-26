@@ -18,7 +18,6 @@ import FormConductor from "./pages/FormConductor/FormConductor";
 import EditFoundForm from "./components/LostAndFound/EditFoundForm";
 import EditLostForm from "./components/LostAndFound/EditLostForm";
 
-
 function PageRoutes() {
   return (
     <>
@@ -39,13 +38,12 @@ function PageRoutes() {
           <Route path="lostfoundreport2" element={<LostForm />} />
           <Route path="lostfoundreport/:id" element={<EditFoundForm />} />
           <Route path="lostfoundreport2/:id" element={<EditLostForm />} />
-
         </Route>
         <Route path="packagetransfer">
           <Route index element={<Main />} />
           <Route path="tracking" element={<Tracking />} />
           <Route path="form" element={<Form />} />
-          <Route path="FormConductor" element={<FormConductor/>}/>
+          <Route path="FormConductor" element={<FormConductor />} />
         </Route>
       </Routes>
     </>

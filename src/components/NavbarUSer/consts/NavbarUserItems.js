@@ -5,12 +5,28 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { LogoutOutlined } from "@mui/icons-material";
 import { Home } from "@mui/icons-material";
 
-export const NavbarUserItems = [
+
+const getRoute = () => {
+  const role = localStorage.getItem('userRole');
+  switch (role){
+    case "employee":
+      return "/packagetransfer/FormConductor";
+      break;
+    case "passenger":
+      return "/packagetransfer/tracking";
+      break;
+    default:
+      return "";
+  }
+  
+}
+
+export const NavbarUserItems  = [
   {
     id: 0,
     icon: <AccountCircle />,
     label: "Profile",
-    route: "/profile",
+    route: "/GeneralUserProfile",
   },
   {
     id: 2,
@@ -22,18 +38,18 @@ export const NavbarUserItems = [
     id: 3,
     icon: <LocalShippingIcon />,
     label: "Package Status",
-    route: "",
+    route: getRoute(),
   },
   {
     id: 4,
     icon: <Home />,
     label: "Home",
-    route: "/",
+    route: `/`,
   },
   {
     id: 5,
     icon: <LogoutOutlined />,
     label: "Log Out",
-    route: "/",
+    route: "/signin",
   },
 ];

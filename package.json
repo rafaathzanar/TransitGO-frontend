@@ -48,7 +48,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "globals": {
+      "Link": "readonly"
+    }
   },
   "browserslist": {
     "production": [
@@ -63,6 +66,6 @@
     ]
   },
   "devDependencies": {
-    "react-router-dom": "^6.21.3"
+    "react-router-dom": "^6.23.0"
   }
 }

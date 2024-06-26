@@ -27,7 +27,10 @@ export default function CRUDtableRoute() {
 
   const loadRoutes = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/busroutes");
+      const token = localStorage.getItem('token');
+      const result = await axios.get("http://localhost:8080/busroutes",{
+        headers: {Authorization: `Bearer ${token}`}
+      });
 
       const routesWithIds = result.data.map((route) => ({
         ...route,
@@ -51,7 +54,10 @@ export default function CRUDtableRoute() {
 
   const handleConfirmDelete = async (routeno) => {
     try {
-      await axios.delete(`http://localhost:8080/busroute/${routeno}`);
+      const token = localStorage.getItem('token');
+      await axios.delete(`http://localhost:8080/busroute/${routeno}`,{
+        headers: {Authorization: `Bearer ${token}`}
+      });
       loadRoutes();
     } catch (error) {
       console.error("Error deleting route:", error.message);

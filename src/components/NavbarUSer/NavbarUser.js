@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -9,6 +9,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { NavbarUserItems } from "./consts/NavbarUserItems";
 import { useNavigate } from "react-router-dom";
+
 
 const NavbarUser = () => {
   const UserfontspanStyle = {
@@ -23,11 +24,16 @@ const NavbarUser = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
   const isSmallScreen = useMediaQuery("(max-width:768px)");
+  
 
   const drawerWidth = isSmallScreen ? 60 : "14%"; // Adjust the width based on the screen size
 
   const handleItemClick = (item) => {
     setSelectedItem(item.id);
+    if(item.route == "/signin"){
+      localStorage.removeItem('token');
+    }
+    console.log(item);
     navigate(item.route);
   };
 

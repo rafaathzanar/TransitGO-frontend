@@ -9,12 +9,12 @@ const Bill = ({ open, onClose, billDetails }) => {
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
     doc.addImage(logo, 'PNG', 10, 10, 50, 30);
-    doc.text("Package Bill", 20, 50);
     doc.text(`Package ID: ${billDetails.packageID}`, 20, 60);
     doc.text(`Bus Registration Number: ${billDetails.busRegNo}`, 20, 70);
     doc.text(`Departure Time: ${billDetails.departureTime}`, 20, 80);
     doc.text(`Arrival Time: ${billDetails.arrivalTime}`, 20, 90);
     doc.text(`Bus Conductor Contact: ${billDetails.conductorContact}`, 20, 100);
+    doc.text(`Bus Conductor Contact: ${billDetails.conductorName}`, 20, 100);
     doc.save("bill.pdf");
   };
 
@@ -29,7 +29,7 @@ const Bill = ({ open, onClose, billDetails }) => {
             <p><strong>Package ID:</strong> {billDetails.packageID}</p>
             <p><strong>Bus Registration Number:</strong> {billDetails.busRegNo}</p>
             <p><strong>Departure Time from {billDetails.start} :</strong> {billDetails.departureTime}</p>
-            
+            <p><strong>Conductor: </strong>{billDetails.conductorName}</p>
             <p><strong>Contact:</strong> {billDetails.conductorContact}</p>
 
           <p>Please Bring the Package before the departure time.</p>

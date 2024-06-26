@@ -18,3 +18,7 @@
 .user-name{
     grid-area: user-name;
 }
+
+.user-name .uname{
+   color: #FA6B6B;
+}

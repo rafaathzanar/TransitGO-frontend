@@ -1,13 +1,13 @@
-.profile-form{
+.profileform{
     display: grid;
-    grid-template-rows: 4fr 1fr;
+    grid-template-rows: 1fr ;
     grid-template-areas:
     "form"
-    "edit-and-save" ;
-    background-color: rgb(94, 144, 204,0.2);
+    ;
+    /*background-color: rgb(94, 144, 204,0.2);*/
     border: 1px solid  #FA6B6B ;
     border-radius: 10px;
-    padding: 2%;
+    padding: 3%;
 }
 
 .form{
@@ -18,6 +18,7 @@
     background-color: white;
     border:2px solid rgb(241, 243, 246);
     font-size: 30px;
+    width: 100%;
 }
 
 .input input{
@@ -43,31 +44,61 @@ label{
     grid-template-columns: 1fr 1fr;
     grid-template-areas: 
     "fn ln";
-    gap: 5px;
+    
 }
 
 .fn{
     grid-area: fn;
+    margin-right: 2%;
 }
 
 .ln{
     grid-area: ln;
+    margin-left: 2%;
 }
 
-.edit-and-save{
-    grid-area: edit-and-save;
+.edit-and-save.with-delete {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-    "edit save";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "edit save delete";
     gap: 2%;
     padding: 2%;
+    margin-top: 5%;
   }
   
-  .edit{
-      grid-area: edit;
+  .edit-and-save.without-delete {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "edit save";
+    gap: 2%;
+    padding: 2%;
+    margin-top: 5%;
   }
   
-  .save{
-      grid-area: save;
+  .edit {
+    grid-area: edit;
+  }
+  
+  .save {
+    grid-area: save;
+  }
+  
+  .delete {
+    grid-area: delete;
+  }
+  .edit-and-save button {
+        background-color: #FA6B6B;
+        color: white;
+        padding: 10px;
+        border: #FA6B6B;
+        border-radius: 8px;
+        width: 100%;
+        
+    
+  }
+
+  #onclick{
+    background-color: transparent;
+    border: 1px solid #f0a7a7;
+    color: #FA6B6B;
   }

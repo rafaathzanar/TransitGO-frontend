@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 
 function ForgotPassword() {
   return (
-    <div className="forgotpassword">
+    <div 
+    className="forgotpassword">
       <div className="logo">
         <Logo></Logo>
       </div>
@@ -19,11 +20,7 @@ function ForgotPassword() {
         <div className="forgotpassword-form">
           <ForgotPasswordEmail></ForgotPasswordEmail>
         </div>
-        <div className="send-otp-button">
-          <Link to="/EmailVerification">
-            <OTPButton title="Send OTP"></OTPButton>
-          </Link>
-        </div>
+        
       </div>
     </div>
   );

@@ -12,7 +12,12 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Logo from "../../logo/logo.png";
-import { useNavigate } from "react-router";
+import { useNavigate} from "react-router";
+import { type } from "@testing-library/user-event/dist/type";
+import axios from "axios";
+import { useEffect } from "react";
+
+
 
 const pages = [
   { displayName: "Home", routePath: "/" },
@@ -20,11 +25,49 @@ const pages = [
   { displayName: "Lost and Found", routePath: "/lostandfound" },
   { displayName: "Package Transfer", routePath: "/packagetransfer" },
   { displayName: "Announcements", routePath: "/announcementanddelay" },
+  
 ];
 
 function HeaderBar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  
+
+  //profile detail
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [username, setUsername] = React.useState({
+    uname : "",
+    type: ""
+  });
+
+  const fetchProfileInfo = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get("http://localhost:8080/user/profile", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setUsername({
+        uname : response.data.uname,
+        type: response.data.type
+      });
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.log("Error Fetching admin profile information: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfileInfo();
+  }, []);
+
+   const handleSignOut = () =>{
+     setIsLoggedIn(false);
+     setUsername("");
+     navigate("/signin");
+   };
+
+  //---------------------------------------
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -114,7 +157,28 @@ function HeaderBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Button
+            {isLoggedIn ? (
+              <>
+              <Button 
+              color="inherit"
+              onClick={()=>{
+                if(username.type === "admin"){
+                  navigate("/admin");
+                }else{
+                  navigate("/GeneralUserProfile");
+                }
+                
+              }}
+              sx={{mr:2}}
+              >
+               {username.uname}
+              </Button>
+              <Button variant="outlined" color="inherit" onClick={handleSignOut}>
+               Sign Out
+              </Button>
+              </>
+            ):(
+              <Button
               variant="outlined"
               color="inherit"
               onClick={() => {
@@ -124,6 +188,8 @@ function HeaderBar() {
             >
               Sign In
             </Button>
+            )}
+            
           </Box>
         </Toolbar>
       </Container>

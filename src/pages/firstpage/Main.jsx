@@ -4,6 +4,7 @@ import m1 from "../../components/assets/p1.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Grid} from "@mui/material";
 const Main = () => {
+  const userRole = localStorage.getItem('userRole');
   const Navigate = useNavigate();
   return (
     <Grid container>
@@ -13,7 +14,18 @@ const Main = () => {
         <p style={{color:"#132968", fontWeight:400, marginTop:0, marginBottom:50}}>Safely move your belongings to your desired places <br/> through our bus route in a fair price.</p>
         <Grid item xs={8} md={12} className="button1" style={{paddingLeft:0}}>
           <button onClick={() => Navigate("form")} className="button" style={{width:380, height:60,borderRadius:59,color:"#132968",fontWeight:500, fontSize:18,backgroundColor:"#bfedf9"}}>Move My Package!</button></Grid>
-        <Grid container xs={12} md={7.5} justifyContent="center" alignItems="center" className="a1" style={{color:"#132968", fontWeight:400,paddingLeft:0, paddingTop:20}}><Link to="tracking">Track My Package</Link><Link to="FormConductor">Track My Package</Link></Grid>
+        <Grid 
+        container xs={12} md={7.5} 
+        justifyContent="center" 
+        alignItems="center" 
+        className="a1" 
+        style={{color:"#132968", fontWeight:400,paddingLeft:0, paddingTop:20}}>
+          {userRole === "passenger" ? (
+             <Link to="tracking">Track My Package</Link>
+          ) : userRole === "employee" ? (
+             <Link to="FormConductor">Track My Package</Link>
+          ) : null}
+        </Grid>
         </div>
       </Grid>
       <Grid item xs={12} md={5}>
