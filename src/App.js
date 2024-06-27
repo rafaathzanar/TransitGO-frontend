@@ -65,7 +65,7 @@ function App() {
             element={<EmailVerification />}
           />
 
-          <Route path="/reviews" element={<MyLayout />} />
+          {/* <Route path="/reviews" element={<MyLayout />} /> */}
 
           <Route path="/profile" element={<GeneralUserProfile />} />
           <Route path="/activityhistory" element={<ActivityHistory />} />
