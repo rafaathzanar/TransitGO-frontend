@@ -414,9 +414,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
             <p style={{ marginBottom: -10, fontSize: 15 }}>From:</p>
             <p>{fromSchedule}</p>
           </div>
-          <p className="duration" style={{ textAlign: "center", margin: 20 }}>
-            {calculateDuration(fromSchedule, toSchedule)}
-          </p>
+
           <div>
             <p style={{ marginBottom: -10, fontSize: 15 }}>To:</p>
             <p>{toSchedule}</p>
