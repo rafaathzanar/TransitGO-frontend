@@ -22,23 +22,27 @@ const FormStop = () => {
 
   const [openDialog, setOpenDialog] = useState(false); // State for success dialog
   const [stopsErrorDialog, setStopsErrorDialog] = useState(false); // State for stops validation error dialog
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const loadBusStops = async () => {
       try {
-        const busStopData = await axios.get("http://localhost:8080/busstops");
+        const busStopData = await axios.get("http://localhost:8080/busstops", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const uniqueNamesSet = new Set();
-        const busStopNames = busStopData.data.filter((stop)=>{
-          if(uniqueNamesSet.has(stop.name.trim())){
-            return false;
-          }else{
-            uniqueNamesSet.add(stop.name.trim());
-            return true;
-          }
-        }).map((stop) => ({
-          label: stop.name.trim(),
-          orderIndex: stop.orderIndex,
-        }));
+        const busStopNames = busStopData.data
+          .filter((stop) => {
+            if (uniqueNamesSet.has(stop.name.trim())) {
+              return false;
+            } else {
+              uniqueNamesSet.add(stop.name.trim());
+              return true;
+            }
+          })
+          .map((stop) => ({
+            label: stop.name.trim(),
+            orderIndex: stop.orderIndex,
+          }));
         setBusStops(busStopNames);
       } catch (error) {
         console.error("Error loading bus stops:", error.message);
@@ -65,7 +69,10 @@ const FormStop = () => {
       console.log("Response", stop);
       const response = await axios.post(
         "http://localhost:8080/busstoplocation",
-        stop
+        stop,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
       if (response.status === 200) {
         setOpenDialog(true);
@@ -150,7 +157,9 @@ const FormStop = () => {
         <Dialog open={stopsErrorDialog} onClose={handleCloseStopsErrorDialog}>
           <DialogTitle>Error</DialogTitle>
           <DialogContent>
-            <Typography>Please select a bus stop, and enter latitude and longitude.</Typography>
+            <Typography>
+              Please select a bus stop, and enter latitude and longitude.
+            </Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseStopsErrorDialog} color="primary">

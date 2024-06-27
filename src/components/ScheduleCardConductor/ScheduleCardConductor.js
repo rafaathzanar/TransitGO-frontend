@@ -6,23 +6,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ScheduleCardConductor.css";
 
-function ScheduleCardConductor({
-  busID,
-  busRegNo,
-  routeNo,
-  fromStop,
-  toStop,
-  direction,
-}) {
+function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
   const [schedules, setSchedules] = useState([]);
+  const [fromSchedule, setFromSchedule] = useState(null);
+  const [toSchedule, setToSchedule] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [updateLocationInterval, setUpdateLocationInterval] = useState(null);
-  const [retrieveLocationInterval, setRetrieveLocationInterval] =
-    useState(null);
+  const [retrieveLocationInterval, setRetrieveLocationInterval] = useState(
+    null
+  );
 
   const [journeyStarted, setJourneyStarted] = useState(false);
   const [allStops, setAllStops] = useState([]);
@@ -30,7 +26,7 @@ function ScheduleCardConductor({
 
   const [delay, setDelay] = useState("0");
   const [lastLeftStop, setLastLeftStop] = useState("");
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     function success(position) {
       setLatitude(position.coords.latitude);
@@ -52,6 +48,9 @@ function ScheduleCardConductor({
         {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
@@ -87,7 +86,10 @@ function ScheduleCardConductor({
       console.log(1111111111);
       try {
         const response = await axios.get(
-          `http://localhost:8080/bus/${busID}/stops`
+          `http://localhost:8080/bus/${busID}/stops`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
         ); //Schedules of the current bus
         //console.log("fetched scheduled for the selected bus ", response.data);
         let stops = response.data.map((stop) => {
@@ -101,6 +103,7 @@ function ScheduleCardConductor({
         console.log("response data", response.data);
         setAllStops(stops);
         setSchedules(response.data);
+        console.log("schedulessssssss", response.data);
       } catch (error) {
         setError("Error fetching bus schedules.");
         console.error("Error fetching bus schedules:", error.message);
@@ -118,13 +121,16 @@ function ScheduleCardConductor({
         if (allStops.length) {
           console.log(allStops);
           const response = await axios.get(
-            `http://localhost:8080/busstoplocations`
+            `http://localhost:8080/busstoplocations`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
           ); //Schedules of the current bus
           //console.log("fetched scheduled for the selected bus ", response.data);
           console.log("all stops in fetchStopLocations", allStops);
           let requiredStopLocationsArr = response.data.filter((location) => {
             for (let i = 0; i < allStops.length; i++) {
-              if (allStops[i].stop == location.location) {
+              if (allStops[i].stop === location.location) {
                 return location.location;
               }
             }
@@ -205,7 +211,9 @@ function ScheduleCardConductor({
   }
 
   const retrieveLocation = async () => {
-    const response = await axios.get(`http://localhost:8080/bus/${busID}`);
+    const response = await axios.get(`http://localhost:8080/bus/${busID}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     console.log(
       "current loaction of the bus is ",
@@ -339,35 +347,33 @@ function ScheduleCardConductor({
   const startEndTimes = { startTime: undefined, endTime: undefined };
 
   // Schedule the tasks to start and end at each specified time
+
   useEffect(() => {
-    if (schedules.length) {
-      console.log("schedules", schedules);
-      console.log("allstops", allStops);
-
-      const filteredStopTimes = schedules.filter(
-        (stop) =>
-          (stop.arrivalTime == null && stop.busStop.name == fromStop) ||
-          (stop.departureTime == null && stop.busStop.name == toStop)
+    console.log("Schedules", schedules);
+    if (schedules.length > 0) {
+      const filteredSchedules = schedules.filter(
+        (schedule) => schedule.direction === direction
       );
-      console.log(filteredStopTimes);
-      for (let i = 0; i < filteredStopTimes.length; i++) {
-        if (
-          filteredStopTimes[i].arrivalTime == null &&
-          filteredStopTimes[i].busStop.name == fromStop
-        ) {
-          startEndTimes.startTime = filteredStopTimes[i].departureTime;
-        } else if (
-          filteredStopTimes[i].departureTime == null &&
-          filteredStopTimes[i].busStop.name == toStop
-        ) {
-          startEndTimes.endTime = filteredStopTimes[i].arrivalTime;
-        }
-      }
+      console.log("filtered schedule", filteredSchedules);
+      const filteredStopTimes = filteredSchedules.map((schedule) => {
+        return {
+          arrivalTime: schedule.arrivalTime,
+          departureTime: schedule.departureTime,
+          busStop: schedule.busStop,
+        };
+      });
 
-      console.log("start end times", startEndTimes);
+      const startEndTimes = {
+        startTime: filteredStopTimes[0].departureTime,
+        endTime: filteredStopTimes[filteredStopTimes.length - 1].arrivalTime,
+      };
       scheduleTasks(startEndTimes, startTask, endTask);
+      setFromSchedule(filteredStopTimes[0].busStop.name);
+      setToSchedule(
+        filteredStopTimes[filteredStopTimes.length - 1].busStop.name
+      );
     }
-  }, [schedules, requiredStopLocations]);
+  }, [schedules]);
 
   const calculateDuration = (startTime, endTime) => {
     const start = new Date(`1970-01-01T${startTime}Z`);
@@ -385,19 +391,9 @@ function ScheduleCardConductor({
     (schedule) => schedule.direction === direction
   );
 
-  const fromSchedule = filteredSchedules.find(
-    (schedule) => schedule.busStop.name === fromStop
-  );
-  const toSchedule = filteredSchedules.find(
-    (schedule) => schedule.busStop.name === toStop
-  );
-
   if (!fromSchedule || !toSchedule) {
     return <p>No schedule available for the selected route.</p>;
   }
-
-  const fromTime = fromSchedule.departureTime;
-  const toTime = toSchedule.arrivalTime;
 
   return (
     <Card className="schedule-card">
@@ -416,18 +412,13 @@ function ScheduleCardConductor({
           </div>
           <div>
             <p style={{ marginBottom: -10, fontSize: 15 }}>From:</p>
-            <p>{fromStop}</p>
-            <p>{fromTime}</p>
+            <p>{fromSchedule}</p>
           </div>
-          <p className="duration" style={{ textAlign: "center", margin: 20 }}>
-            {calculateDuration(fromTime, toTime)}
-          </p>
+
           <div>
             <p style={{ marginBottom: -10, fontSize: 15 }}>To:</p>
-            <p>{toStop}</p>
-            <p>{toTime}</p>
+            <p>{toSchedule}</p>
           </div>
-          <Link to="/reviews">Review & Rating</Link>
         </div>
         <div className="footer-bar" style={footerbarStyle}>
           <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
@@ -454,7 +445,9 @@ function ScheduleCardConductor({
             >
               {filteredSchedules.map((schedule, index) => (
                 <option key={index}>
-                  Arrival at {schedule.busStop.name} {schedule.arrivalTime}
+                  {index === 0
+                    ? `${schedule.busStop.name} - Departure: ${schedule.departureTime}`
+                    : `${schedule.busStop.name} - Arrival: ${schedule.arrivalTime}`}
                 </option>
               ))}
             </select>

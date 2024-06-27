@@ -40,8 +40,7 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
 
-//           <Route path="/reviews" element={<ConductorPage />} />
-//           <Route path="/reviews/:id" element={<EditCommentBox />} />
+          <Route path="/location" element={<ConductorPage />} />
 
           <Route path="/reviews/:busID" element={<ReviewRating />} />
           <Route path="/reviewsedit/:id" element={<EditCommentBox />} />
@@ -57,7 +56,10 @@ function App() {
           <Route path="/SuccessComponent" element={<SuccessComponent />} />
           <Route path="/FailComponent" element={<FailComponent />} />
           <Route path="/NewPassword/:email" element={<NewPassword />} />
-          <Route path="/PasswordVerification" element={<PasswordVerificationPage/>}/>
+          <Route
+            path="/PasswordVerification"
+            element={<PasswordVerificationPage />}
+          />
           <Route
             path="/otpVerification/:email"
             element={<EmailVerification />}
