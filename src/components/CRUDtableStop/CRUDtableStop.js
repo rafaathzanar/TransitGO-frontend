@@ -27,7 +27,7 @@ export default function CRUDtableStop() {
     longitude: "",
   });
   const [busStops, setBusStops] = useState([]);
-
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +37,9 @@ export default function CRUDtableStop() {
 
   const loadStops = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/busstoplocations");
+      const result = await axios.get("http://localhost:8080/busstoplocations", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const stopsWithIds = result.data.map((stop) => ({
         ...stop,
         id: stop.stopID.toString(),
@@ -51,7 +53,9 @@ export default function CRUDtableStop() {
 
   const loadBusStops = async () => {
     try {
-      const busStopData = await axios.get("http://localhost:8080/busstops");
+      const busStopData = await axios.get("http://localhost:8080/busstops", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const uniqueNamesSet = new Set();
       const busStopNames = busStopData.data
         .filter((stop) => {
@@ -83,7 +87,9 @@ export default function CRUDtableStop() {
 
   const handleConfirmDelete = async (stopID) => {
     try {
-      await axios.delete(`http://localhost:8080/busstoplocation/${stopID}`);
+      await axios.delete(`http://localhost:8080/busstoplocation/${stopID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       loadStops();
     } catch (error) {
       console.error("Error deleting stop:", error.message);
@@ -110,7 +116,10 @@ export default function CRUDtableStop() {
     try {
       const response = await axios.put(
         `http://localhost:8080/busstoplocation/${selectedStop.stopID}`,
-        editFormData
+        editFormData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
       if (response.status === 200) {
         loadStops();
