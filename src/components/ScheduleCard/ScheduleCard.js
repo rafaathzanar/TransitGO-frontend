@@ -1,4 +1,3 @@
-//ScheduleCard.js
 import React, { useEffect, useState } from "react";
 import busImg from "../../logo/image 1.png";
 import { Card, CardContent } from "@mui/material";
@@ -13,6 +12,9 @@ function ScheduleCard({
   fromStop,
   toStop,
   direction,
+  delay,
+  lastLeftStop,
+  date,
 }) {
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +26,7 @@ function ScheduleCard({
         const response = await axios.get(
           `http://localhost:8080/bus/${busID}/stops`
         ); //Schedules of the current bus
-        console.log("fwtched scheduled for the selected bus ", response.data);
+        console.log("fetched schedules for the selected bus ", response.data);
         setSchedules(response.data);
       } catch (error) {
         setError("Error fetching bus schedules.");
@@ -71,6 +73,8 @@ function ScheduleCard({
   const fromTime = fromSchedule.departureTime;
   const toTime = toSchedule.arrivalTime;
 
+  const today = new Date().toISOString().split("T")[0];
+
   return (
     <Card className="schedule-card">
       <CardContent className="schedule-card-content">
@@ -103,15 +107,17 @@ function ScheduleCard({
         </div>
         <div className="footer-bar" style={footerbarStyle}>
           <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
-            <p
-              style={{
-                backgroundColor: "#90EE90",
-                padding: 2,
-                borderRadius: 6,
-              }}
-            >
-              Left "last bus stop" at "time"
-            </p>
+            {date === today && lastLeftStop && (
+              <p
+                style={{
+                  backgroundColor: "#90EE90",
+                  padding: 2,
+                  borderRadius: 6,
+                }}
+              >
+                Left {lastLeftStop}
+              </p>
+            )}
           </div>
           <div>
             <select
@@ -134,9 +140,13 @@ function ScheduleCard({
             </select>
           </div>
           <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
-            <p style={{ backgroundColor: "red", padding: 6, borderRadius: 15 }}>
-              Delay: 10 min
-            </p>
+            {date === today && delay && (
+              <p
+                style={{ backgroundColor: "red", padding: 6, borderRadius: 15 }}
+              >
+                Delay: {delay}
+              </p>
+            )}
           </div>
         </div>
       </CardContent>
