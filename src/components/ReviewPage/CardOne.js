@@ -4,11 +4,23 @@ import CommentBox from "./CommentBox";
 import FeedbackCards from "./FeedbackCards";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import { Typography } from "@mui/material";
+import { Typography, Box, LinearProgress } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import Pagination from "../../components/Pagination/Paginaton"; // adjust the path as per your actual file location
 
 const CardOne = ({ busID }) => {
   const token = localStorage.getItem("token");
   const [feedbacks, setFeedbacks] = useState([]);
+  const [summary, setSummary] = useState({
+    fiveStars: 0,
+    fourStars: 0,
+    threeStars: 0,
+    twoStars: 0,
+    oneStar: 0,
+    total: 0,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reviewsPerPage] = useState(5); // Adjust as needed
 
   useEffect(() => {
     loadReviews();
@@ -29,7 +41,17 @@ const CardOne = ({ busID }) => {
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
 
+      const summary = {
+        fiveStars: formattedFeedbacks.filter((fb) => fb.rate === 5).length,
+        fourStars: formattedFeedbacks.filter((fb) => fb.rate === 4).length,
+        threeStars: formattedFeedbacks.filter((fb) => fb.rate === 3).length,
+        twoStars: formattedFeedbacks.filter((fb) => fb.rate === 2).length,
+        oneStar: formattedFeedbacks.filter((fb) => fb.rate === 1).length,
+        total: formattedFeedbacks.length,
+      };
+
       setFeedbacks(sortedFeedbacks);
+      setSummary(summary);
     } catch (error) {
       console.error("Error loading reviews:", error);
     }
@@ -50,29 +72,90 @@ const CardOne = ({ busID }) => {
     }
   };
 
+  const getPercentage = (count) => {
+    return summary.total ? (count / summary.total) * 100 : 0;
+  };
+
+  // Pagination logic
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = feedbacks.slice(indexOfFirstReview, indexOfLastReview);
+
+  // Change page
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div>
-      <Grid item xs={11} sm={11} md={10} lg={10} xl={10} m={6}>
-        <CardContent sx={{ backgroundColor: "white", borderRadius: "25px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography>BusID: {busID}</Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          <div className="SummaryReview">
+            <CardContent
+              sx={{ backgroundColor: "white", borderRadius: "25px" }}
+            >
+              <Typography variant="h6">BusID: {busID}</Typography>
+              <Box sx={{ mt: 2 }}>
+                {[
+                  { label: "5 Stars", count: summary.fiveStars },
+                  { label: "4 Stars", count: summary.fourStars },
+                  { label: "3 Stars", count: summary.threeStars },
+                  { label: "2 Stars", count: summary.twoStars },
+                  { label: "1 Star", count: summary.oneStar },
+                ].map(({ label, count }) => (
+                  <Box key={label} sx={{ mb: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <StarIcon sx={{ color: "gold" }} />
+                      <Typography variant="body2" sx={{ ml: 1 }}>
+                        {label}: ({count})
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={getPercentage(count)}
+                      sx={{ mt: 0.5 }}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            </CardContent>
           </div>
-          <CommentBox onSubmit={handleFeedbackSubmission} busId={busID} />
-        </CardContent>
-      </Grid>
+        </Grid>
 
-      {feedbacks.map((feedback) => (
-        <FeedbackCards
-          key={feedback.id}
-          id={feedback.id}
-          username={feedback.username}
-          profile={feedback.profile}
-          rate={feedback.rate}
-          review={feedback.review}
-          createdAt={feedback.createdAt}
-          onDelete={deleteReviews}
-        />
-      ))}
+        <Grid item xs={9}>
+          <div className="AddReview">
+            <CardContent
+              sx={{ backgroundColor: "white", borderRadius: "25px" }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="h6">Reviews</Typography>
+                <CommentBox onSubmit={handleFeedbackSubmission} busId={busID} />
+              </div>
+            </CardContent>
+          </div>
+          <div className="feedbackCards">
+            {currentReviews.map((feedback) => (
+              <FeedbackCards
+                key={feedback.id}
+                id={feedback.id}
+                username={feedback.username}
+                profile={feedback.profile}
+                rate={feedback.rate}
+                review={feedback.review}
+                createdAt={feedback.createdAt}
+                onDelete={deleteReviews}
+              />
+            ))}
+
+            {/* Pagination component */}
+            <Pagination
+              totalPages={Math.ceil(feedbacks.length / reviewsPerPage)}
+              currentPage={currentPage}
+              onPageChange={onPageChange}
+            />
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };

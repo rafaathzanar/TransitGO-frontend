@@ -29,6 +29,7 @@ function EditCommentBox() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setComment(result.data);
+        console.log("restult", result.data);
       } catch (error) {
         console.error("Error loading comment:", error);
       }

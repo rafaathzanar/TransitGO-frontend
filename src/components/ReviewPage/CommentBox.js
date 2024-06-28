@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import StarRating from "./StarRating";
 import { Typography } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 function CommentBox({ onSubmit, busId }) {
   const token = localStorage.getItem("token");
@@ -26,6 +27,8 @@ function CommentBox({ onSubmit, busId }) {
   });
 
   const { rate, review } = comment;
+
+  const navigate = useNavigate();
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,6 +72,7 @@ function CommentBox({ onSubmit, busId }) {
         }
       }
     }
+    navigate(0);
   };
 
   const validate = () => {
