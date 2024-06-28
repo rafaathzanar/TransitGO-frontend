@@ -11,15 +11,15 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const MyForm = (props) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
+    headers: { Authorization: `Bearer ${token}` },
   };
   let navigate = useNavigate();
 
   const [errorMsg, setErrorMsg] = useState(""); // state to hold error messages
 
-  const {handleSubmit, setValue } = useForm();
+  const { handleSubmit, setValue } = useForm();
 
   const onSubmit = async (data) => {
     try {
@@ -28,10 +28,12 @@ const MyForm = (props) => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         // Backend validation error
-        setErrorMsg(error.response.data.Mobile_Number || error.response.data.Name ||error.response.data.Bus_Description ||error.response.data.Item_Description);
-
-       
-      
+        setErrorMsg(
+          error.response.data.Mobile_Number ||
+            error.response.data.Name ||
+            error.response.data.Bus_Description ||
+            error.response.data.Item_Description
+        );
       } else {
         // Other types of errors
         setErrorMsg("An error occurred. Please try again later.");
@@ -47,12 +49,17 @@ const MyForm = (props) => {
     }
   };
 
-  
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box sx={{ margin: "auto", marginTop: 5, display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            margin: "auto",
+            marginTop: 5,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Card>
             <CardContent>
               <Typography
@@ -74,12 +81,8 @@ const MyForm = (props) => {
                     variant="outlined"
                     placeholder="Enter your name"
                     fullWidth
-                   
                     onChange={(e) => onInputChange(e, "name")}
                   />
-
-
-                 
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -87,12 +90,8 @@ const MyForm = (props) => {
                     variant="outlined"
                     fullWidth
                     placeholder="07xxxxxxxx"
-                  
                     onChange={(e) => onInputChange(e, "mobile_Number")}
                   />
-
-             
-                 
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -101,11 +100,9 @@ const MyForm = (props) => {
                     minRows={2.5}
                     variant="outlined"
                     fullWidth
-                   
-                      required
+                    required
                     onChange={(e) => onInputChange(e, "bus_Description")}
                   />
-                  
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -114,11 +111,9 @@ const MyForm = (props) => {
                     minRows={2.5}
                     variant="outlined"
                     fullWidth
-                   
-                      required
+                    required
                     onChange={(e) => onInputChange(e, "item_Description")}
                   />
-                 
                 </Grid>
                 <Grid item xs={12}>
                   <Button
@@ -139,10 +134,18 @@ const MyForm = (props) => {
               )}
 
               <br />
-              <Link to={props.url} style={{ fontSize: "20px", float: 'right', textDecoration: 'none' }}>
-                 Report {props.lostorfound} Items Here
+              <Link
+                to={props.url}
+                style={{
+                  fontSize: "20px",
+                  float: "right",
+                  textDecoration: "none",
+                  padding: "10px",
+                  color: "",
+                }}
+              >
+                Report {props.lostorfound} Items Here
               </Link>
-             
             </CardContent>
           </Card>
         </Box>
@@ -151,4 +154,3 @@ const MyForm = (props) => {
   );
 };
 export default MyForm;
-
