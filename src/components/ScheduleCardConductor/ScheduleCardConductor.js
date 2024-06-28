@@ -16,9 +16,8 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [updateLocationInterval, setUpdateLocationInterval] = useState(null);
-  const [retrieveLocationInterval, setRetrieveLocationInterval] = useState(
-    null
-  );
+  const [retrieveLocationInterval, setRetrieveLocationInterval] =
+    useState(null);
 
   const [journeyStarted, setJourneyStarted] = useState(false);
   const [allStops, setAllStops] = useState([]);
@@ -92,6 +91,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
           }
         ); //Schedules of the current bus
         //console.log("fetched scheduled for the selected bus ", response.data);
+        //console.log("stop:", stops);
         let stops = response.data.map((stop) => {
           return {
             stop: stop["busStop"]["name"],
@@ -114,6 +114,10 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
 
     fetchSchedules();
   }, [busID]);
+
+  useEffect(() => {
+    console.log("requiredStopLocations state updated:", requiredStopLocations);
+  }, [requiredStopLocations]);
 
   useEffect(() => {
     const fetchStopLocations = async () => {
@@ -258,7 +262,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
               getAbsoluteDifferenceInMilliseconds(stop.arrivalTime)
             )
             .sort((a, b) => a.absoluteDifference - b.absoluteDifference)[0];
-
+          console.log("hi");
           if (delayTimeInMilliSecondsObj.difference < 0) {
             let delayTimeInMinutes = convertMillisecondsToMinutesSeconds(
               delayTimeInMilliSecondsObj.absoluteDifference
@@ -286,10 +290,10 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
     console.log(startEndTimes);
     const { startTime, endTime } = startEndTimes;
 
-    const [startHour, startMinute, startSecond] = "11:12:13" //startTime
+    const [startHour, startMinute, startSecond] = "05:12:13" //startTime
       .split(":")
       .map(Number);
-    const [endHour, endMinute, endSecond] = endTime.split(":").map(Number);
+    const [endHour, endMinute, endSecond] = "18:12:13".split(":").map(Number); //endTime.split(":").map(Number);
 
     let startDateTime = new Date(
       now.getFullYear(),
@@ -363,17 +367,20 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
         };
       });
 
+      console.log("filteredStopTimes:", filteredStopTimes);
+
       const startEndTimes = {
         startTime: filteredStopTimes[0].departureTime,
         endTime: filteredStopTimes[filteredStopTimes.length - 1].arrivalTime,
       };
-      scheduleTasks(startEndTimes, startTask, endTask);
+      if (requiredStopLocations.length)
+        scheduleTasks(startEndTimes, startTask, endTask);
       setFromSchedule(filteredStopTimes[0].busStop.name);
       setToSchedule(
         filteredStopTimes[filteredStopTimes.length - 1].busStop.name
       );
     }
-  }, [schedules]);
+  }, [schedules, requiredStopLocations]);
 
   const calculateDuration = (startTime, endTime) => {
     const start = new Date(`1970-01-01T${startTime}Z`);
@@ -443,13 +450,17 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
                 backgroundColor: "white",
               }}
             >
-              {filteredSchedules.map((schedule, index) => (
-                <option key={index}>
-                  {index === 0
-                    ? `${schedule.busStop.name} - Departure: ${schedule.departureTime}`
-                    : `${schedule.busStop.name} - Arrival: ${schedule.arrivalTime}`}
-                </option>
-              ))}
+              {filteredSchedules.map((schedule, index) => {
+                console.log("filteredSchedules:", filteredSchedules);
+
+                return (
+                  <option key={index}>
+                    {index === 0
+                      ? `${schedule.busStop.name} - Departure: ${schedule.departureTime}`
+                      : `${schedule.busStop.name} - Arrival: ${schedule.arrivalTime}`}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>
