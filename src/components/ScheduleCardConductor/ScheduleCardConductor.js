@@ -324,7 +324,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
     console.log(startEndTimes);
     const { startTime, endTime } = startEndTimes;
 
-    const [startHour, startMinute, startSecond] = "05:12:13" //startTime
+    const [startHour, startMinute, startSecond] = "11:12:13" //startTime
       .split(":")
       .map(Number);
     const [endHour, endMinute, endSecond] = "18:12:13".split(":").map(Number); //endTime.split(":").map(Number);
