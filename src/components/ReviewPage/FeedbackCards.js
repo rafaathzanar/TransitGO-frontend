@@ -56,7 +56,7 @@ const FeedbackCards = ({
     <Card
       sx={{
         border: 1,
-        borderRadius: "0px",
+        borderRadius: "8px",
         borderColor: "#f2a2a2",
         margin: "5px",
       }}
@@ -83,29 +83,41 @@ const FeedbackCards = ({
               <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
             }
           />
-          <Box sx={{ ml: 2 }}>{labels[rate]}</Box>
+          <Box sx={{ ml: 2, fontSize: "0.8rem" }}>{labels[rate]}</Box>
         </Box>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+          sx={{ fontSize: "0.8rem" }}
+        >
           {review}
         </Typography>
         <Typography
           variant="body2"
           color="textSecondary"
           component="p"
-          sx={{ position: "absolute", bottom: 0, right: 0 }}
+          sx={{ position: "absolute", bottom: 0, right: 0, fontSize: "0.8rem" }}
         >
           {createdAt}
         </Typography>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            width: "100%",
+            mt: 1,
+          }}
+        >
           <Link to={`/reviewsedit/${id}`}>
-            <IconButton>
-              <EditIcon />
+            <IconButton size="small">
+              <EditIcon fontSize="small" />
             </IconButton>
           </Link>
-          <IconButton onClick={handleDeleteClick}>
-            <DeleteIcon />
+          <IconButton onClick={handleDeleteClick} size="small">
+            <DeleteIcon fontSize="small" />
           </IconButton>
-        </div>
+        </Box>
       </CardContent>
       <AlertDialogBox
         open={dialogOpen}

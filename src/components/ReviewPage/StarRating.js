@@ -5,20 +5,15 @@ import StarIcon from "@mui/icons-material/Star";
 import Typography from "@mui/material/Typography";
 
 const labels = {
-  0.5: "Useless",
-  1: "Useless+",
-  1.5: "Poor",
-  2: "Poor+",
-  2.5: "Ok",
-  3: "Ok+",
-  3.5: "Good",
-  4: "Good+",
-  4.5: "Excellent",
-  5: "Excellent+",
+  1: "Useless",
+  2: "Poor",
+  3: "Ok",
+  4: "Good",
+  5: "Excellent",
 };
 
 function getLabelText(value) {
-  return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]};`;
+  return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
 const StarRating = React.forwardRef((props, ref) => {
@@ -51,7 +46,7 @@ const StarRating = React.forwardRef((props, ref) => {
         name="hover-feedback"
         size="large"
         value={value}
-        precision={0.5}
+        precision={1} // Only integer values allowed
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
           if (onChange) {
