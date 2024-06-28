@@ -4,6 +4,7 @@ import DescriptionCard from "../../components/LostAndFound/DescriptionCard";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./LostItem.css";
+import HeaderBar from "../../components/HeaderBar/HeaderBar";
 
 const FoundItem = (props) => {
   const token = localStorage.getItem("token");
@@ -65,6 +66,7 @@ const FoundItem = (props) => {
   return (
     <>
       <div className="container">
+        <HeaderBar></HeaderBar>
         <h1 className="title">Reported Found Items</h1>
         <SearchFilter onSearch={handleSearch} />
       </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MyForm from "../../components/LostAndFound/MyForm";
 import backlost from "../../images/lostback.jpg";
-
+import HeaderBar from "../../components/HeaderBar/HeaderBar";
 export default function LostForm() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -39,6 +39,7 @@ export default function LostForm() {
 
   return (
     <div style={containerStyle}>
+      <HeaderBar></HeaderBar>
       <div style={backgroundImageStyle}></div>
       <div style={formContainerStyle}>
         <MyForm
