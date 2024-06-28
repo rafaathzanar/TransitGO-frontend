@@ -23,7 +23,8 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
   const [allStops, setAllStops] = useState([]);
   const [requiredStopLocations, setRequiredStopLocations] = useState([]);
 
-  const [delay, setDelay] = useState("0");
+  const [delay, setDelay] = useState();
+  const delayRef = useRef(null);
   const [lastLeftStop, setLastLeftStop] = useState("");
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -71,12 +72,12 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
     let curUpdateLocationInterval = setInterval(updateLocation, 2000);
 
     setUpdateLocationInterval(curUpdateLocationInterval);
+
     setJourneyStarted(true);
   };
-
   const onJourneyEnd = () => {
-    console.log(updateLocationInterval);
     clearInterval(updateLocationInterval);
+
     setJourneyStarted(false);
   };
 
@@ -228,16 +229,20 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
     let curRetrievedLatitude = response.data.latitude;
     let curRetrievedLongitude = response.data.longitude;
 
-    console.log(curRetrievedLatitude, curRetrievedLongitude);
-    console.log(requiredStopLocations);
-    console.log(schedules);
+    console.log(
+      "curRetrieved Latitude Longtitude ",
+      curRetrievedLatitude,
+      curRetrievedLongitude
+    );
+    console.log("requiredStopLocations", requiredStopLocations);
+    console.log("Schedules", schedules);
 
     if (
       requiredStopLocations.length &&
       curRetrievedLatitude &&
       curRetrievedLongitude
     ) {
-      requiredStopLocations.forEach((requiredStopLocation) => {
+      requiredStopLocations.forEach(async (requiredStopLocation) => {
         const isWithin = isWithinRadius(
           requiredStopLocation.latitude,
           requiredStopLocation.longitude,
@@ -254,26 +259,55 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
             } is within ${500} meters of Your current location `
           );
 
-          let delayTimeInMilliSecondsObj = schedules
+          let delayTimeInMilliSecondsObj = filteredSchedules
             .filter(
-              (stop) => stop.busStop.name == requiredStopLocation.location
+              (stop) => stop.busStop.name === requiredStopLocation.location
             )
-            .map((stop) =>
-              getAbsoluteDifferenceInMilliseconds(stop.arrivalTime)
-            )
+            .map((stop) => {
+              let arrivalOrDepartureTime =
+                stop.arrivalTime || stop.departureTime;
+              return getAbsoluteDifferenceInMilliseconds(
+                arrivalOrDepartureTime
+              );
+            })
             .sort((a, b) => a.absoluteDifference - b.absoluteDifference)[0];
           console.log("hi");
           if (delayTimeInMilliSecondsObj.difference < 0) {
             let delayTimeInMinutes = convertMillisecondsToMinutesSeconds(
               delayTimeInMilliSecondsObj.absoluteDifference
             );
-            console.log(delayTimeInMinutes);
+
+            console.log("delay is ", delayTimeInMinutes);
+            delayRef.current = delayTimeInMinutes;
             setDelay(delayTimeInMinutes);
           } else {
+            console.log("No delay");
             setDelay("0");
+            delayRef.current = "0";
           }
 
           setLastLeftStop(requiredStopLocation.location);
+
+          try {
+            console.log("delay inside ", delayRef.current);
+            const postResponse = await axios.post(
+              `http://localhost:8080/bus`,
+              {
+                id: busID,
+                delay: delayRef.current,
+                lastLeftStop: requiredStopLocation.location,
+              },
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            console.log(
+              "Updated bus management successfully.",
+              postResponse.data
+            );
+          } catch (postError) {
+            console.error("Error updating bus management:", postError.message);
+          }
         } else {
           console.log(
             `Location ${
@@ -338,7 +372,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
   // // Example task functions
   function startTask() {
     console.log("Start task executed at", new Date());
-    const curRetrieveLocationInterval = setInterval(retrieveLocation, 60000);
+    const curRetrieveLocationInterval = setInterval(retrieveLocation, 15000);
     setRetrieveLocationInterval(curRetrieveLocationInterval);
   }
 
