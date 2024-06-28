@@ -11,6 +11,13 @@
   border-radius: 20px;
   width: 400px; /* Set the desired width of cardbox */
   height: 300px; /* Set the desired height of cardbox */
+  box-shadow: 0px 2px 4px hsla(0, 93%, 70%, 0.8);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.card-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 8px hsla(0, 93%, 70%, 0.8);
 }
 
 .card-box-content {
@@ -29,16 +36,6 @@
   font-size: 20px;
   color: #132968;
   margin-right: 10px;
-
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: contents;
 }
-
-.card-box {
-  transition: transform 0.3s ease-in-out;
-}
-
-.card-box:hover {
-  transform: scale(1.05);
-}
-
