@@ -6,6 +6,7 @@ import img2 from "../../images/FoundAnno.png";
 import img3 from "../../images/Report.png";
 import { useNavigate } from "react-router";
 import { Grid } from "@mui/material";
+import HeaderBar from "../../components/HeaderBar/HeaderBar";
 
 export default function LostFound() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function LostFound() {
 
   return (
     <div>
+      <HeaderBar></HeaderBar>
       <div
         style={{
           backgroundColor: "hsl(224, 69%, 24%)",
@@ -26,7 +28,7 @@ export default function LostFound() {
           boxShadow: "0px 5px 8px hsla(0, 93%, 70%, 0.8)",
         }}
       >
-        <Typography variant="h2" align="center" marginTop="30px" color="#fff">
+        <Typography variant="h3" align="center" marginTop="80px" color="#fff">
           Get Your Things Back with
         </Typography>
 

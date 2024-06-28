@@ -34,7 +34,7 @@ const DelayInputCon = (props) => {
   return (
     <div>
       <div className="on">
-        <Button onClick={() => navigate("report")}>+ Announcement/Delay</Button>
+        <Button >+ Announcement/Delay</Button>
       </div>
     </div>
   );
