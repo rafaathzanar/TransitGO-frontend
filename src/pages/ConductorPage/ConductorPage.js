@@ -20,7 +20,7 @@ function ConductorPage() {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://localhost:8080/bus/${2}`, {
+        const response = await axios.get(`http://localhost:8080/bus/${1}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log("bus response ", response.data);
@@ -43,7 +43,7 @@ function ConductorPage() {
       {error && <p>{error}</p>}
 
       <ScheduleCardConductor
-        busID={2}
+        busID={1}
         busRegNo={bus.regNo}
         routeNo={bus.routeNo}
         // fromStop={"Kalmunai"}

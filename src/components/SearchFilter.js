@@ -27,7 +27,9 @@ const SearchFilter = ({ onSearch }) => {
       onChange={handleSearch}
       InputProps={{
         startAdornment: (
-          <SearchIcon style={{ color: "#edebe6", marginRight: "0" }} />
+          <SearchIcon
+            style={{ color: "#edebe6", marginRight: "7", marginLeft: "10" }}
+          />
         ),
         style: { padding: "0", margin: "0" }, // Adjust padding and margin for the input field
         inputProps: { style: { color: "#edebe6" } }, // Set color for the input text

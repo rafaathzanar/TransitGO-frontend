@@ -45,7 +45,8 @@ const DescriptionCard = ({
         sx={{
           background: "linear-gradient(#9fe8fc,#e1f6fc,#edf3f5 )",
           border: "1px solid #fa9dad",
-          borderRadius: "60px",
+          borderRadius: "10px",
+          paddingLeft: "10px",
         }}
         style={{ width: "80%", margin: 20 }}
       >
