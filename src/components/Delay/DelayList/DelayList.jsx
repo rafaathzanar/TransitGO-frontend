@@ -113,6 +113,7 @@ const DelayList = () => {
           <DelayItem
             key={delay.id}
             id={delay.id}
+            username={delay.user}
             //onDelete={deleteDelayHandler}
             onDelete = {(userRole === "admin" || delay.createdBy === email) ? deleteDelayHandler : null}
             onEdit={(userRole === "admin" || delay.createdBy === email) ? editDelayHandler : null}
