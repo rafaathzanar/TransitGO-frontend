@@ -31,9 +31,24 @@ const NavbarUser = () => {
   const handleItemClick = (item) => {
     setSelectedItem(item.id);
     if(item.route == "/signin"){
-      localStorage.removeItem('token');
+      fetch("http://localhost:8080/api/v1/auth/logout",{
+        method: "POST",
+        headers: {
+          "content-Type" :"application/json",
+          "Authorization" : `Bearer ${localStorage.getItem('token')}`
+        },
+      }).then(response => {
+        if (response.ok){
+          localStorage.clear();
+          navigate(item.route);
+          console.log("Logout success");
+        }else{
+          console.log("logout failed");
+        }
+      }).catch(error => {
+        console.error("Error during logout", error);
+      });
     }
-    console.log(item);
     navigate(item.route);
   };
 
