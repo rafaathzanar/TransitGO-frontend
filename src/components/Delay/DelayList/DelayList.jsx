@@ -23,7 +23,7 @@ const DelayList = () => {
 
   const fetchDelays = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/announcements",Authorization);
+      const response = await axios.get("http://localhost:8080/announcements");
       setDelayList(response.data);
     } catch (error) {
       console.error("Error fetching delays:", error);

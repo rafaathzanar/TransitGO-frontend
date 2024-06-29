@@ -41,6 +41,7 @@ function CommentBox({ onSubmit, busId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (token != null){
     if (validate()) {
       try {
         const currentDateTime = new Date().toISOString();
@@ -72,6 +73,9 @@ function CommentBox({ onSubmit, busId }) {
         }
       }
     }
+  }else{
+    navigate("/signin");
+  }
     navigate(0);
   };
 

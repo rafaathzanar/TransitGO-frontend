@@ -24,10 +24,10 @@ function ConductorPage() {
       setLoading(true);
       setError(null);
       try {
-          const empBus = await axios.get(`http://localhost:8080/user/${id}`, Authorization);
+          const empBus = await axios.get(`http://localhost:8080/userBus/${id}`, Authorization);
           if (empBus.data != 0) {
             const busId = empBus.data;
-            console.log(busId);
+            
             const response = await axios.get(`http://localhost:8080/bus/${busId}`, Authorization);
             console.log("bus response ", response.data);
             setBus(response.data);
