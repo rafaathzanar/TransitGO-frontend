@@ -73,6 +73,8 @@ function App() {
           <Route path="/adminSignin" element={<FormAdminSignIn />} />
 
           <Route path="/accessDenied" element={<AccessDenied/>}/>
+
+          <Route path="/conductor" element={<ConductorPage/>}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

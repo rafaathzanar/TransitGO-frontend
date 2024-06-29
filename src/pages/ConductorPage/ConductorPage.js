@@ -14,17 +14,27 @@ function ConductorPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
+  const id = localStorage.getItem('id');
+  const Authorization = {
+    headers: { Authorization: `Bearer ${token}` },
+  }
 
   useEffect(() => {
     const loadBus = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://localhost:8080/bus/${1}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        console.log("bus response ", response.data);
-        setBus(response.data);
+          const empBus = await axios.get(`http://localhost:8080/user/${id}`, Authorization);
+          if (empBus.data != 0) {
+            const busId = empBus.data;
+            console.log(busId);
+            const response = await axios.get(`http://localhost:8080/bus/${busId}`, Authorization);
+            console.log("bus response ", response.data);
+            setBus(response.data);
+          }else{
+            console.log("Employee is not yet assigned with a bus");
+          }
+        
       } catch (error) {
         setError("Error fetching bus schedules. Please try again later.");
         console.error("Error fetching bus schedules:", error.message);
