@@ -7,12 +7,11 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-function EditCommentBox() {
-  const token = localStorage.getItem('token');
+function EditCommentBox({ id, onClose }) {
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
-  }
-  const { id } = useParams();
+    headers: { Authorization: `Bearer ${token}` },
+  };
   const navigate = useNavigate();
   const [comment, setComment] = useState({
     username: "",
@@ -28,9 +27,11 @@ function EditCommentBox() {
   useEffect(() => {
     const loadComment = async () => {
       try {
-        const result = await axios.get(`http://localhost:8080/rate/${id}`, Authorization);
+        const result = await axios.get(
+          `http://localhost:8080/rate/${id}`,
+          Authorization
+        );
         setComment(result.data);
-        console.log("restult", result.data);
       } catch (error) {
         console.error("Error loading comment:", error);
       }
@@ -62,7 +63,7 @@ function EditCommentBox() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        navigate(`/reviews/${id}`);
+        onClose(); // Close the dialog upon successful submission
       } catch (error) {
         console.error("Error submitting feedback:", error);
       }

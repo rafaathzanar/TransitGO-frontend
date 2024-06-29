@@ -40,7 +40,7 @@ const DelayItem = (props) => {
             {props.onDelete && <DeleteIcon onClick={deleteHandler}></DeleteIcon>}
           </div>
           <div className="authordelay">
-            <div>Posted by : </div>
+            <div>Posted by : {props.username} </div>
           </div>
         </div>
       </td>
