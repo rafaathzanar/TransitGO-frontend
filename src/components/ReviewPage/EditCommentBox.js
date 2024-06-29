@@ -9,6 +9,9 @@ import { useForm } from "react-hook-form";
 
 function EditCommentBox({ id, onClose }) {
   const token = localStorage.getItem("token");
+  const Authorization = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
   const navigate = useNavigate();
   const [comment, setComment] = useState({
     username: "",
@@ -24,9 +27,10 @@ function EditCommentBox({ id, onClose }) {
   useEffect(() => {
     const loadComment = async () => {
       try {
-        const result = await axios.get(`http://localhost:8080/rate/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const result = await axios.get(
+          `http://localhost:8080/rate/${id}`,
+          Authorization
+        );
         setComment(result.data);
       } catch (error) {
         console.error("Error loading comment:", error);

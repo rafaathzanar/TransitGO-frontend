@@ -104,7 +104,7 @@ function OTPVerification(){
                 value={otp} 
                 onChange={(e) => setOtp(e.target.value)} 
                 required
-                className='form-control' 
+                className='form-control'
                 />
                 <OTPButton title="Verify"></OTPButton>
                </label>
@@ -112,7 +112,10 @@ function OTPVerification(){
           </div>
           <div className='resent-otp'>
              <form onSubmit={handleResend}>
-                <button type='submit'>Resent OTP</button>
+                <button 
+                type='submit'
+                style={{border: "none"}} 
+                >Resent OTP</button>
              </form>
           </div>
           <div 

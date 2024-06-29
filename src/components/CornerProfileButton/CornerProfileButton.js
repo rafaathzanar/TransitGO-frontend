@@ -25,8 +25,24 @@ const CornerProfileButton = () => {
 
   const handleMenuItemClick = (route) => {
     if (route === "/signin"){
-      localStorage.removeItem('token');
-      navigate(`${route}`);
+      fetch("http://localhost:8080/api/v1/auth/logout",{
+        method: "POST",
+        headers: {
+          "content-Type" :"application/json",
+          "Authorization" : `Bearer ${localStorage.getItem('token')}`
+        },
+      }).then(response => {
+        if (response.ok){
+          localStorage.clear();
+          navigate(`${route}`);
+          console.log("Logout success");
+        }else{
+          console.log("logout failed");
+        }
+      }).catch(error => {
+        console.error("Error during logout", error);
+      });
+      
     }
     navigate(`${route}`);
     // Perform actions based on the clicked menu item, e.g., navigate to a route

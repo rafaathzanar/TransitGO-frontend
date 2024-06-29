@@ -88,7 +88,7 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             setDialogContent("Login Success");
             setOpen(true);
             
-            setNavigateTo(type === "admin" ? "/admin" : "/GeneralUserProfile");
+            setNavigateTo(type === "admin" ? "/admin" : "/profile");
             
          }catch(error){
           let errorMessage = "Something went wrong! Please try again later";
