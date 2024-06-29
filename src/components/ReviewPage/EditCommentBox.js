@@ -30,6 +30,7 @@ function EditCommentBox() {
       try {
         const result = await axios.get(`http://localhost:8080/rate/${id}`, Authorization);
         setComment(result.data);
+        console.log("restult", result.data);
       } catch (error) {
         console.error("Error loading comment:", error);
       }

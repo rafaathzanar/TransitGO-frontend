@@ -1,16 +1,13 @@
-
 #goals1 {
-    max-width: 80%;
-    margin: 2rem auto;
-  }
-  
-  #goal-form1 {
-    max-width:80%;
-    margin: 4rem auto;
-    padding: 2rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-  }
-  
-  
-  
+  max-width: 80%;
+  margin: 2rem auto;
+}
+
+#goal-form1 {
+  max-width: 80%;
+  margin: 4rem auto;
+  margin-top: 10rem;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}

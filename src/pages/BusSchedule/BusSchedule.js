@@ -56,6 +56,9 @@ function BusSchedule() {
           fromStop={from}
           toStop={to}
           direction={direction}
+          delay={bus.delay}
+          lastLeftStop={bus.lastLeftStop}
+          date={date}
         />
       ))}
     </div>

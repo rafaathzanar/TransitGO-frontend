@@ -27,8 +27,7 @@ function PageRoutes() {
         <Route path="busschedule" element={<BusSchedule />} />
 
         <Route path="announcementanddelay">
-          <Route index element={<AnnouncementandDelayReportsConductor />} />
-          <Route path="report" element={<AnnouncementandDelayReportsUser />} />
+          <Route index element={<AnnouncementandDelayReportsUser />} />
         </Route>
         <Route path="lostandfound">
           <Route index element={<LostFound />} />
