@@ -4,7 +4,15 @@ import CommentBox from "./CommentBox";
 import FeedbackCards from "./FeedbackCards";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import { Typography, Box, LinearProgress } from "@mui/material";
+import {
+  Typography,
+  Box,
+  LinearProgress,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import Pagination from "../../components/Pagination/Paginaton"; // adjust the path as per your actual file location
 
@@ -21,6 +29,7 @@ const CardOne = ({ busID }) => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewsPerPage] = useState(5); // Adjust as needed
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     loadReviews();
@@ -86,53 +95,35 @@ const CardOne = ({ busID }) => {
     setCurrentPage(pageNumber);
   };
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <div>
       <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <div className="SummaryReview">
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="center">
             <CardContent
-              sx={{ backgroundColor: "white", borderRadius: "25px" }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "10px",
+                width: "100%",
+                maxWidth: "1000px",
+              }}
             >
-              <Typography variant="h6">BusID: {busID}</Typography>
-              <Box sx={{ mt: 2 }}>
-                {[
-                  { label: "5 Stars", count: summary.fiveStars },
-                  { label: "4 Stars", count: summary.fourStars },
-                  { label: "3 Stars", count: summary.threeStars },
-                  { label: "2 Stars", count: summary.twoStars },
-                  { label: "1 Star", count: summary.oneStar },
-                ].map(({ label, count }) => (
-                  <Box key={label} sx={{ mb: 1 }}>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <StarIcon sx={{ color: "gold" }} />
-                      <Typography variant="body2" sx={{ ml: 1 }}>
-                        {label}: ({count})
-                      </Typography>
-                    </Box>
-                    <LinearProgress
-                      variant="determinate"
-                      value={getPercentage(count)}
-                      sx={{ mt: 0.5 }}
-                    />
-                  </Box>
-                ))}
-              </Box>
+              <CommentBox onSubmit={handleFeedbackSubmission} busId={busID} />
             </CardContent>
-          </div>
-        </Grid>
-
-        <Grid item xs={9}>
-          <div className="AddReview">
-            <CardContent
-              sx={{ backgroundColor: "white", borderRadius: "25px" }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="h6">Reviews</Typography>
-                <CommentBox onSubmit={handleFeedbackSubmission} busId={busID} />
-              </div>
-            </CardContent>
-          </div>
+          </Box>
+          <Box display="flex" justifyContent="center" margin="20px 0">
+            <Button variant="contained" onClick={handleOpenDialog}>
+              Click Here to Ratings Summary
+            </Button>
+          </Box>
           <div className="feedbackCards">
             {currentReviews.map((feedback) => (
               <FeedbackCards
@@ -156,6 +147,43 @@ const CardOne = ({ busID }) => {
           </div>
         </Grid>
       </Grid>
+
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Bus Ratings Summary</DialogTitle>
+        <DialogContent>
+          <CardContent>
+            <Typography variant="h6">BusID: {busID}</Typography>
+            <Box sx={{ mt: 2 }}>
+              {[
+                { label: "5 Stars", count: summary.fiveStars },
+                { label: "4 Stars", count: summary.fourStars },
+                { label: "3 Stars", count: summary.threeStars },
+                { label: "2 Stars", count: summary.twoStars },
+                { label: "1 Stars", count: summary.oneStar },
+              ].map(({ label, count }) => (
+                <Box key={label} sx={{ mb: 1 }}>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <StarIcon sx={{ color: "gold" }} />
+                    <Typography variant="body2" sx={{ ml: 1 }}>
+                      {label}: ({count})
+                    </Typography>
+                  </Box>
+                  <LinearProgress
+                    variant="determinate"
+                    value={getPercentage(count)}
+                    sx={{ mt: 0.5 }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          </CardContent>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

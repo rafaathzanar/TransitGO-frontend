@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import CardOne from "../../components/ReviewPage/CardOne";
 import { useParams } from "react-router-dom";
+import Grid from "@mui/material/Grid";
 
 function ReviewRating() {
   const { busID } = useParams();
 
   return (
-    <div
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
       style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#031a30",
-        borderTopRightRadius: "0px",
+        backgroundColor: "#fa6b6b",
+        minHeight: "100vh",
       }}
     >
-      <CardOne busID={busID} />
-    </div>
+      <Grid item xs={12} sm={10} md={8} lg={8} m={4}>
+        <CardOne busID={busID} />
+      </Grid>
+    </Grid>
   );
 }
 
