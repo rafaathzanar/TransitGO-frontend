@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import StarRating from "./StarRating";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
@@ -94,7 +94,7 @@ function CommentBox({ onSubmit, busId }) {
   };
 
   return (
-    <div style={{ margin: "50px" }}>
+    <Box sx={{ margin: "20px", textAlign: "center" }}>
       <Typography
         variant="h4"
         sx={{ display: "flex", justifyContent: "center" }}
@@ -105,31 +105,46 @@ function CommentBox({ onSubmit, busId }) {
       <StarRating value={rate} onChange={onRatingChange} />
       {errors.rate && <Typography color="error">{errors.rate}</Typography>}
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <form onSubmit={handleSubmit}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <form
+          onSubmit={handleSubmit}
+          style={{ width: "100%", maxWidth: "1000px" }}
+        >
           <TextField
             label="Comments"
             multiline
-            rows={8}
+            rows={10}
             placeholder="Leave a Comment here!"
             name="review"
             value={review}
+            fullWidth
             onChange={onInputChange}
             error={Boolean(errors.review)}
             helperText={errors.review}
           />
-          <br />
-          <br />
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: "black", color: "white" }}
-            type="submit"
-          >
-            Submit
-          </Button>
+          <Box sx={{ marginTop: "16px" }}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#0B183C",
+                color: "white",
+                width: "10rem",
+              }}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Box>
         </form>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

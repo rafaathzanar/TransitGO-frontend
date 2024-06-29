@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -32,7 +32,7 @@ export default function Reviews({ heading, onRadioChange }) {
         <Card
           sx={{
             border: 1,
-            borderRadius: "25px",
+            borderRadius: "15px",
             borderColor: "#f2a2a2",
             width: "15rem",
             height: "14rem",
@@ -46,7 +46,10 @@ export default function Reviews({ heading, onRadioChange }) {
                 label={<Typography variant="h5">Very High</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === "Very High" ? 100 : 0} />
+              <LinearProgress
+                variant="determinate"
+                value={value === "Very High" ? 100 : 0}
+              />
 
               <FormControlLabel
                 value="High"
@@ -54,7 +57,10 @@ export default function Reviews({ heading, onRadioChange }) {
                 label={<Typography variant="h5">High</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === "High" ? 100 : 0} />
+              <LinearProgress
+                variant="determinate"
+                value={value === "High" ? 100 : 0}
+              />
 
               <FormControlLabel
                 value="Low"
@@ -62,7 +68,10 @@ export default function Reviews({ heading, onRadioChange }) {
                 label={<Typography variant="h5">Low</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === "Low" ? 100 : 0} />
+              <LinearProgress
+                variant="determinate"
+                value={value === "Low" ? 100 : 0}
+              />
 
               <FormControlLabel
                 value="Very Low"
@@ -70,7 +79,10 @@ export default function Reviews({ heading, onRadioChange }) {
                 label={<Typography variant="h5">Very Low</Typography>}
                 labelPlacement="start"
               />
-              <LinearProgress variant="determinate" value={value === "Very Low" ? 100 : 0} />
+              <LinearProgress
+                variant="determinate"
+                value={value === "Very Low" ? 100 : 0}
+              />
             </div>
           </CardContent>
         </Card>
@@ -78,4 +90,3 @@ export default function Reviews({ heading, onRadioChange }) {
     </FormControl>
   );
 }
-

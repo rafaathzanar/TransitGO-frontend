@@ -529,10 +529,11 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
 const headbarStyle = {
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   backgroundColor: "#071E60",
   height: "32px",
   color: "white",
-  borderRadius: 6,
+  borderRadius: "6px 6px 0 0",
 };
 const middlePartStyle = {
   display: "flex",
@@ -544,7 +545,7 @@ const footerbarStyle = {
   justifyContent: "space-between",
   alignItems: "center",
   backgroundColor: "#071E60",
-  borderRadius: 6,
+  borderRadius: " 0 0 6px 6px",
 };
 
 export default ScheduleCardConductor;

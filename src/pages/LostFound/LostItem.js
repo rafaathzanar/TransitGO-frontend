@@ -67,8 +67,8 @@ const LostItem = (props) => {
 
   return (
     <>
+      <HeaderBar></HeaderBar>
       <div className="container">
-        <HeaderBar></HeaderBar>
         <h1 className="title">Reported Lost Items</h1>
         <SearchFilter onSearch={handleSearch} />
       </div>
