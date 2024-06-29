@@ -7,9 +7,8 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-function EditCommentBox() {
+function EditCommentBox({ id, onClose }) {
   const token = localStorage.getItem("token");
-  const { id } = useParams();
   const navigate = useNavigate();
   const [comment, setComment] = useState({
     username: "",
@@ -29,7 +28,6 @@ function EditCommentBox() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setComment(result.data);
-        console.log("restult", result.data);
       } catch (error) {
         console.error("Error loading comment:", error);
       }
@@ -61,7 +59,7 @@ function EditCommentBox() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        navigate(`/reviews/${id}`);
+        onClose(); // Close the dialog upon successful submission
       } catch (error) {
         console.error("Error submitting feedback:", error);
       }
