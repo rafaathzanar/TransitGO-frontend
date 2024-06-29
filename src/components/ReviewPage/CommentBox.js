@@ -17,7 +17,7 @@ function CommentBox({ onSubmit, busId }) {
     rate: "",
     review: "",
     buses: {
-      busId: parseInt(busId, 10)
+      busId: parseInt(busId, 10),
     },
   });
 

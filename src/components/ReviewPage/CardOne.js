@@ -18,6 +18,7 @@ import Pagination from "../../components/Pagination/Paginaton"; // adjust the pa
 
 const CardOne = ({ busID }) => {
   const token = localStorage.getItem("token");
+  const currentUser = localStorage.getItem("username");
   const [feedbacks, setFeedbacks] = useState([]);
   const [summary, setSummary] = useState({
     fiveStars: 0,
@@ -133,6 +134,7 @@ const CardOne = ({ busID }) => {
                 review={feedback.review}
                 createdAt={feedback.createdAt}
                 onDelete={deleteReviews}
+                currentUser={currentUser}
               />
             ))}
 

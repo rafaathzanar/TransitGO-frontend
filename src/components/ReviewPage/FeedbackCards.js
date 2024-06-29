@@ -10,6 +10,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import AlertDialogBox from "../AlertDialogBox";
+import EditCommentBox from "./EditCommentBox";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 
 const labels = {
   0.5: "Useless",
@@ -37,16 +41,26 @@ const FeedbackCards = ({
   rate,
   review,
   createdAt,
+  currentUser,
   onDelete,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const handleDeleteClick = () => {
     setDialogOpen(true);
   };
 
+  const handleEditClick = () => {
+    setEditDialogOpen(true);
+  };
+
   const handleCloseDialog = () => {
     setDialogOpen(false);
+  };
+
+  const handleEditClose = () => {
+    setEditDialogOpen(false);
   };
 
   const handleConfirmDelete = () => {
@@ -90,7 +104,6 @@ const FeedbackCards = ({
               <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
             }
           />
-          {/* <Box sx={{ ml: 2, fontSize: "0.8rem" }}>{labels[rate]}</Box> */}
         </Box>
         <Typography
           variant="body2"
@@ -130,11 +143,10 @@ const FeedbackCards = ({
               <EditIcon fontSize="small" color="#0B183C" />
             </IconButton>
           </Link>
-          <IconButton onClick={handleDeleteClick} size="small">
-             <DeleteIcon fontSize="small" />
-          </IconButton>
-          
-        </Box>
+            <IconButton onClick={handleDeleteClick} size="small">
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Box>
         )}
       </CardContent>
       <AlertDialogBox
@@ -142,6 +154,18 @@ const FeedbackCards = ({
         onClose={handleCloseDialog}
         onConfirm={handleConfirmDelete}
       />
+
+      <Dialog
+        open={editDialogOpen}
+        onClose={handleEditClose}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Edit Review & Ratings</DialogTitle>
+        <DialogContent>
+          <EditCommentBox id={id} onClose={handleEditClose} />
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
