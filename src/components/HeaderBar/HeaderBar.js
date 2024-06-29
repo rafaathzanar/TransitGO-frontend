@@ -64,7 +64,24 @@ function HeaderBar() {
    const handleSignOut = () =>{
      setIsLoggedIn(false);
      setUsername("");
-     navigate("/signin");
+     fetch("http://localhost:8080/api/v1/auth/logout",{
+      method: "POST",
+      headers: {
+        "content-Type" :"application/json",
+        "Authorization" : `Bearer ${localStorage.getItem('token')}`
+      },
+    }).then(response => {
+      if (response.ok){
+        localStorage.clear();
+        navigate("/signin");
+        console.log("Logout success");
+      }else{
+        console.log("logout failed");
+      }
+    }).catch(error => {
+      console.error("Error during logout", error);
+    });
+     
    };
 
   //---------------------------------------
@@ -165,7 +182,7 @@ function HeaderBar() {
                 if(username.type === "admin"){
                   navigate("/admin");
                 }else{
-                  navigate("/GeneralUserProfile");
+                  navigate("/profile");
                 }
                 
               }}

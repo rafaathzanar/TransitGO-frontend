@@ -26,7 +26,7 @@ export const NavbarUserItems  = [
     id: 0,
     icon: <AccountCircle />,
     label: "Profile",
-    route: "/GeneralUserProfile",
+    route: "/profile",
   },
   {
     id: 2,

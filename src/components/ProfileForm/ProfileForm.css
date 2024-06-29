@@ -4,8 +4,8 @@
     grid-template-areas:
     "form"
     ;
-    /*background-color: rgb(94, 144, 204,0.2);*/
-    border: 1px solid  #FA6B6B ;
+    /*background-color: rgb(94, 144, 204,0.2);
+    border: 1px solid  #FA6B6B ;*/
     border-radius: 10px;
     padding: 3%;
 }

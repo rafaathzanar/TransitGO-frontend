@@ -7,13 +7,16 @@ import axios from "axios";
 
 function CommentBox({ onSubmit, busId }) {
   const token = localStorage.getItem("token");
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  }
   const [comment, setComment] = useState({
     username: localStorage.getItem("username") || "Anonymous",
     profile: "",
     rate: "",
     review: "",
     buses: {
-      busId: busId,
+      busId: parseInt(busId, 10),
     },
   });
 
@@ -38,12 +41,11 @@ function CommentBox({ onSubmit, busId }) {
     if (validate()) {
       try {
         const currentDateTime = new Date().toISOString();
+        console.log(comment);
         const response = await axios.post(
-          "http://localhost:8080/rate",
+          "http://localhost:8080/rate/bus",
           { ...comment, rate: parseFloat(rate) },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          Authorization
         );
         onSubmit({
           ...comment,
@@ -56,7 +58,7 @@ function CommentBox({ onSubmit, busId }) {
           rate: "",
           review: "",
           buses: {
-            busId: busId,
+            busId: parseInt(busId,10),
           },
         });
         console.log("comment: ", comment);

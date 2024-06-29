@@ -27,6 +27,7 @@ import EditCommentBox from "./components/ReviewPage/EditCommentBox";
 import FormAddAdmin from "./pages/FormAddAdmin/FormAddAdmin.js";
 import FormAdminSignIn from "./pages/FormAdminSignIn/FormAdminSignIn.js";
 import PasswordVerificationPage from "./pages/PasswordVerificationPage/PasswordVerificationPage.js";
+import AccessDenied from "./pages/AccessDenied/AccessDenied.js";
 function App() {
   return (
     <ThemeProvider theme={dashboardTheme}>
@@ -44,8 +45,6 @@ function App() {
           <Route path="/LoginBusEmployee" element={<LoginBusEmployee />} />
           <Route path="/LoginGeneralUser" element={<LoginGeneralUser />} />
 
-          <Route path="/ActivityHistory" element={<ActivityHistory />} />
-          <Route path="/GeneralUserProfile" element={<GeneralUserProfile />} />
           <Route path="/edituser/:id" element={<FormEditEmployee />} />
           <Route path="/verifyEmail" element={<EmailVerificationSend />} />
           <Route path="/verify-email" element={<EmailVerificationResult />} />
@@ -64,6 +63,8 @@ function App() {
           <Route path="/dummy" element={<Dummy />} />
           <Route path="/adminAdd" element={<FormAddAdmin />} />
           <Route path="/adminSignin" element={<FormAdminSignIn />} />
+
+          <Route path="/accessDenied" element={<AccessDenied/>}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

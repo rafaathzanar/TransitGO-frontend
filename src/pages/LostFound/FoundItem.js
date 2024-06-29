@@ -22,7 +22,7 @@ const FoundItem = (props) => {
 
   const loadItems = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/founds",Authorization);
+      const response = await axios.get("http://localhost:8080/founds");
       const sortedItems = response.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
       setItems(sortedItems);//sort by date time
     } catch (error) {
