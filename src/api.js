@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
     baseURL: "http://localhost:8080",
@@ -17,8 +17,11 @@ api.interceptors.response.use(
     response => response,
     error => {
         if (error.response && error.response.status === 403){
-            useNavigate().push('/accessDenied');
+            console.log("403");
+            const navigate = useNavigate();
+            navigate('/accessDenied');
         }
+        console.log("no error");
         return Promise.reject(error);
     }
 );

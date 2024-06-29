@@ -22,7 +22,6 @@ const DelayList = () => {
   }, []);
 
   const fetchDelays = async () => {
-    console.log(userRole.username);
     try {
       const response = await axios.get("http://localhost:8080/announcements",Authorization);
       setDelayList(response.data);
