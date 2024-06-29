@@ -25,9 +25,9 @@ const StarRating = React.forwardRef((props, ref) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center", // Center vertically
-        justifyContent: "center", // Center horizontally
-        height: "6rem",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "5rem",
       }}
     >
       <Typography
@@ -35,7 +35,7 @@ const StarRating = React.forwardRef((props, ref) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center", // Center vertically
+          alignItems: "center",
           justifyContent: "center",
         }}
       >

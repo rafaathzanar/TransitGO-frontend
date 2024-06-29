@@ -8,7 +8,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
   }
 
   return (
-    <nav>
+    <nav style={{ marginTop: "40px" }}>
       <ul className="pagination">
         {pageNumbers.map((number) => (
           <li key={number} className="page-item">

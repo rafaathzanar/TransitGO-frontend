@@ -69,7 +69,12 @@ const FeedbackCards = ({
           position: "relative",
         }}
       >
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+          sx={{ fontSize: "0.8rem", color: "#0B183C", fontWeight: "bold" }}
+        >
           {username}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -83,13 +88,13 @@ const FeedbackCards = ({
               <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
             }
           />
-          <Box sx={{ ml: 2, fontSize: "0.8rem" }}>{labels[rate]}</Box>
+          {/* <Box sx={{ ml: 2, fontSize: "0.8rem" }}>{labels[rate]}</Box> */}
         </Box>
         <Typography
           variant="body2"
           color="textSecondary"
           component="p"
-          sx={{ fontSize: "0.8rem" }}
+          sx={{ fontSize: "1.1rem", paddingTop: "10px" }}
         >
           {review}
         </Typography>
@@ -97,7 +102,14 @@ const FeedbackCards = ({
           variant="body2"
           color="textSecondary"
           component="p"
-          sx={{ position: "absolute", bottom: 0, right: 0, fontSize: "0.8rem" }}
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            fontSize: "0.7rem",
+            padding: "10px",
+            color: "#0B183C",
+          }}
         >
           {createdAt}
         </Typography>
@@ -110,8 +122,8 @@ const FeedbackCards = ({
           }}
         >
           <Link to={`/reviewsedit/${id}`}>
-            <IconButton size="small">
-              <EditIcon fontSize="small" />
+            <IconButton size="small" color="#0B183C">
+              <EditIcon fontSize="small" color="#0B183C" />
             </IconButton>
           </Link>
           <IconButton onClick={handleDeleteClick} size="small">
