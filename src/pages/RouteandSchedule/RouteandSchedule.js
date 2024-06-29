@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import CardButton from "../../components/CardButton/CardButton";
 import Icon1 from "../../logo/manageroute.png";
 import Icon2 from "../../logo/managebus.png";
+import Icon3  from "../../logo/location.png";
 import { useNavigate } from "react-router";
 const RouteandSchedule = () => {
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ const RouteandSchedule = () => {
             typography="Bus Management"
             icon={Icon2}
             onClick={() => navigate("busmanagement")}
+          />
+        </Grid>
+        <Grid item xs={12} lg={4} justifyContent="center" alignItems="center" marginTop={2}>
+          <CardButton
+            typography="Location Management"
+            icon={Icon3}
+            onClick={() => navigate("stopmanagement")}
           />
         </Grid>
       </Grid>

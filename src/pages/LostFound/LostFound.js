@@ -6,27 +6,51 @@ import img2 from "../../images/FoundAnno.png";
 import img3 from "../../images/Report.png";
 import { useNavigate } from "react-router";
 import { Grid } from "@mui/material";
+import HeaderBar from "../../components/HeaderBar/HeaderBar";
 
 export default function LostFound() {
   const navigate = useNavigate();
 
+  const cardBoxStyle = {
+    boxShadow: "0px 2px 4px hsla(0, 93%, 70%, 0.8)",
+    padding: "20px",
+    borderRadius: "8px",
+    textAlign: "center",
+  };
+
   return (
     <div>
-      <Typography variant="h2" align="center" marginTop="50px">
-        Get Your Things Back with
-      </Typography>
-
-      <Typography
-        variant="h2"
-        align="center"
-        fontWeight="bold"
-        fontFamily="OpenSans"
-        marginBottom="80px"
+      <HeaderBar></HeaderBar>
+      <div
+        style={{
+          backgroundColor: "hsl(224, 69%, 24%)",
+          padding: "10px 0",
+          boxShadow: "0px 5px 8px hsla(0, 93%, 70%, 0.8)",
+        }}
       >
-        Lost & Found
-      </Typography>
+        <Typography variant="h3" align="center" marginTop="80px" color="#fff">
+          Get Your Things Back with
+        </Typography>
 
-      <Grid container spacing={6} justifyContent="center" alignItems="center">
+        <Typography
+          variant="h2"
+          align="center"
+          fontWeight="bold"
+          fontFamily="OpenSans"
+          marginBottom="30px"
+          color="#fff"
+        >
+          Lost & Found
+        </Typography>
+      </div>
+
+      <Grid
+        container
+        spacing={6}
+        justifyContent="center"
+        alignItems="center"
+        mt={4}
+      >
         <CardBox
           icon={img1}
           typography={"Lost Announcement"}

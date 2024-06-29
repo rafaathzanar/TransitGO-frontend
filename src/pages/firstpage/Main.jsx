@@ -3,11 +3,13 @@ import "./main.css";
 import m1 from "../../components/assets/p1.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Grid} from "@mui/material";
+import HeaderBar from "../../components/HeaderBar/HeaderBar";
 const Main = () => {
   const userRole = localStorage.getItem('userRole');
   const Navigate = useNavigate();
   return (
     <Grid container>
+      <HeaderBar></HeaderBar>
       <Grid item xs={12} md={7}>
         <div className="leftside">
         <h1 style={{color:"#132968", fontWeight:700}}>Move your packages <br/>with us.</h1>

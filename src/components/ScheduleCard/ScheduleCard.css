@@ -41,6 +41,7 @@
   height: auto;
 }
 
+
 @media screen and (max-width: 1440px) {
   .schedule-card {
     width: 70%;
@@ -152,6 +153,7 @@
   .header-bar {
     color: brown;
   }
+
 }
 @media screen and (max-width: 425px) {
   .schedule-card {

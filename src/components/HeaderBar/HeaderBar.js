@@ -143,7 +143,7 @@ function HeaderBar() {
                 <MenuItem
                   key={page}
                   onClick={() => {
-                    handleCloseNavMenu();
+                    // handleCloseNavMenu();
                     navigate(page.routePath);
                   }}
                 >
@@ -163,7 +163,7 @@ function HeaderBar() {
               <Button
                 key={page.displayName}
                 onClick={() => {
-                  handleCloseNavMenu();
+                  // handleCloseNavMenu();
                   navigate(page.routePath);
                 }}
                 sx={{ my: 2, color: "white", display: "block" }}

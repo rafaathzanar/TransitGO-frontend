@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import SearchFilter from "../../components/SearchFilter";
 import DescriptionCard from "../../components/LostAndFound/DescriptionCard";
 import axios from "axios";
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import "./LostItem.css";
+import HeaderBar from "../../components/HeaderBar/HeaderBar";
 
 const LostItem = (props) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
+    headers: { Authorization: `Bearer ${token}` },
   };
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -15,8 +17,6 @@ const LostItem = (props) => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-
-  
 
   useEffect(() => {
     loadItems();
@@ -28,7 +28,7 @@ const LostItem = (props) => {
       const sortedItems = response.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
       setItems(sortedItems); //sort by date time
     } catch (error) {
-      console.error('Error loading items:', error);
+      console.error("Error loading items:", error);
     }
   };
 
@@ -37,7 +37,7 @@ const LostItem = (props) => {
       await axios.delete(`http://localhost:8080/lost/${id}`, Authorization);
       loadItems();
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error("Error deleting item:", error);
     }
   };
 
@@ -45,9 +45,13 @@ const LostItem = (props) => {
     setSearchTerm(term); // Update the search term state
     const filtered = items.filter((item) => {
       // Ensure item.name and item.item_Description are not null or undefined
-      const busDescription = item.bus_Description ? item.bus_Description.toLowerCase() : '';
-      const itemDescription = item.item_Description ? item.item_Description.toLowerCase() : '';
-      
+      const busDescription = item.bus_Description
+        ? item.bus_Description.toLowerCase()
+        : "";
+      const itemDescription = item.item_Description
+        ? item.item_Description.toLowerCase()
+        : "";
+
       return (
         busDescription.includes(term.toLowerCase()) ||
         itemDescription.includes(term.toLowerCase())
@@ -58,9 +62,10 @@ const LostItem = (props) => {
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", marginTop: 20 }}>
-       <h1 style={{ color: "#071d40", fontFamily: "fantasy", fontSize: "50px",  }}>Reported Lost Items</h1>
-        <SearchFilter onSearch={handleSearch} /> 
+      <HeaderBar></HeaderBar>
+      <div className="container">
+        <h1 className="title">Reported Lost Items</h1>
+        <SearchFilter onSearch={handleSearch} />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -93,7 +98,6 @@ const LostItem = (props) => {
                 dateTime={item.dateTime}
                 editLink={`/lostandfound/lostfoundreport2/${item.id}`}
                 onDelete={() => deleteItem(item.id)}
-                
               />
             </div>
           ))
