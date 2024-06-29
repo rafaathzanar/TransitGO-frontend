@@ -215,7 +215,7 @@ function Textfield() {
     if (hasError) return;
 
     try {
-      const response = await axios.post("http://localhost:8080/package", updatedPack,Authorization);
+      const response = await axios.post("http://localhost:8080/package", updatedPack, Authorization);
       const packageID = response.data.packageID;
       const selectedBus = availableBuses.find(bus => bus.id === busID);
 

@@ -37,9 +37,7 @@ const CardOne = ({ busID }) => {
 
   const loadReviews = async () => {
     try {
-      const result = await axios.get(`http://localhost:8080/rates/${busID}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const result = await axios.get(`http://localhost:8080/rates/${busID}`);
 
       const formattedFeedbacks = result.data.map((feedback) => ({
         ...feedback,

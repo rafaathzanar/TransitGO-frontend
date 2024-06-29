@@ -8,7 +8,10 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 
 function EditCommentBox() {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
+  const Authorization = {
+    headers: {Authorization: `Bearer ${token}`}
+  }
   const { id } = useParams();
   const navigate = useNavigate();
   const [comment, setComment] = useState({
@@ -25,9 +28,7 @@ function EditCommentBox() {
   useEffect(() => {
     const loadComment = async () => {
       try {
-        const result = await axios.get(`http://localhost:8080/rate/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const result = await axios.get(`http://localhost:8080/rate/${id}`, Authorization);
         setComment(result.data);
         console.log("restult", result.data);
       } catch (error) {
