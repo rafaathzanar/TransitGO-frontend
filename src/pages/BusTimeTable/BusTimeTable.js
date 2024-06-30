@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Button, Box, Grid, Typography, Container } from "@mui/material";
 import moment from "moment";
 
 const BusTimeTable = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
+    headers: { Authorization: `Bearer ${token}` },
   };
   const { busId } = useParams();
   const [weeklyStatus, setWeeklyStatus] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(moment());
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadWeeklyStatus();
@@ -67,7 +68,7 @@ const BusTimeTable = () => {
         weeklyStatus,
         Authorization
       );
-      alert("Weekly status saved successfully");
+      navigate(-1);
     } catch (error) {
       console.error("Error saving weekly status:", error);
     }

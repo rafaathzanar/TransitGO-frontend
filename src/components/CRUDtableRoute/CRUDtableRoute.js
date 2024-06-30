@@ -27,9 +27,9 @@ export default function CRUDtableRoute() {
 
   const loadRoutes = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const result = await axios.get("http://localhost:8080/busroutes",{
-        headers: {Authorization: `Bearer ${token}`}
+      const token = localStorage.getItem("token");
+      const result = await axios.get("http://localhost:8080/busroutes", {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const routesWithIds = result.data.map((route) => ({
@@ -54,9 +54,9 @@ export default function CRUDtableRoute() {
 
   const handleConfirmDelete = async (routeno) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8080/busroute/${routeno}`,{
-        headers: {Authorization: `Bearer ${token}`}
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:8080/busroute/${routeno}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       loadRoutes();
     } catch (error) {
@@ -153,6 +153,7 @@ export default function CRUDtableRoute() {
         width: "70rem",
         backgroundColor: "hsla(190, 96%, 80%, 0.2)",
         marginTop: "30px",
+        marginBottom: "30px",
       }}
     >
       <SearchField
@@ -186,8 +187,8 @@ export default function CRUDtableRoute() {
                     </ListItem>
                   ))
               ) : (
-                <ListItem>
-                  <ListItemText primary="No buses are currently available in the route" />
+                <ListItem key="no-buses">
+                  <ListItemText primary="No buses are currently assigned to the route" />
                 </ListItem>
               ))}
           </List>
