@@ -5,6 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { Nav } from 'react-bootstrap';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "../UI/Button/Button";
 
 
 
@@ -19,6 +25,10 @@ function ProfileForm({profileInfo, setProfileInfo}){
        lname: '',
        uname: '',
       });
+
+  const [Open, setOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState("");
+  const [dialogTitle, setDialogTitle] = useState("");
 
    //to handle edit button click
    const handleEdit = (e) => {
@@ -48,7 +58,10 @@ function ProfileForm({profileInfo, setProfileInfo}){
                headers: {Authorization: `Bearer ${token}`}
             }
          );
-         window.confirm("Changes Saved!");
+         setDialogTitle("Saved");
+         setDialogContent("Changes Saved");
+         setOpen(true);
+
          console.log(response.data);
    
          setProfileInfo(response.data);
@@ -90,6 +103,10 @@ function ProfileForm({profileInfo, setProfileInfo}){
    useEffect(() => {
       getProfileInfo();
    },[]);
+
+   const handleCloseDialog = () => {
+      setOpen(false);
+    }
 
    
     return(
@@ -169,6 +186,25 @@ function ProfileForm({profileInfo, setProfileInfo}){
         </div>
         </form>
         </div>
+
+        <Dialog
+        open={Open}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {dialogContent}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
     );
 }

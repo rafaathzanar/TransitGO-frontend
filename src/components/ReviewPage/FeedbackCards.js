@@ -28,6 +28,8 @@ const labels = {
   5: "Excellent+",
 };
 
+const email = localStorage.getItem('username');
+
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
@@ -126,18 +128,21 @@ const FeedbackCards = ({
         >
           {createdAt}
         </Typography>
-        {currentUser === username && (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              width: "100%",
-              mt: 1,
-            }}
-          >
-            <IconButton onClick={handleEditClick} size="small">
+        {username === email && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            width: "100%",
+            mt: 1,
+          }}
+        >
+          
+          <Link to={`/reviewsedit/${id}`}>
+            <IconButton size="small" color="#0B183C">
               <EditIcon fontSize="small" color="#0B183C" />
             </IconButton>
+          </Link>
             <IconButton onClick={handleDeleteClick} size="small">
               <DeleteIcon fontSize="small" />
             </IconButton>

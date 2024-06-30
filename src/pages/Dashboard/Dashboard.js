@@ -1,12 +1,47 @@
 import "./Dashboard.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 
 import { Typography } from "@mui/material";
 import RampRightIcon from "@mui/icons-material/RampRight";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import DirectionsBusFilledIcon from "@mui/icons-material/DirectionsBusFilled";
+import axios from "axios";
 function DashboardElement() {
+ const token = localStorage.getItem('token');
+ const Authorization = {
+  headers: { Authorization: `Bearer ${token}` },
+}
+ const [user, setUser] = useState('');
+ const [route, setRoute] = useState('');
+ const [emp, setEmp] = useState('');
+ const [bus, setBus] = useState('');
+
+ useEffect(() => {
+  const loadNumber = async () => {
+      try{
+        const user = await axios.get("http://localhost:8080/admin/users",Authorization);
+        const  users = user.data.userList || [];
+        const employee = users.filter((user)=>user.type === "employee")
+        setUser(users.length);
+        setEmp(employee.length);
+
+        const route = await axios.get("http://localhost:8080/busroutes",Authorization);
+        const routes = route.data || [];
+        setRoute(routes.length);
+
+        const bus = await axios.get("http://localhost:8080/buses",Authorization);
+        const buses = bus.data || [];
+        setBus(buses.length);
+
+      }catch(error){
+        console.error("Error loading feed:", error);
+      }
+  }
+  loadNumber();
+
+ },[Authorization])
+
   return (
     <>
       <div className="main-container-hash">
@@ -18,7 +53,7 @@ function DashboardElement() {
               </Typography>
               <PeopleAltIcon className="card_icon-hash" />
             </div>
-            <h1>300</h1>
+            <h1>{user}</h1>
           </div>
           <div className="card-hash">
             <div className="card-inner-hash">
@@ -26,7 +61,7 @@ function DashboardElement() {
 
               <RampRightIcon className="card_icon-hash" />
             </div>
-            <h1>12</h1>
+            <h1>{route}</h1>
           </div>
           <div className="card-hash">
             <div className="card-inner-hash">
@@ -35,7 +70,7 @@ function DashboardElement() {
               </Typography>
               <BsPeopleFill className="card_icon-hash" />
             </div>
-            <h1>33</h1>
+            <h1>{emp}</h1>
           </div>
           <div className="card-hash">
             <div className="card-inner-hash">
@@ -45,7 +80,7 @@ function DashboardElement() {
               </Typography>
               <DirectionsBusFilledIcon className="card_icon-hash" />
             </div>
-            <h1>42</h1>
+            <h1>{bus}</h1>
           </div>
         </div>
       </div>

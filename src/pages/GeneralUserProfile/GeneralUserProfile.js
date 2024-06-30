@@ -28,7 +28,7 @@ function GeneralUserProfile(){
                      <GeneralUserProfileIcon username={lastname} pagename='PROFILE'></GeneralUserProfileIcon>
                  </div>
                  <div className='profilenotification'>
-                     <CircleNotifications sx={{fontSize:40}}></CircleNotifications>
+                     
                  </div>
               </div>
               <div className='profilesubject'>
