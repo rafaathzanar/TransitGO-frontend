@@ -16,8 +16,9 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [updateLocationInterval, setUpdateLocationInterval] = useState(null);
-  const [retrieveLocationInterval, setRetrieveLocationInterval] =
-    useState(null);
+  const [retrieveLocationInterval, setRetrieveLocationInterval] = useState(
+    null
+  );
 
   const [journeyStarted, setJourneyStarted] = useState(false);
   const [allStops, setAllStops] = useState([]);

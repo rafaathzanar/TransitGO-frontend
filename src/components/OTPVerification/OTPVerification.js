@@ -6,7 +6,15 @@ import OTPButton from '../OTPButton/OTPButton';
 import { useLocation, useNavigate, useParams} from 'react-router';
 import { useEffect } from 'react';
 import { Form } from 'react-router-dom';
-import { Button } from 'bootstrap';
+
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "../UI/Button/Button";
+
+
 
 
 function OTPVerification(){
@@ -15,6 +23,10 @@ function OTPVerification(){
     const [otpExpired, setOtpExpired] = useState(false);
     const navigate = useNavigate();
     const {email} = useParams();
+
+  const [Open, setOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState("");
+  const [dialogTitle, setDialogTitle] = useState("");
 
     // useEffect(() => {
     //     const searchParams = new URLSearchParams(location.search);
@@ -70,12 +82,13 @@ function OTPVerification(){
         const responseStatus = response.data.message;
         console.log(responseStatus);
         if (responseStatus === "OTP sent successfully"){
-             window.alert("OTP Sent");
              setTimeLeft(300);
              setOtpExpired(false);
              navigate(`/otpVerification/${encodeURIComponent(email)}`);
+
         } else if (responseStatus === "Email does not exist"){
             window.alert("Email does not exist, Enter a valid Email");
+
         } else{
             window.alert("Error occurred while sending otp, Try again");
         }
@@ -90,6 +103,10 @@ function OTPVerification(){
         return `${minutes} : ${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     }
 
+    const handleCloseDialog = () => {
+        setOpen(false);
+      }
+
     return(
         <div className='email-verification'>
           <div className='email-verification-heading'>
@@ -100,6 +117,11 @@ function OTPVerification(){
                <label>
                 OTP:
                 <input 
+                style={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  letterSpacing: "2em"
+                }}
                 type="text" 
                 value={otp} 
                 onChange={(e) => setOtp(e.target.value)} 
@@ -129,6 +151,24 @@ function OTPVerification(){
               )
               }
           </div>
+          <Dialog
+        open={Open}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {dialogContent}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
       </div>
     );
 }

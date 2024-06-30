@@ -21,6 +21,7 @@ const DelayInput = (onAddGoal) => {
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
+
     if (enteredValue.trim() === "") {
       setIsValid(false);
       return;
@@ -43,10 +44,16 @@ const DelayInput = (onAddGoal) => {
     } catch (error) {
       console.error("Error adding delay:", error);
     }
+ 
   };
 
   const toggleRules = () => {
-    setShowRules(!showRules);
+    if (token != null){
+      setShowRules(!showRules);
+    }else{
+      navigate("/signin");
+    }
+    
   };
 
   return (

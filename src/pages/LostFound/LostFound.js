@@ -10,6 +10,15 @@ import HeaderBar from "../../components/HeaderBar/HeaderBar";
 
 export default function LostFound() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  const handleAuthentication = () => {
+    if (token != null){
+      navigate("lostfoundreport");
+    }else{
+       navigate("/signin");
+    }
+  }
 
   const cardBoxStyle = {
     boxShadow: "0px 2px 4px hsla(0, 93%, 70%, 0.8)",
@@ -64,7 +73,8 @@ export default function LostFound() {
         <CardBox
           icon={img3}
           typography={"Report Lost/Found"}
-          onClick={() => navigate("lostfoundreport")}
+          onClick={() => handleAuthentication()}
+          //onClick={() => navigate("lostfoundreport")}
         />
       </Grid>
     </div>
