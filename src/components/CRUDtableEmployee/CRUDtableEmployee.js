@@ -17,7 +17,7 @@ export default function CRUDtableEmployee({ searchData }) {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
-  const {employeeId} = useParams();
+  const { employeeId } = useParams();
   const [filteredRows, setFilteredRows] = useState(rows); // New state for filtered rows
   const [searchValue, setSearchValue] = useState(""); // New state for search input value
 
@@ -27,63 +27,61 @@ export default function CRUDtableEmployee({ searchData }) {
   //   email: '',
   //   uname: ''
   // })
-  
-  
+
   //load user information every time the page is open
-  useEffect(()=>{
+  useEffect(() => {
     loadUsers();
-  },[]);
+  }, []);
 
   // useEffect(()=>{
   //   handleEdit(employeeId);
   // },[employeeId]);
 
- 
-
   //to load the infromations
-  const loadUsers = async()=>{
-    try{
-      const token = localStorage.getItem('token');
-      const result = await axios.get("http://localhost:8080/admin/users",{
-      headers: {Authorization: `Bearer ${token}`}
-    });
-    console.log(result.data);
-    const userArray = result.data.userList || [];
-    const transformedRows = userArray
-    .filter((user)=>user.type === "employee")
-    .map((user, index)=>({
-      id: index+1,
-      employeeId: user.id,
-      employeeName: user.email,
-      currentBusId: user.busid
-    }));
-    console.log(transformedRows);
-    setRows(transformedRows);
-    setFilteredRows(transformedRows);
+  const loadUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const result = await axios.get("http://localhost:8080/admin/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(result.data);
+      const userArray = result.data.userList || [];
+      const transformedRows = userArray
+        .filter((user) => user.type === "employee")
+        .map((user, index) => ({
+          id: index + 1,
+          employeeId: user.id,
+          employeeName: user.email,
+          currentBusId: user.busid,
+        }));
+      console.log(transformedRows);
+      setRows(transformedRows);
+      setFilteredRows(transformedRows);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
-    catch(error){
-      console.error("Error fetching user data:",error);
-    }
-  }
+  };
 
-//to delete a user by id
-  const deleteUser = async (employeeid)=>{
-    try{
-      const confirmDelete = window.confirm("Are you sure you want to delete this user ?");
-      const token = localStorage.getItem('token');
-      if (confirmDelete){
-      const response = await axios.delete(`http://localhost:8080/admin/delete/${employeeid}`,{
-      headers: {Authorization: `Bearer ${token}`}
-    });
-    loadUsers();
+  //to delete a user by id
+  const deleteUser = async (employeeid) => {
+    try {
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this user ?"
+      );
+      const token = localStorage.getItem("token");
+      if (confirmDelete) {
+        const response = await axios.delete(
+          `http://localhost:8080/admin/delete/${employeeid}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        loadUsers();
       }
-    }catch(error){
-      console.error("Error deleting the user :",error);
+    } catch (error) {
+      console.error("Error deleting the user :", error);
     }
-  }
-
-
-  
+  };
 
   // Function to confirm row deletion
   const handleConfirmDelete = () => {
@@ -100,10 +98,10 @@ export default function CRUDtableEmployee({ searchData }) {
   };
 
   // Function to handle row edit
-  
+
   //to get a user by id
   // const handleEdit = async(employeeId) =>{
-    
+
   //   try{
   //     const token = localStorage.getItem('token');
   //     const response = await axios.get(`http://localhost:8080/admin/get-user/${employeeId}`,{
@@ -112,16 +110,15 @@ export default function CRUDtableEmployee({ searchData }) {
   //     console.log(response)
   //     //const {fname, lname, email, uname} = response.data.user.data;
   //     setUserData({
-  //       fname : response.data.user.fname, 
-  //       lname : response.data.user.lname, 
-  //       email : response.data.user.email, 
+  //       fname : response.data.user.fname,
+  //       lname : response.data.user.lname,
+  //       email : response.data.user.email,
   //       uname : response.data.user.uname
   //     });
   //   }catch(error){
   //     console.log("Error fetching user data :", error)
   //   }
   // };
-   
 
   // Function to handle search input change
   const handleSearchChange = (e) => {
@@ -156,11 +153,10 @@ export default function CRUDtableEmployee({ searchData }) {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => navigate(`/edituser/${params.row.employeeId}`)}
+            onClick={() => navigate(`edituser/${params.row.employeeId}`)}
           >
             Edit
           </Button>
-          
         </div>
       ),
     },
@@ -190,7 +186,7 @@ export default function CRUDtableEmployee({ searchData }) {
           },
         }}
       />
- 
+
       <Dialog
         open={open}
         onClose={handleClose}

@@ -14,12 +14,13 @@ import FormRoute from "./pages/FormRoute/FormRoute";
 import FormAddEmployee from "./pages/FormAddEmployee/FormAddEmployee";
 import ProfileForm from "./components/ProfileForm/ProfileForm";
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import EditRoute from "./pages/FormRoute/EditRoute";
 import EditBus from "./pages/FormBus/EditBus";
 import BusTimeTable from "./pages/BusTimeTable/BusTimeTable";
 import StopManagement from "./pages/StopManagement/StopManagement";
 import FormStop from "./pages/FormStop/FormStop";
+import FormEditEmployee from "./pages/FormEditEmployee/FormEditEmployee";
 
 function AdminRoutes() {
   console.log("Rendering LayoutAdmin");
@@ -27,9 +28,9 @@ function AdminRoutes() {
 
   const fetchProfileInfo = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const response = await axios.get("http://localhost:8080/user/profile", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setProfileInfo(response.data);
     } catch (error) {
@@ -62,7 +63,6 @@ function AdminRoutes() {
             <Route path="stopmanagement">
               <Route index element={<StopManagement />} />
               <Route path="addstop" element={<FormStop />} />
-
             </Route>
             <Route path="employees"></Route>
           </Route>
@@ -73,11 +73,20 @@ function AdminRoutes() {
           <Route path="employees">
             <Route index element={<Employees />} />
             <Route path="addemployee" element={<FormAddEmployee />} />
+            <Route path="edituser/:id" element={<FormEditEmployee />} />
           </Route>
 
           <Route path="packagetransfer" element={<Package />} />
 
-          <Route path="ProfileForm" element={<ProfileForm profileInfo={profileInfo} setProfileInfo={setProfileInfo}/>}/>
+          <Route
+            path="ProfileForm"
+            element={
+              <ProfileForm
+                profileInfo={profileInfo}
+                setProfileInfo={setProfileInfo}
+              />
+            }
+          />
         </Routes>
       </div>
     </>

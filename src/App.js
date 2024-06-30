@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import LoginBusEmployee from "./pages/LoginBusEmployee/LoginBusEmployee";
 import GeneralUserProfile from "./pages/GeneralUserProfile/GeneralUserProfile";
-import FormEditEmployee from "./pages/FormEditEmployee/FormEditEmployee";
+
 import EmailVerification from "./pages/EmailVerification/EmailVerification";
 import EmailVerificationSend from "./pages/EmailVerificationSend/EmailVerificationSend";
 import EmailVerificationResult from "./pages/EmailVerificationResult/EmailVerificationResult";
@@ -49,7 +49,6 @@ function App() {
           <Route path="/LoginBusEmployee" element={<LoginBusEmployee />} />
           <Route path="/LoginGeneralUser" element={<LoginGeneralUser />} />
 
-          <Route path="/edituser/:id" element={<FormEditEmployee />} />
           <Route path="/verifyEmail" element={<EmailVerificationSend />} />
           <Route path="/verify-email" element={<EmailVerificationResult />} />
           <Route path="/SuccessComponent" element={<SuccessComponent />} />
@@ -72,10 +71,10 @@ function App() {
           <Route path="/adminAdd" element={<FormAddAdmin />} />
           <Route path="/adminSignin" element={<FormAdminSignIn />} />
 
-          <Route path="/accessDenied" element={<AccessDenied/>}/>
+          <Route path="/accessDenied" element={<AccessDenied />} />
 
-          <Route path="/conductor" element={<ConductorPage/>}/>
-          <Route path="/formAdmin" element={<FormAddAdmin/>}/>
+          <Route path="/conductor" element={<ConductorPage />} />
+          <Route path="/formAdmin" element={<FormAddAdmin />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
