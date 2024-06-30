@@ -30,7 +30,7 @@ function DashboardElement() {
         const routes = route.data || [];
         setRoute(routes.length);
 
-        const bus = await axios.get("http://localhost:8080/buses",Authorization);
+        const bus = await axios.get("http://localhost:8080/buses");
         const buses = bus.data || [];
         setBus(buses.length);
 

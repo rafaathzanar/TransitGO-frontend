@@ -14,7 +14,7 @@ import { useNavigate, useParams } from "react-router";
 const FormEditEmployee = () => {
   let navigate = useNavigate();
   const { id } = useParams();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -55,7 +55,7 @@ const FormEditEmployee = () => {
   const loadBuses = async () => {
     try {
       const busesResponse = await axios.get("http://localhost:8080/buses", {
-        headers: { Authorization: `Bearer ${token} `},
+        headers: { Authorization: `Bearer ${token} ` },
       });
       const buses = busesResponse.data;
       setBuses(buses);
@@ -108,7 +108,7 @@ const FormEditEmployee = () => {
       const result = await axios.get(
         `http://localhost:8080/admin/get-user/${id}`,
         {
-          headers: { Authorization: `Bearer ${token} `},
+          headers: { Authorization: `Bearer ${token} ` },
         }
       );
       console.log(result);
@@ -134,7 +134,7 @@ const FormEditEmployee = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom style={{ marginBottom: 50 }}>
         Edit Employee
       </Typography>
       <form onSubmit={(e) => handleSubmit(e)}>

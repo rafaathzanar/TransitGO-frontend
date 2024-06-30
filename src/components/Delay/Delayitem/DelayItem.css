@@ -4,8 +4,12 @@
   color: hsl(224, 69%, 24%);
   padding: 1rem 1rem;
   padding-bottom: 1rem;
+  margin-bottom: 1rem;
   cursor: pointer;
-  
+}
+
+.itemspace {
+  margin-bottom: 15px;
 }
 
 .deleteicon {
@@ -35,6 +39,5 @@
   }
   .tab {
     width: 100%;
-    
   }
 }

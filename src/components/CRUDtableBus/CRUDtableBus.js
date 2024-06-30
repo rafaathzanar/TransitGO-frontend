@@ -14,10 +14,9 @@ import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function CRUDtableRoute({}) {
-  
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
+    headers: { Authorization: `Bearer ${token}` },
   };
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -225,6 +224,7 @@ export default function CRUDtableRoute({}) {
         width: "70rem",
         backgroundColor: "hsla(190, 96%, 80%, 0.2)",
         marginTop: "30px",
+        marginBottom: "30px",
       }}
     >
       <SearchField

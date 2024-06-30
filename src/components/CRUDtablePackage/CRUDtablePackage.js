@@ -101,7 +101,11 @@ export default function CRUDtablePackage({}) {
 
   return (
     <div
-      style={{ width: "70rem", backgroundColor: "hsla(190, 96%, 80%, 0.2)" }}
+      style={{
+        width: "70rem",
+        backgroundColor: "hsla(190, 96%, 80%, 0.2)",
+        marginBottom: "30px",
+      }}
     >
       <SearchField
         placeholderText="Search Package"

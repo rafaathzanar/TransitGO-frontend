@@ -1,8 +1,12 @@
 .goal-listxs {
   width: 100%;
   list-style: none;
-  margin:0;
+  margin: 0;
   padding-bottom: 0;
+}
+
+.itemspace {
+  margin-bottom: 15px;
 }
 
 .form-control {
@@ -27,7 +31,7 @@
 .form-control textarea:focus {
   outline: none;
   background: hsl(0, 93%, 70%);
-  border-color:  hsl(224, 69%, 24%);
+  border-color: hsl(224, 69%, 24%);
 }
 
 .form-control.invalid textarea {
@@ -38,8 +42,6 @@
 .form-control.invalid label {
   color: red;
 }
-
-
 
 @media screen and (max-width: 600px) {
   .goal-listxs {

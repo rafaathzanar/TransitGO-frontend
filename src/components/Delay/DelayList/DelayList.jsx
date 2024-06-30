@@ -9,22 +9,24 @@ const DelayList = () => {
   const [delayList, setDelayList] = useState([]);
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const { id } = useParams();
-  const token = localStorage.getItem('token');
-  const userRole = localStorage.getItem('userRole');
-  const email = localStorage.getItem('username');
-  console.log(token,userRole,email);
+  const token = localStorage.getItem("token");
+  const userRole = localStorage.getItem("userRole");
+  const email = localStorage.getItem("username");
+  console.log(token, userRole, email);
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
-  }
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
   useEffect(() => {
     fetchDelays();
   }, []);
 
   const fetchDelays = async () => {
-
     try {
+
+
       const response = await axios.get("http://localhost:8080/announcements");
+
       setDelayList(response.data);
     } catch (error) {
       console.error("Error fetching delays:", error);
@@ -33,7 +35,10 @@ const DelayList = () => {
 
   const deleteDelayHandler = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/announcement/${id}`,Authorization);
+      await axios.delete(
+        `http://localhost:8080/announcement/${id}`,
+        Authorization
+      );
       setDelayList(delayList.filter((delay) => delay.id !== id));
     } catch (error) {
       console.error("Error deleting delay:", error);
@@ -43,7 +48,8 @@ const DelayList = () => {
   const editDelayHandler = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/announcement/${id}`,Authorization
+        `http://localhost:8080/announcement/${id}`,
+        Authorization
       );
       const existingDetails = response.data.details;
       setEditingAnnouncement({ id, details: existingDetails });
@@ -58,9 +64,13 @@ const DelayList = () => {
 
   const submitEditHandler = async (id, updatedDetails) => {
     try {
-      await axios.put(`http://localhost:8080/announcement/${id}`, {
-        details: updatedDetails,
-      },Authorization);
+      await axios.put(
+        `http://localhost:8080/announcement/${id}`,
+        {
+          details: updatedDetails,
+        },
+        Authorization
+      );
       setEditingAnnouncement(null);
       fetchDelays();
     } catch (error) {
@@ -110,16 +120,24 @@ const DelayList = () => {
 
       <ul className="goal-list">
         {delayList.map((delay) => (
-          <DelayItem
-            key={delay.id}
-            id={delay.id}
-            username={delay.user}
-            //onDelete={deleteDelayHandler}
-            onDelete = {(userRole === "admin" || delay.createdBy === email) ? deleteDelayHandler : null}
-            onEdit={(userRole === "admin" || delay.createdBy === email) ? editDelayHandler : null}
-          >
-            {delay.details}
-          </DelayItem>
+          <div key={delay.id} className="itemspace">
+            <DelayItem
+              id={delay.id}
+              username={delay.user}
+              onDelete={
+                userRole === "admin" || delay.createdBy === email
+                  ? deleteDelayHandler
+                  : null
+              }
+              onEdit={
+                userRole === "admin" || delay.createdBy === email
+                  ? editDelayHandler
+                  : null
+              }
+            >
+              {delay.details}
+            </DelayItem>
+          </div>
         ))}
       </ul>
     </Grid>
