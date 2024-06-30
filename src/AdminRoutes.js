@@ -21,6 +21,7 @@ import BusTimeTable from "./pages/BusTimeTable/BusTimeTable";
 import StopManagement from "./pages/StopManagement/StopManagement";
 import FormStop from "./pages/FormStop/FormStop";
 import FormEditEmployee from "./pages/FormEditEmployee/FormEditEmployee";
+import Location from "./pages/Location/Location";
 
 function AdminRoutes() {
   console.log("Rendering LayoutAdmin");
@@ -74,6 +75,14 @@ function AdminRoutes() {
             <Route index element={<Employees />} />
             <Route path="addemployee" element={<FormAddEmployee />} />
             <Route path="edituser/:id" element={<FormEditEmployee />} />
+          </Route>
+
+          <Route path="locationmanagement">
+            <Route index element={<Location />} />
+            <Route path="stopmanagement">
+              <Route index element={<StopManagement />} />
+              <Route path="addstop" element={<FormStop />} />
+            </Route>
           </Route>
 
           <Route path="packagetransfer" element={<Package />} />
