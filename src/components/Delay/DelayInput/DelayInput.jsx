@@ -1,36 +1,40 @@
 import React, { useState } from "react";
-
 import Button from "../../UI/Button/Button";
 import "./DelayInput.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import AddIcon from "@mui/icons-material/Add";
 import Add from "@mui/icons-material/Add";
 
 const DelayInput = (onAddGoal) => {
   let navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const [enteredValue, setEnteredValue] = useState("");
   const [isValid, setIsValid] = useState(true);
+  const [showRules, setShowRules] = useState(false);
 
   const delayInputChangeHandler = (event) => {
     const inputText = event.target.value;
     setEnteredValue(inputText);
-    setIsValid(inputText.trim().length > 0);
+    setIsValid(true);
   };
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
     if (enteredValue.trim() === "") {
+      setIsValid(false);
       return;
     }
     try {
-      const response = await axios.post("http://localhost:8080/announcement", {
-        details: enteredValue,
-      },{
-        headers: {Authorization: `Bearer ${token}`}
-      });
+      const response = await axios.post(
+        "http://localhost:8080/announcement",
+        {
+          details: enteredValue,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setEnteredValue("");
       window.location.reload();
@@ -41,8 +45,6 @@ const DelayInput = (onAddGoal) => {
     }
   };
 
-  const [showRules, setShowRules] = useState(false);
-
   const toggleRules = () => {
     setShowRules(!showRules);
   };
@@ -51,13 +53,12 @@ const DelayInput = (onAddGoal) => {
     <div>
       <div className="on">
         <Button onClick={toggleRules} className="but-add">
-          <Add  onClick={toggleRules}></Add>
-          <span className="button-text">Announcement/Delay</span>
-
+          <Add onClick={toggleRules} />
+          <span className="button-text">Add Announcement</span>
         </Button>
       </div>
 
-      {showRules ? (
+      {showRules && (
         <div>
           <form onSubmit={formSubmitHandler}>
             <div className={`form-control ${!isValid ? "invalid" : ""}`}>
@@ -67,10 +68,11 @@ const DelayInput = (onAddGoal) => {
                 onChange={delayInputChangeHandler}
               />
             </div>
+            {!isValid && <p className="error-text">Please enter a value!</p>}
             <Button type="submit">Submit Post</Button>
           </form>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
