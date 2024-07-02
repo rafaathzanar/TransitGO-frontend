@@ -14,6 +14,7 @@ function Location() {
         justifyContent="center"
         alignItems="center"
         marginTop={25}
+        marginLeft={-10}
         display="flex"
       >
         <CardButton
