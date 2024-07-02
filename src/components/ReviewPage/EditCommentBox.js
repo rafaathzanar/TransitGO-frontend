@@ -7,8 +7,10 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-function EditCommentBox({ id, onClose }) {
+function EditCommentBox({}) {
   const token = localStorage.getItem("token");
+
+  const { id } = useParams();
   const Authorization = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -63,7 +65,7 @@ function EditCommentBox({ id, onClose }) {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        onClose(); // Close the dialog upon successful submission
+        navigate(-1);
       } catch (error) {
         console.error("Error submitting feedback:", error);
       }
