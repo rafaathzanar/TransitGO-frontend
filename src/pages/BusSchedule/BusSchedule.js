@@ -1,9 +1,9 @@
-//BusSchedule.js
 import React, { useState } from "react";
 import ScheduleSearchBar from "../../components/ScheduleSearchBar/ScheduleSearchBar";
 import HeaderBar from "../../components/HeaderBar/HeaderBar";
 import ScheduleCard from "../../components/ScheduleCard/ScheduleCard";
 import axios from "axios";
+import "./BusSchedule.css"; // Ensure the CSS file is imported
 
 function BusSchedule() {
   const [busSchedules, setBusSchedules] = useState([]);
@@ -42,25 +42,28 @@ function BusSchedule() {
   };
 
   return (
-    <div>
-      <HeaderBar />
-      <ScheduleSearchBar onSearch={handleSearch} />
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {busSchedules.map((bus) => (
-        <ScheduleCard
-          key={bus.id}
-          busID={bus.id}
-          busRegNo={bus.regNo}
-          routeNo={bus.routeNo}
-          fromStop={from}
-          toStop={to}
-          direction={direction}
-          delay={bus.delay}
-          lastLeftStop={bus.lastLeftStop}
-          date={date}
-        />
-      ))}
+    <div id="bus-schedule-container">
+      <div id="overlay"></div>
+      <div className="content">
+        <HeaderBar />
+        <ScheduleSearchBar onSearch={handleSearch} />
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+        {busSchedules.map((bus) => (
+          <ScheduleCard
+            key={bus.id}
+            busID={bus.id}
+            busRegNo={bus.regNo}
+            routeNo={bus.routeNo}
+            fromStop={from}
+            toStop={to}
+            direction={direction}
+            delay={bus.delay}
+            lastLeftStop={bus.lastLeftStop}
+            date={date}
+          />
+        ))}
+      </div>
     </div>
   );
 }

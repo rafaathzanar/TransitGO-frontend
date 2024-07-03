@@ -25,6 +25,7 @@ function HomePage() {
           backgroundImage: `url(${BackgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundPositionY: -160,
           backgroundRepeat: "no-repeat",
           minHeight: "100vh",
         }}
