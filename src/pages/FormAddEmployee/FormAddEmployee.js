@@ -10,7 +10,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router";
-import { type } from "@testing-library/user-event/dist/type";
 import {
   validateFname,
   validateLname,
@@ -34,7 +33,7 @@ const FormAddEmployee = () => {
     busid: "", // New state for bus selection
   });
 
-  const { fname, lname, email, uname, password, phone, bus } = formData;
+  const { fname, lname, email, uname, password, phone, busid } = formData;
 
   const onFormInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -59,16 +58,40 @@ const FormAddEmployee = () => {
       const busesResponse = await axios.get("http://localhost:8080/buses", {
         headers: { Authorization: `Bearer ${token}` },
       });
+      const result = await axios.get("http://localhost:8080/admin/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(result.data);
+      const userArray = result.data.userList || [];
+      const transformedRows = userArray.filter(
+        (user) => user.type === "employee"
+      );
+
       const buses = busesResponse.data;
-      setBuses(buses);
+      console.log("Buses", buses);
+      const employees = transformedRows;
+      console.log("Employeees", employees);
+
+      // Filter out buses that are already assigned to employees
+      const assignedBusIds = employees.map((emp) => emp.busid);
+
+      console.log("Assigned bus ids ", assignedBusIds);
+
+      const availableBuses = buses.filter(
+        (bus) => !assignedBusIds.includes(String(bus.id))
+      );
+
+      console.log("Available buses ", availableBuses);
+      setBuses(availableBuses);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //Form Validation
+    // Form Validation
     const fnameValidation = validateFname(formData.fname);
     const lnameValidation = validateLname(formData.lname);
     const usernameValidation = validateUsername(formData.uname);
@@ -96,7 +119,7 @@ const FormAddEmployee = () => {
       return;
     }
 
-    //to register new users
+    // to register new users
     try {
       const token = localStorage.getItem("token");
       const updatedFormData = { ...formData, type: "employee" };
@@ -136,9 +159,9 @@ const FormAddEmployee = () => {
               fullWidth
               label="First Name"
               name="fname"
-              value={formData.firstName}
+              value={formData.fname}
               onChange={(e) => onFormInput(e)}
-              error={formErrors.fname}
+              error={!!formErrors.fname}
             />
             {formErrors.fname && <p className="error">{formErrors.fname}</p>}
           </Grid>
@@ -147,9 +170,9 @@ const FormAddEmployee = () => {
               fullWidth
               label="Last Name"
               name="lname"
-              value={formData.lastName}
+              value={formData.lname}
               onChange={(e) => onFormInput(e)}
-              error={formErrors.lname}
+              error={!!formErrors.lname}
             />
             {formErrors.lname && <p className="error">{formErrors.lname}</p>}
           </Grid>
@@ -161,7 +184,7 @@ const FormAddEmployee = () => {
               name="email"
               value={formData.email}
               onChange={(e) => onFormInput(e)}
-              error={formErrors.email}
+              error={!!formErrors.email}
             />
             {formErrors.email && <p className="error">{formErrors.email}</p>}
           </Grid>
@@ -172,7 +195,7 @@ const FormAddEmployee = () => {
               name="uname"
               value={formData.uname}
               onChange={(e) => onFormInput(e)}
-              error={formErrors.uname}
+              error={!!formErrors.uname}
             />
             {formErrors.uname && <p className="error">{formErrors.uname}</p>}
           </Grid>
@@ -183,7 +206,7 @@ const FormAddEmployee = () => {
               name="phone"
               value={formData.phone}
               onChange={(e) => onFormInput(e)}
-              error={formErrors.phone}
+              error={!!formErrors.phone}
             />
             {formErrors.phone && <p className="error">{formErrors.phone}</p>}
           </Grid>
@@ -195,34 +218,20 @@ const FormAddEmployee = () => {
               name="password"
               value={formData.password}
               onChange={(e) => onFormInput(e)}
-              error={formErrors.password}
+              error={!!formErrors.password}
             />
             {formErrors.password && (
               <p className="error">{formErrors.password}</p>
             )}
           </Grid>
-
-          {/* <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Phone"
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={(e) => onFormInput(e)}
-              error={formErrors.phone}
-            />
-            {formErrors.phone && <p className="error">{formErrors.phone}</p>}
-          </Grid> */}
-
           <Grid item xs={12}>
             <Select
               fullWidth
               label="Bus"
               name="busid"
-              value={formData.bus}
+              value={formData.busid}
               onChange={(e) => onFormInput(e)}
-              error={formErrors.bus}
+              error={!!formErrors.busid}
               displayEmpty
             >
               <MenuItem value="" disabled>
@@ -234,7 +243,7 @@ const FormAddEmployee = () => {
                 </MenuItem>
               ))}
             </Select>
-            {formErrors.bus && (
+            {formErrors.busid && (
               <Typography variant="caption" color="error">
                 Bus selection is required
               </Typography>
@@ -242,7 +251,6 @@ const FormAddEmployee = () => {
           </Grid>
         </Grid>
         <Button
-          onSubmit={handleSubmit}
           sx={{ marginTop: "20px" }}
           variant="contained"
           color="primary"
