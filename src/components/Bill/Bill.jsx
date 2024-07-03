@@ -6,18 +6,52 @@ import logo from '../../logo/logoblack.png';
 import './bill.css';
 
 const Bill = ({ open, onClose, billDetails }) => {
+  console.log("bill details", billDetails);
+  
   const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-    doc.addImage(logo, 'PNG', 10, 10, 50, 30);
-    doc.text(`Package ID: ${billDetails.packageID}`, 20, 60);
-    doc.text(`Bus Registration Number: ${billDetails.busRegNo}`, 20, 70);
-    doc.text(`Departure Time: ${billDetails.departureTime}`, 20, 80);
-    doc.text(`Arrival Time: ${billDetails.arrivalTime}`, 20, 90);
-    doc.text(`Bus Conductor Contact: ${billDetails.conductorContact}`, 20, 100);
-    doc.text(`Bus Conductor Contact: ${billDetails.conductorName}`, 20, 100);
-    doc.save("bill.pdf");
-  };
+    const doc = new jsPDF('l', 'in', [6, 13]);
+    
+    const pageWidth = 20; 
+    const centerX = pageWidth / 2;
+    
+  
+    const imgWidth = 2; 
+    const imgHeight = 0.8; 
+    doc.addImage(logo, 'PNG', 0.5, 0.5, imgWidth, imgHeight);
+    
+    // Title
+    doc.setFontSize(18);
+    doc.text("Invoice", centerX, 2, { align: 'center' });
 
+ 
+    doc.setFontSize(12);
+    let yPos = 3; // Starting y position
+    const lineHeight = 0.25; // Line height in inches
+    doc.text(`Package ID: ${billDetails.packageID}`, 1, yPos);
+    yPos += lineHeight;
+    doc.text(`Bus Registration Number: ${billDetails.busRegNo}`, 1, yPos);
+    yPos += lineHeight;
+    doc.text(`Bus Departure Time from ${billDetails.start}: ${billDetails.departureTime}`, 1, yPos);
+    yPos += lineHeight;
+    doc.text(`Bus Conductor Contact: ${billDetails.conductorContact}`, 1, yPos);
+    yPos += lineHeight;
+    doc.text(`Bus Conductor Name: ${billDetails.conductorName}`, 1, yPos);
+    yPos += lineHeight;
+    doc.text(`Destination: ${billDetails.destination}`, 1, yPos);
+    yPos += lineHeight;
+    doc.text(`Arrival Time at Destination: ${billDetails.arrivalTime}`, 1, yPos);
+    yPos += lineHeight;
+
+    // Footer note
+    doc.setFontSize(10);
+    doc.text(
+      `Please note that your package will reach your destination at the mentioned arrival time.`,
+      1, yPos + lineHeight
+    );
+
+    // Save the PDF
+    doc.save("invoice.pdf");
+  };
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
       <DialogContent>
