@@ -51,20 +51,7 @@ function ScheduleCard({
     return `${hours} Hours and ${minutes} Minutes`;
   };
 
-  if (loading)
-    return (
-      <div
-        className="loading"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 250,
-        }}
-      >
-        <l-miyagi size="100" stroke="3.5" speed="0.9" color="black"></l-miyagi>
-      </div>
-    );
+  if (loading) return <p>loading</p>;
   if (error) return <p>{error}</p>;
 
   const filteredSchedules = schedules.filter(
