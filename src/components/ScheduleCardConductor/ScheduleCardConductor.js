@@ -16,9 +16,8 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [updateLocationInterval, setUpdateLocationInterval] = useState(null);
-  const [retrieveLocationInterval, setRetrieveLocationInterval] = useState(
-    null
-  );
+  const [retrieveLocationInterval, setRetrieveLocationInterval] =
+    useState(null);
 
   const [journeyStarted, setJourneyStarted] = useState(false);
   const [allStops, setAllStops] = useState([]);
@@ -27,6 +26,8 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
   const [delay, setDelay] = useState();
   const delayRef = useRef(null);
   const [lastLeftStop, setLastLeftStop] = useState("");
+  const [nextLocation, setNextLocation] = useState("");
+
   const token = localStorage.getItem("token");
   useEffect(() => {
     function success(position) {
@@ -243,7 +244,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
       curRetrievedLatitude &&
       curRetrievedLongitude
     ) {
-      requiredStopLocations.forEach(async (requiredStopLocation) => {
+      requiredStopLocations.forEach(async (requiredStopLocation, index) => {
         const isWithin = isWithinRadius(
           requiredStopLocation.latitude,
           requiredStopLocation.longitude,
@@ -289,6 +290,12 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
 
           setLastLeftStop(requiredStopLocation.location);
 
+          if (index < requiredStopLocations.length - 1) {
+            setNextLocation(requiredStopLocations[index + 1].location);
+          } else {
+            setNextLocation("End of the Stop");
+          }
+
           try {
             console.log("delay inside ", delayRef.current);
             const postResponse = await axios.post(
@@ -297,6 +304,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
                 id: busID,
                 delay: delayRef.current,
                 lastLeftStop: requiredStopLocation.location,
+                nextLocation: requiredStopLocation.location,
               },
               {
                 headers: { Authorization: `Bearer ${token}` },

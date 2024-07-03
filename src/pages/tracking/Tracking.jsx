@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../../components/heading/heading";
 import "./tracking.css";
 import { Stack, TextField } from "@mui/material";
 import map from "../../components/assets/Basemap image.png";
 import Tline from "../../components/Destination/Destination";
-function Tracking() {
+import axios from "axios";
+
+function Tracking({ busID }) {
+  const [lastLeftStop, setLastLeftStop] = useState(null);
+  const [nextLocation, setNextLocation] = useState(null);
+
+  useEffect(() => {
+    const fetchTrackingData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/bus/${busID}`,
+          {}
+        );
+        setLastLeftStop(response.data.lastLeftStop);
+        setNextLocation(response.data.nextLocation);
+      } catch (error) {
+        console.error("Error fetching tracking data:", error.message);
+      }
+    };
+
+    fetchTrackingData();
+  }, [busID]);
+
   return (
     <div className="content">
       <div className="header">
@@ -20,9 +42,13 @@ function Tracking() {
         />
       </div>
       <div className="track">
-        <img className="im1" src={map} />
+        {/* <img className="im1" src={map} />
         <div className="tline">
           <Tline />
+        </div> */}
+        <div className="location-info">
+          <div className="last-left-stop">{lastLeftStop}</div>
+          <div className="next-location">{nextLocation}</div>
         </div>
       </div>
     </div>
