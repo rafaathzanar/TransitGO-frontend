@@ -53,7 +53,7 @@ function Tracking() {
           onChange={(e) => setPackageID(e.target.value)}
         />
         <Button onClick={handleSearch} variant="contained" sx={{ ml: 2 }}>
-          Search
+          Track
         </Button>
       </div>
       <div className="track">
