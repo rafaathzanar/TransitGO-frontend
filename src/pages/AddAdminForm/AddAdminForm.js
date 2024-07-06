@@ -20,10 +20,9 @@ import {
   validatePassword,
 } from "../../components/FormValidationSignup/FormValidationSignup";
 
-const FormAddEmployee = () => {
+const AddAdminForm = () => {
   const token = localStorage.getItem("token");
   let navigate = useNavigate();
-  const [buses, setBuses] = useState([]);
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -31,10 +30,10 @@ const FormAddEmployee = () => {
     uname: "",
     password: "",
     phone: "",
-    busid: "", // New state for bus selection
+   
   });
 
-  const { fname, lname, email, uname, password, phone, bus } = formData;
+  const { fname, lname, email, uname, password, phone} = formData;
 
   const onFormInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,24 +46,13 @@ const FormAddEmployee = () => {
     uname: "",
     password: "",
     phone: "",
-    busid: "", // New state for bus selection
   });
 
   useEffect(() => {
     loadBuses();
   }, []);
 
-  const loadBuses = async () => {
-    try {
-      const busesResponse = await axios.get("http://localhost:8080/buses", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const buses = busesResponse.data;
-      setBuses(buses);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -118,11 +106,6 @@ const FormAddEmployee = () => {
             ...formErrors,
             email: error.response.data,
           });
-        }else{
-          setFormErrors({
-            ...formErrors,
-            busid: error.response.data,
-          });
         }
         
       } else {
@@ -135,10 +118,10 @@ const FormAddEmployee = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Add Employee
+        Add Admin
       </Typography>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <input type="hidden" name="type" value="employee" />
+        <input type="hidden" name="type" value="admin" />
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -224,34 +207,8 @@ const FormAddEmployee = () => {
             {formErrors.phone && <p className="error">{formErrors.phone}</p>}
           </Grid> */}
 
-          <Grid item xs={12}>
-            <Select
-              fullWidth
-              label="Bus"
-              name="busid"
-              value={formData.bus}
-              onChange={(e) => onFormInput(e)}
-              error={formErrors.bus}
-              displayEmpty
-            >
-              <MenuItem value="" disabled>
-                Select Bus
-              </MenuItem>
-              {buses.map((bus, index) => (
-                <MenuItem key={index} value={bus.id}>
-                  {bus.regNo}
-                </MenuItem>
-              ))}
-            </Select>
-            {formErrors.busid && (
-              <p className="error">{formErrors.busid}</p>
-            )}
-            {formErrors.bus && (
-              <Typography variant="caption" color="error">
-                Bus selection is required
-              </Typography>
-            )}
-          </Grid>
+          
+          
         </Grid>
         <Button
           onSubmit={handleSubmit}
@@ -267,4 +224,4 @@ const FormAddEmployee = () => {
   );
 };
 
-export default FormAddEmployee;
+export default AddAdminForm;
