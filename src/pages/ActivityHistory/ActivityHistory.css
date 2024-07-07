@@ -20,7 +20,7 @@
 .history{
     grid-area: history;
     display: grid;
-    grid-template-rows: 1fr 6fr;
+    grid-template-rows: 0.5fr 7fr;
     grid-template-areas:
     "top"
     "bottom";
