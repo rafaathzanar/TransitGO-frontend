@@ -57,55 +57,57 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
       usernameORemailValidation = validateEmail(formData.usernameORemail);
     }*/
 
-    if (!emailValidation.isValid || !passwordValidation.isValid) {
-      setFormErrors({
-        email: emailValidation.Message,
-        password: passwordValidation.Message,
-      });
-      return;
-    }
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/authentication",
-        formData
-      );
+    if (!emailValidation.isValid ||
+        !passwordValidation.isValid){
+           setFormErrors({
+            email: emailValidation.Message,
+            password: passwordValidation.Message
+           });
+           return;
+         }
 
-      //store token, role and mail in the localstorage
-      const token = response.data.token;
-      const type = response.data.user.type;
-      const email = response.data.user.username;
-      const lastname = response.data.user.lname;
-      const uname = response.data.user.uname;
-      const id = response.data.user.id;
+         try{
+          console.log(formData);
+            const response = await axios.post("http://localhost:8080/api/v1/auth/authentication",formData);
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("userRole", type);
-      localStorage.setItem("username", email);
-      localStorage.setItem("lastname", lastname);
-      localStorage.setItem("uname", uname);
-      localStorage.setItem("id", id);
+            //store token, role and mail in the localstorage
+            const token = response.data.token;
+            const type = response.data.user.type;
+            const email = response.data.user.username;
+            const lastname = response.data.user.lname;
+            const uname = response.data.user.uname;
+            const id = response.data.user.id;
+            
+            localStorage.setItem('token',token);
+            localStorage.setItem('userRole',type);
+            localStorage.setItem('username',email);
+            localStorage.setItem('lastname',lastname);
+            localStorage.setItem('uname',uname);
+            localStorage.setItem('id',id);
 
-      setDialogTitle("Success");
-      setDialogContent("Login Success");
-      setOpen(true);
 
-      setNavigateTo(type === "admin" ? "/admin" : "/profile");
-    } catch (error) {
-      let errorMessage = "Something went wrong! Please try again later";
-      if (error.response && error.response.data) {
-        errorMessage =
-          error.response.data.Message || "Invalid Email or Password";
-        setFormErrors({
-          email: errorMessage,
-          password: errorMessage,
-        });
+            setDialogTitle("Success");
+            setDialogContent("Login Success");
+            setOpen(true);
+            
+            setNavigateTo(type === "admin" ? "/admin" : "/profile");
+            
+         }catch(error){
+          let errorMessage = "Something went wrong! Please try again later";
+          if (error.response && error.response.data){
+              errorMessage = error.response.data.Message || "Invalid Email or Password";
+             setFormErrors({
+              email: errorMessage,
+              password: errorMessage
+            });
+          
+            setDialogTitle("Error");
+            setDialogContent(errorMessage);
+            setOpen(true);
+           }
+         }
 
-        setDialogTitle("Error");
-        setDialogContent(errorMessage);
-        setOpen(true);
-      }
-    }
   };
 
   const handleCloseDialog = () => {
@@ -150,24 +152,17 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             <p className="error">{formErrors.password}</p>
           )}
         </div>
-        <div className="other-option">
-          {/* {loginAs === 'Login as Customer?' ? ( 
+
+
+        <div className='other-option'>
+              
                <div className='option'>
-                 <Link to='/LoginGeneralUser'>{loginAs}</Link>
-               </div>):(
-               <div className='option'>
-                  <Link to='/LoginBusEmployee'>{loginAs}</Link>
+                  <Link to='/ForgotPassword'>Forgot Password</Link>
                </div>
-               )} */}
-          <div className="option">
-            <Link to="/ForgotPassword">Forgot Password</Link>
-          </div>
-        </div>
-        <div className="btn">
-          <LoginButton
-            buttonTitle="Login Now"
-            onSubmit={(e) => handleSubmit(e)}
-          ></LoginButton>
+         </div> 
+         <div className="btn">
+          <LoginButton buttonTitle="Login Now" onSubmit={(e)=>handleSubmit(e)}></LoginButton>
+
         </div>
       </form>
       <Dialog
