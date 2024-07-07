@@ -23,6 +23,7 @@ function BusSchedule() {
       setTo(savedState.toStop);
       setDirection(savedState.direction);
       setDate(savedState.date);
+      setShowNoBusesMessage(false);
       handleSearch(
         savedState.fromStop,
         savedState.toStop,
@@ -69,8 +70,7 @@ function BusSchedule() {
         setShowNoBusesMessage(true); // Show message if no schedules found
       }
     } catch (error) {
-      console.error("Error fetching bus schedules:", error.message);
-      setError("Error fetching bus schedules. Please try again later.");
+      console.log("error fetching");
     } finally {
       setLoading(false);
     }
@@ -95,11 +95,8 @@ function BusSchedule() {
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       {!loading && busSchedules.length === 0 && showNoBusesMessage && (
-        <div style={{ textAlign: "center", fontSize: "1.5em", marginTop: 200 }}>
-          <p>No buses available on the route on selected date.</p>
-        </div>
+        <p>No buses available on the route on selected date.</p>
       )}
-
       {busSchedules.map((bus) => (
         <ScheduleCard
           key={bus.id}
