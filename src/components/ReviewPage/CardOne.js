@@ -65,9 +65,17 @@ const CardOne = ({ busID }) => {
     }
   };
 
-  const handleFeedbackSubmission = (feedback) => {
-    setFeedbacks([feedback, ...feedbacks]);
+  const handleFeedbackSubmission = (feedback, isEdit = false) => {
+    if (isEdit) {
+      const updatedFeedbacks = feedbacks.map((fb) =>
+        fb.id === feedback.id ? feedback : fb
+      );
+      setFeedbacks(updatedFeedbacks);
+    } else {
+      setFeedbacks([feedback, ...feedbacks]);
+    }
   };
+  
 
   const deleteReviews = async (id) => {
     try {
@@ -135,6 +143,7 @@ const CardOne = ({ busID }) => {
                 createdAt={feedback.createdAt}
                 onDelete={deleteReviews}
                 currentUser={currentUser}
+                onEdit={loadReviews} // Pass the loadReviews function to refresh data
               />
             ))}
 
