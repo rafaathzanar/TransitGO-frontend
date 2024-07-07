@@ -13,7 +13,6 @@ function Textfield() {
   const [pack, setPack] = useState({
     busID: "",
     destination: "",
-    payment: "",
     receivedDate: "",
     start: "",
     status: "Booked",
@@ -238,7 +237,6 @@ function Textfield() {
       setPack({
         busID: '',
         destination: '',
-        payment: '',
         receivedDate: '',
         start: '',
         status: '',
