@@ -70,7 +70,6 @@ function BusSchedule() {
       console.log("bus schedules on that date ", response.data);
       setBusSchedules(response.data);
     } catch (error) {
-      setError("Error fetching bus schedules. Please try again later.");
       console.error("Error fetching bus schedules:", error.message);
     } finally {
       setLoading(false);
