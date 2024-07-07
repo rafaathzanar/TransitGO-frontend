@@ -96,8 +96,8 @@ export const ActivityHistoryTable = () => {
            updatedLostFound,
            Authorization);
          console.log(response);
-      }else if (type === "Package"){
-        const response = await axios.put(`http://localhost:8080/package/${activity.activityId}`,{
+      }else if (type === "Announcement"){
+        const response = await axios.put(`http://localhost:8080/announcement/${activity.activityId}`,{
           details: editDescription
          }, Authorization);
          console.log(response);

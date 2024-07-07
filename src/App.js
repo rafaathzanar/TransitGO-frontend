@@ -64,13 +64,12 @@ function App() {
           <Route path="/profile" element={<GeneralUserProfile />} />
           <Route path="/activityhistory" element={<ActivityHistory />} />
           <Route path="/dummy" element={<Dummy />} />
-          <Route path="/adminAdd" element={<FormAddAdmin />} />
+
           <Route path="/adminSignin" element={<FormAdminSignIn />} />
 
           <Route path="/accessDenied" element={<AccessDenied />} />
 
           <Route path="/conductor" element={<ConductorPage />} />
-          <Route path="/formAdmin" element={<FormAddAdmin />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

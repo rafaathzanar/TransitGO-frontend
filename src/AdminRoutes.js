@@ -22,6 +22,7 @@ import StopManagement from "./pages/StopManagement/StopManagement";
 import FormStop from "./pages/FormStop/FormStop";
 import FormEditEmployee from "./pages/FormEditEmployee/FormEditEmployee";
 import Location from "./pages/Location/Location";
+import FormAddAdmin from "./pages/FormAddAdmin/FormAddAdmin";
 
 function AdminRoutes() {
   console.log("Rendering LayoutAdmin");
@@ -75,6 +76,7 @@ function AdminRoutes() {
             <Route index element={<Employees />} />
             <Route path="addemployee" element={<FormAddEmployee />} />
             <Route path="edituser/:id" element={<FormEditEmployee />} />
+            <Route path="adminAdd" element={<FormAddAdmin />} />
           </Route>
 
           <Route path="locationmanagement">
