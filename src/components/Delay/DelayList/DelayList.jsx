@@ -23,8 +23,6 @@ const DelayList = () => {
 
   const fetchDelays = async () => {
     try {
-
-
       const response = await axios.get("http://localhost:8080/announcements");
 
       setDelayList(response.data);
@@ -124,16 +122,16 @@ const DelayList = () => {
             <DelayItem
               id={delay.id}
               username={delay.user}
+              userRole={userRole}
+              createdBy={delay.createdBy}
+              createdByRole={delay.createdByRole}
+              currentUser={email}
               onDelete={
                 userRole === "admin" || delay.createdBy === email
                   ? deleteDelayHandler
                   : null
               }
-              onEdit={
-                userRole === "admin" || delay.createdBy === email
-                  ? editDelayHandler
-                  : null
-              }
+              onEdit={delay.createdBy === email ? editDelayHandler : null}
             >
               {delay.details}
             </DelayItem>

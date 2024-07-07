@@ -7,7 +7,15 @@
   margin-bottom: 1rem;
   cursor: pointer;
 }
+.goal-item.user-post {
+  background: hsla(200, 100%, 80%, 0.348);
+  color: hsl(224, 69%, 24%);
+}
 
+.goal-item.admin-post {
+  background: hsl(200, 100%, 77%);
+  color: hsl(224, 69%, 24%);
+}
 .itemspace {
   margin-bottom: 15px;
 }
@@ -19,7 +27,7 @@
   padding-right: 15px;
 }
 .authordelay {
-  width: 20rem;
+  width: 15rem;
   float: right;
   background: hsl(0, 93%, 70%);
   color: hsl(224, 69%, 24%);
@@ -27,6 +35,14 @@
   padding: 4px;
   padding-left: 15px;
   border-radius: 10px;
+}
+.authordelay.admin-post {
+  background: rgba(196, 3, 3, 0.878);
+  color: hsl(0, 0%, 100%);
+}
+.authordelay.user-post {
+  background: hsl(0, 93%, 70%);
+  color: hsl(224, 69%, 24%);
 }
 .tab {
   width: 100%;
