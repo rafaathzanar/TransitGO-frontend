@@ -1,8 +1,9 @@
 import "./LoginForm.css";
 import { Link } from "react-router-dom";
-import { 
-         validateEmail,
-        validatePassword } from "../FormValidationSignup/FormValidationSignup";
+import {
+  validateEmail,
+  validatePassword,
+} from "../FormValidationSignup/FormValidationSignup";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -16,15 +17,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "../UI/Button/Button";
 
 const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
- let navigate = useNavigate();
+  let navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const [profileName, setUsername] = useState({
-     username: ""
+    username: "",
   });
 
   const [Open, setOpen] = useState(false);
@@ -32,20 +33,20 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
   const [dialogTitle, setDialogTitle] = useState("");
   const [navigateTo, setNavigateTo] = useState("");
 
-  const onFormInput = (e) =>{
-    setFormData({...formData,[e.target.name]:e.target.value});
-  }
+  const onFormInput = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const [formErrors,setFormErrors] = useState({
+  const [formErrors, setFormErrors] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     //const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    //let usernameORemailValidation; 
+    //let usernameORemailValidation;
     const passwordValidation = validatePassword(formData.password);
     const emailValidation = validateEmail(formData.email);
     //validate form values
@@ -56,54 +57,55 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
       usernameORemailValidation = validateEmail(formData.usernameORemail);
     }*/
 
-    if (!emailValidation.isValid ||
-        !passwordValidation.isValid){
-           setFormErrors({
-            email: emailValidation.Message,
-            password: passwordValidation.Message
-           });
-           return;
-         }
+    if (!emailValidation.isValid || !passwordValidation.isValid) {
+      setFormErrors({
+        email: emailValidation.Message,
+        password: passwordValidation.Message,
+      });
+      return;
+    }
 
-         try{
-            const response = await axios.post("http://localhost:8080/api/v1/auth/authentication",formData);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/auth/authentication",
+        formData
+      );
 
-            //store token, role and mail in the localstorage
-            const token = response.data.token;
-            const type = response.data.user.type;
-            const email = response.data.user.username;
-            const lastname = response.data.user.lname;
-            const uname = response.data.user.uname;
-            const id = response.data.user.id;
-            
-            localStorage.setItem('token',token);
-            localStorage.setItem('userRole',type);
-            localStorage.setItem('username',email);
-            localStorage.setItem('lastname',lastname);
-            localStorage.setItem('uname',uname);
-            localStorage.setItem('id',id);
+      //store token, role and mail in the localstorage
+      const token = response.data.token;
+      const type = response.data.user.type;
+      const email = response.data.user.username;
+      const lastname = response.data.user.lname;
+      const uname = response.data.user.uname;
+      const id = response.data.user.id;
 
+      localStorage.setItem("token", token);
+      localStorage.setItem("userRole", type);
+      localStorage.setItem("username", email);
+      localStorage.setItem("lastname", lastname);
+      localStorage.setItem("uname", uname);
+      localStorage.setItem("id", id);
 
-            setDialogTitle("Success");
-            setDialogContent("Login Success");
-            setOpen(true);
-            
-            setNavigateTo(type === "admin" ? "/admin" : "/profile");
-            
-         }catch(error){
-          let errorMessage = "Something went wrong! Please try again later";
-          if (error.response && error.response.data){
-              errorMessage = error.response.data.Message || "Invalid Email or Password";
-             setFormErrors({
-              email: errorMessage,
-              password: errorMessage
-            });
-          
-            setDialogTitle("Error");
-            setDialogContent(errorMessage);
-            setOpen(true);
-           }
-         }
+      setDialogTitle("Success");
+      setDialogContent("Login Success");
+      setOpen(true);
+
+      setNavigateTo(type === "admin" ? "/admin" : "/profile");
+    } catch (error) {
+      let errorMessage = "Something went wrong! Please try again later";
+      if (error.response && error.response.data) {
+        errorMessage =
+          error.response.data.Message || "Invalid Email or Password";
+        setFormErrors({
+          email: errorMessage,
+          password: errorMessage,
+        });
+
+        setDialogTitle("Error");
+        setDialogContent(errorMessage);
+        setOpen(true);
+      }
+    }
   };
 
   const handleCloseDialog = () => {
@@ -111,12 +113,11 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
     if (dialogTitle === "Success") {
       navigate(navigateTo);
     }
-  }
- 
+  };
 
   return (
     <div className="login-form">
-      <form onSubmit={(e)=>handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <div class="input">
           <label for="username" class="form-label">
             {userNameTitle}
@@ -127,11 +128,10 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             placeholder={userNamePlaceholder}
             name="email"
             value={formData.email}
-            onChange={(e)=>onFormInput(e)}
+            onChange={(e) => onFormInput(e)}
             error={formErrors.email}
           />
-           {formErrors.email && <p className='error'>{formErrors.email}</p>}
-
+          {formErrors.email && <p className="error">{formErrors.email}</p>}
         </div>
         <div class="input">
           <label for="password" class="form-label">
@@ -143,27 +143,31 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             placeholder="Enter Your Password"
             name="password"
             value={formData.password}
-            onChange={(e)=>onFormInput(e)}
+            onChange={(e) => onFormInput(e)}
             error={formErrors.password}
           />
-            {formErrors.password && <p className='error'>{formErrors.password}</p>}
-
+          {formErrors.password && (
+            <p className="error">{formErrors.password}</p>
+          )}
         </div>
-        <div className='other-option'>
-               {loginAs === 'Login as Customer?' ? ( 
+        <div className="other-option">
+          {/* {loginAs === 'Login as Customer?' ? ( 
                <div className='option'>
                  <Link to='/LoginGeneralUser'>{loginAs}</Link>
                </div>):(
                <div className='option'>
                   <Link to='/LoginBusEmployee'>{loginAs}</Link>
                </div>
-               )}
-               <div className='option'>
-                  <Link to='/ForgotPassword'>Forgot Password</Link>
-               </div>
-         </div> 
-         <div className="btn">
-          <LoginButton buttonTitle="Login Now" onSubmit={(e)=>handleSubmit(e)}></LoginButton>
+               )} */}
+          <div className="option">
+            <Link to="/ForgotPassword">Forgot Password</Link>
+          </div>
+        </div>
+        <div className="btn">
+          <LoginButton
+            buttonTitle="Login Now"
+            onSubmit={(e) => handleSubmit(e)}
+          ></LoginButton>
         </div>
       </form>
       <Dialog
@@ -186,6 +190,6 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
       </Dialog>
     </div>
   );
-}
+};
 
 export default LoginForm;

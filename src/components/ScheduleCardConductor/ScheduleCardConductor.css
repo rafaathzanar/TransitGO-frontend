@@ -7,7 +7,7 @@
 .schedule-card {
   width: 60%;
   margin-left: 20%;
-  margin-top: 40px;
+  /* margin-top: 60px; */
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -40,12 +40,12 @@
   max-width: 100%;
   height: auto;
 }
-.ConButton{
+.ConButton {
   display: flex;
   justify-content: space-between;
   padding: 5px;
 }
-.ConButtonST{
+.ConButtonST {
   background-color: hsl(0, 93%, 70%);
   color: aliceblue;
   border: 0ch;
@@ -164,7 +164,6 @@
   .header-bar {
     color: brown;
   }
-
 }
 @media screen and (max-width: 425px) {
   .schedule-card {
