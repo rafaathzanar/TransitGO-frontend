@@ -126,7 +126,7 @@ const FeedbackCards = ({
         >
           {createdAt}
         </Typography>
-        {username === email && (
+        {username === uname && (
           <Box
             sx={{
               display: "flex",
