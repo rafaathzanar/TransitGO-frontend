@@ -12,7 +12,7 @@ function CommentBox({ onSubmit, busId }) {
     headers: { Authorization: `Bearer ${token}` },
   };
   const [comment, setComment] = useState({
-    username: localStorage.getItem("uname") || "Anonymous",
+    username: localStorage.getItem("username") || "Anonymous",
     profile: "",
     rate: "",
     review: "",
@@ -57,7 +57,7 @@ function CommentBox({ onSubmit, busId }) {
             createdAt: currentDateTime,
           });
           setComment({
-            username: localStorage.getItem("uname") || "Anonymous",
+            username: localStorage.getItem("username") || "Anonymous",
             profile: "",
             rate: "",
             review: "",

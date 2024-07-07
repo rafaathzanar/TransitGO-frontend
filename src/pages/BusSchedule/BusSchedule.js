@@ -1,17 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ScheduleSearchBar from "../../components/ScheduleSearchBar/ScheduleSearchBar";
 import HeaderBar from "../../components/HeaderBar/HeaderBar";
 import ScheduleCard from "../../components/ScheduleCard/ScheduleCard";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 function BusSchedule() {
+  const location = useLocation();
   const [busSchedules, setBusSchedules] = useState([]);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [direction, setDirection] = useState("");
-  const [date, setDate] = useState("");
+  const [from, setFrom] = useState(location.state?.fromStop || "");
+  const [to, setTo] = useState(location.state?.toStop || "");
+  const [direction, setDirection] = useState(location.state?.direction || "");
+  const [date, setDate] = useState(location.state?.date || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const savedState = JSON.parse(localStorage.getItem("busScheduleState"));
+    if (savedState) {
+      setFrom(savedState.fromStop);
+      setTo(savedState.toStop);
+      setDirection(savedState.direction);
+      setDate(savedState.date);
+      handleSearch(
+        savedState.fromStop,
+        savedState.toStop,
+        savedState.direction,
+        savedState.date
+      );
+    } else if (
+      location.state &&
+      location.state.fromStop &&
+      location.state.toStop &&
+      location.state.direction &&
+      location.state.date
+    ) {
+      console.log("location : ", location.state);
+      console.log("location Fromstop : ", location.state.fromStop);
+      console.log("location tostop : ", location.state.toStop);
+      console.log("location direction : ", location.state.direction);
+      console.log("location date : ", location.state.date);
+
+      handleSearch(
+        location.state.fromStop,
+        location.state.toStop,
+        location.state.direction,
+        location.state.date
+      );
+    }
+  }, [location.state]);
 
   const handleSearch = async (fromStop, toStop, direction, date) => {
     setFrom(fromStop);
@@ -30,7 +67,7 @@ function BusSchedule() {
         },
       });
 
-      console.log("bus schedules in that date ", response.data);
+      console.log("bus schedules on that date ", response.data);
       setBusSchedules(response.data);
     } catch (error) {
       setError("Error fetching bus schedules. Please try again later.");
@@ -39,6 +76,18 @@ function BusSchedule() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      const stateToSave = {
+        fromStop: from,
+        toStop: to,
+        direction: direction,
+        date: date,
+      };
+      localStorage.setItem("busScheduleState", JSON.stringify(stateToSave));
+    };
+  }, [from, to, direction, date]);
 
   return (
     <div id="bus-schedule-container">

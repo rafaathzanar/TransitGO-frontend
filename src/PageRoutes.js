@@ -14,9 +14,10 @@ import Tracking from "./pages/tracking/Tracking";
 import Form from "./pages/form/Form";
 
 import FormConductor from "./pages/FormConductor/FormConductor";
-
+import ReviewRating from "./pages/ReviewRating/ReviewRating";
 import EditFoundForm from "./components/LostAndFound/EditFoundForm";
 import EditLostForm from "./components/LostAndFound/EditLostForm";
+import EditCommentBox from "./components/ReviewPage/EditCommentBox";
 
 function PageRoutes() {
   return (
@@ -24,7 +25,11 @@ function PageRoutes() {
       <Routes>
         <Route index element={<HomePage />} />
 
-        <Route path="busschedule" element={<BusSchedule />} />
+        <Route path="busschedule">
+          <Route index element={<BusSchedule />} />
+          <Route path="reviews/:busID" element={<ReviewRating />} />
+          <Route path="reviewsedit/:id" element={<EditCommentBox />} />
+        </Route>
 
         <Route path="announcementanddelay">
           <Route index element={<AnnouncementandDelayReportsUser />} />

@@ -25,7 +25,7 @@ const labels = {
   5: "Excellent",
 };
 
-const uname = localStorage.getItem("uname");
+const email = localStorage.getItem("username");
 
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
@@ -126,7 +126,7 @@ const FeedbackCards = ({
         >
           {createdAt}
         </Typography>
-        {username === uname && (
+        {username === email && (
           <Box
             sx={{
               display: "flex",
