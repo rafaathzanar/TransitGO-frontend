@@ -20,7 +20,6 @@ function ConductorPage() {
       setError(null);
       try {
         const empBusResponse = await axios.get(
-
           `http://localhost:8080/userBus/${id}`,
 
           Authorization
@@ -47,6 +46,10 @@ function ConductorPage() {
     loadBus();
   }, [id]);
 
+  const marStyle = {
+    paddingTop: "60px",
+  };
+
   return (
     <div>
       <HeaderBar />
@@ -54,14 +57,16 @@ function ConductorPage() {
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
-      {bus.regNo && bus.routeNo && bus.id && (
-        <ScheduleCardConductor
-          busID={bus.id}
-          busRegNo={bus.regNo}
-          routeNo={bus.routeNo}
-          direction={bus.status}
-        />
-      )}
+      <div style={marStyle}>
+        {bus.regNo && bus.routeNo && bus.id && (
+          <ScheduleCardConductor
+            busID={bus.id}
+            busRegNo={bus.regNo}
+            routeNo={bus.routeNo}
+            direction={bus.status}
+          />
+        )}
+      </div>
     </div>
   );
 }

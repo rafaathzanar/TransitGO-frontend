@@ -23,19 +23,35 @@ const FormStop = () => {
   const [openDialog, setOpenDialog] = useState(false); // State for success dialog
   const [stopsErrorDialog, setStopsErrorDialog] = useState(false); // State for stops validation error dialog
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     const loadBusStops = async () => {
       try {
         const busStopData = await axios.get("http://localhost:8080/busstops", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        const busStopLocationData = await axios.get(
+          "http://localhost:8080/busstoplocations",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const existingStopLocations = new Set(
+          busStopLocationData.data.map((stop) => stop.location.trim())
+        );
+
         const uniqueNamesSet = new Set();
         const busStopNames = busStopData.data
           .filter((stop) => {
-            if (uniqueNamesSet.has(stop.name.trim())) {
+            const stopNameTrimmed = stop.name.trim();
+            if (
+              uniqueNamesSet.has(stopNameTrimmed) ||
+              existingStopLocations.has(stopNameTrimmed)
+            ) {
               return false;
             } else {
-              uniqueNamesSet.add(stop.name.trim());
+              uniqueNamesSet.add(stopNameTrimmed);
               return true;
             }
           })
@@ -43,6 +59,7 @@ const FormStop = () => {
             label: stop.name.trim(),
             orderIndex: stop.orderIndex,
           }));
+
         setBusStops(busStopNames);
       } catch (error) {
         console.error("Error loading bus stops:", error.message);

@@ -231,7 +231,7 @@ export default function CRUDtableRoute() {
         <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this row?
+            Are you sure you want to delete this route?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

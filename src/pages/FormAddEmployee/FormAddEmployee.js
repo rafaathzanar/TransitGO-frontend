@@ -18,6 +18,7 @@ import {
   validatePhoneNumber,
   validatePassword,
 } from "../../components/FormValidationSignup/FormValidationSignup";
+import { Link } from "react-router-dom";
 
 const FormAddEmployee = () => {
   const token = localStorage.getItem("token");
@@ -136,18 +137,17 @@ const FormAddEmployee = () => {
     } catch (error) {
       console.log(error);
       if (error.response && error.response.data) {
-        if(error.response.data === "Email already in use"){
+        if (error.response.data === "Email already in use") {
           setFormErrors({
             ...formErrors,
             email: error.response.data,
           });
-        }else{
+        } else {
           setFormErrors({
             ...formErrors,
             busid: error.response.data,
           });
         }
-        
       } else {
         console.error("Error submitting form: ", error);
         window.alert("Something went wrong, please try again later");
@@ -252,9 +252,7 @@ const FormAddEmployee = () => {
                 </MenuItem>
               ))}
             </Select>
-            {formErrors.busid && (
-              <p className="error">{formErrors.busid}</p>
-            )}
+            {formErrors.busid && <p className="error">{formErrors.busid}</p>}
             {formErrors.bus && (
               <Typography variant="caption" color="error">
                 Bus selection is required
@@ -270,6 +268,7 @@ const FormAddEmployee = () => {
         >
           Submit
         </Button>
+        <Link to={`/admin/employees/adminAdd`}> Add Admin </Link>
       </form>
     </Container>
   );
