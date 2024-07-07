@@ -4,7 +4,10 @@ import { Card, CardContent } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ScheduleCard.css";
+import "ldrs/mirage";
+import { miyagi } from "ldrs";
 
+miyagi.register();
 function ScheduleCard({
   busID,
   busRegNo,
@@ -48,7 +51,7 @@ function ScheduleCard({
     return `${hours} Hours and ${minutes} Minutes`;
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>loading</p>;
   if (error) return <p>{error}</p>;
 
   const filteredSchedules = schedules.filter(

@@ -26,7 +26,10 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
 
   const [delay, setDelay] = useState();
   const delayRef = useRef(null);
+  const nextStopRef = useRef(null);
   const [lastLeftStop, setLastLeftStop] = useState("");
+  const [nextLocation, setNextLocation] = useState("");
+
   const token = localStorage.getItem("token");
   useEffect(() => {
     function success(position) {
@@ -141,6 +144,9 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
               }
             }
           });
+          if (direction === "down") {
+            requiredStopLocationsArr.reverse();
+          }
           console.log("required StopLocations", requiredStopLocationsArr);
           setRequiredStopLocations(requiredStopLocationsArr);
           console.log(requiredStopLocations);
@@ -235,7 +241,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
       curRetrievedLatitude,
       curRetrievedLongitude
     );
-    console.log("requiredStopLocations", requiredStopLocations);
+    console.log("requiredStopLocations before for loop", requiredStopLocations);
     console.log("Schedules", schedules);
 
     if (
@@ -243,7 +249,7 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
       curRetrievedLatitude &&
       curRetrievedLongitude
     ) {
-      requiredStopLocations.forEach(async (requiredStopLocation) => {
+      requiredStopLocations.forEach(async (requiredStopLocation, index) => {
         const isWithin = isWithinRadius(
           requiredStopLocation.latitude,
           requiredStopLocation.longitude,
@@ -289,14 +295,32 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
 
           setLastLeftStop(requiredStopLocation.location);
 
+          console.log("index ", index);
+          console.log(
+            "requiredStopLocation.length - 1 ",
+            requiredStopLocations.length - 1
+          );
+          console.log("if condition", index < requiredStopLocations.length - 1);
+
+          if (index < requiredStopLocations.length - 1) {
+            nextStopRef.current = requiredStopLocations[index + 1].location;
+            setNextLocation(requiredStopLocations[index + 1].location);
+          } else {
+            console.log("elseee next location ", nextLocation);
+            nextStopRef.current = "End of the Stop";
+            setNextLocation("End of the Stop");
+          }
+
           try {
             console.log("delay inside ", delayRef.current);
+
             const postResponse = await axios.post(
               `http://localhost:8080/bus`,
               {
                 id: busID,
                 delay: delayRef.current,
                 lastLeftStop: requiredStopLocation.location,
+                nextLocation: nextStopRef.current,
               },
               {
                 headers: { Authorization: `Bearer ${token}` },
@@ -416,15 +440,6 @@ function ScheduleCardConductor({ busID, busRegNo, routeNo, direction }) {
       );
     }
   }, [schedules, requiredStopLocations]);
-
-  const calculateDuration = (startTime, endTime) => {
-    const start = new Date(`1970-01-01T${startTime}Z`);
-    const end = new Date(`1970-01-01T${endTime}Z`);
-    const diff = end - start;
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    return `${hours} Hours and ${minutes} Minutes`;
-  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;

@@ -18,27 +18,14 @@ const FormEditEmployee = () => {
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
-    fname: "",
-    lname: "",
     email: "",
     uname: "",
     phone: "",
-    uname: "",
-    phone: "",
-    //password: "",
     busid: "", // New state for bus selection
   });
   const [buses, setBuses] = useState([]);
 
-  const {
-    firstName,
-    lastName,
-    email,
-    username,
-    password,
-    phone,
-    bus,
-  } = formData;
+  const { fname, lname, email, uname, phone, busid } = formData;
 
   const onFormInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,15 +37,73 @@ const FormEditEmployee = () => {
 
   useEffect(() => {
     loadBuses();
-  }, []);
+  }, [formData.busid]);
+
+  const loadUserData = async () => {
+    try {
+      const result = await axios.get(
+        `http://localhost:8080/admin/get-user/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(result);
+      if (result.data && result.data.user) {
+        setFormData({
+          fname: result.data.user.fname,
+          lname: result.data.user.lname,
+          email: result.data.user.email,
+          uname: result.data.user.uname,
+          phone: result.data.user.phone,
+          busid: result.data.user.busid || "",
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   const loadBuses = async () => {
     try {
       const busesResponse = await axios.get("http://localhost:8080/buses", {
-        headers: { Authorization: `Bearer ${token} ` },
+        headers: { Authorization: `Bearer ${token}` },
       });
+      const result = await axios.get("http://localhost:8080/admin/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(result.data);
+      const userArray = result.data.userList || [];
+      const transformedRows = userArray.filter(
+        (user) => user.type === "employee"
+      );
+
       const buses = busesResponse.data;
-      setBuses(buses);
+      console.log("Buses", buses);
+      const employees = transformedRows;
+      console.log("Employees", employees);
+
+      // Filter out buses that are already assigned to employees
+      const assignedBusIds = employees.map((emp) => emp.busid);
+
+      console.log("Assigned bus ids ", assignedBusIds);
+
+      let availableBuses = buses.filter(
+        (bus) => !assignedBusIds.includes(String(bus.id))
+      );
+
+      console.log("Form data", formData.busid);
+      // Add the currently assigned bus back to the available buses list
+      if (formData.busid) {
+        const assignedBus = buses.find(
+          (bus) => String(bus.id) === formData.busid
+        );
+        if (assignedBus) {
+          availableBuses = [...availableBuses, assignedBus];
+        }
+      }
+
+      console.log("Available buses ", availableBuses);
+      setBuses(availableBuses);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -67,14 +112,9 @@ const FormEditEmployee = () => {
   const [formErrors, setFormErrors] = useState({
     fname: "",
     lname: "",
-    fname: "",
-    lname: "",
     email: "",
     uname: "",
     phone: "",
-    uname: "",
-    phone: "",
-    //password: "",
     busid: "", // New state for bus selection
   });
 
@@ -93,42 +133,6 @@ const FormEditEmployee = () => {
       navigate("/admin/employees");
     } catch (error) {
       console.error("Error submitting form: ", error);
-    }
-  };
-
-  //Load the data for the specific user
-  // const loadUsers = async ()=>{
-  //   const result = await axios.get(http://localhost:8080/user/${id},formData);
-  //   setFormData(result.data);
-
-  // }
-
-  const loadUserData = async () => {
-    try {
-      const result = await axios.get(
-        `http://localhost:8080/admin/get-user/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token} ` },
-        }
-      );
-      console.log(result);
-      if (result.data && result.data.user) {
-        setFormData({
-          fname: result.data.user.fname,
-          lname: result.data.user.lname,
-          fname: result.data.user.fname,
-          lname: result.data.user.lname,
-          email: result.data.user.email,
-          uname: result.data.user.uname,
-          phone: result.data.user.phone,
-          uname: result.data.user.uname,
-          phone: result.data.user.phone,
-          //password: "",
-          busid: result.data.user.busid || "",
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
     }
   };
 
@@ -192,22 +196,9 @@ const FormEditEmployee = () => {
               value={formData.phone}
               onChange={(e) => onFormInput(e)}
               error={formErrors.phone}
-              helperText={formErrors.phone && "Username is required"}
+              helperText={formErrors.phone && "Phone is required"}
             />
           </Grid>
-
-          {/* <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={(e)=>onFormInput(e)}
-              error={formErrors.password}
-              helperText={formErrors.password && "Password is required"}
-            />
-          </Grid> */}
 
           <Grid item xs={12}>
             <Select

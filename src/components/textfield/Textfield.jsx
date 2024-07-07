@@ -113,7 +113,8 @@ function Textfield() {
             return {
               ...bus,
               routeName,
-              fromStopDepartureTime: fromStopSchedule.departureTime === null ? fromStopSchedule.arrivalTime : fromStopSchedule.departureTime
+              fromStopDepartureTime: fromStopSchedule.departureTime === null ? fromStopSchedule.arrivalTime : fromStopSchedule.departureTime,
+              destinationStopArrivalTime : toStopSchedule.departureTime === null ? toStopSchedule.arrivalTime : toStopSchedule.departureTime
             };
           } catch (error) {
             console.error(`Error processing bus with ID ${bus.id}:`, error);
@@ -218,12 +219,16 @@ function Textfield() {
       const response = await axios.post("http://localhost:8080/package", updatedPack, Authorization);
       const packageID = response.data.packageID;
       const selectedBus = availableBuses.find(bus => bus.id === busID);
+      console.log("selected bus" ,selectedBus )
 
       const billInfo = {
         packageID: packageID,
         busRegNo: selectedBus.regNo,
         departureTime: selectedBus.fromStopDepartureTime,
+        arrivalTime : selectedBus.destinationStopArrivalTime,
         start: start,  // You can add logic to fetch the arrival time
+        destination : destination,
+
         conductorName: updatedPack.employeeName,
         conductorContact: updatedPack.employeePhone
       };

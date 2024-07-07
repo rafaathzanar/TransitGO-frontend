@@ -1,4 +1,3 @@
-//BusSchedule.js
 import React, { useState } from "react";
 import ScheduleSearchBar from "../../components/ScheduleSearchBar/ScheduleSearchBar";
 import HeaderBar from "../../components/HeaderBar/HeaderBar";
@@ -42,7 +41,7 @@ function BusSchedule() {
   };
 
   return (
-    <div>
+    <div id="bus-schedule-container">
       <HeaderBar />
       <ScheduleSearchBar onSearch={handleSearch} />
       {loading && <p>Loading...</p>}
