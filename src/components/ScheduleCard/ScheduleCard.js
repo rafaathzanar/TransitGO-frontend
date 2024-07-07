@@ -4,10 +4,7 @@ import { Card, CardContent } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ScheduleCard.css";
-import "ldrs/mirage";
-import { miyagi } from "ldrs";
 
-miyagi.register();
 function ScheduleCard({
   busID,
   busRegNo,
@@ -106,7 +103,21 @@ function ScheduleCard({
             <p>{toStop}</p>
             <p>{toTime}</p>
           </div>
-          <Link to={`/reviews/${busID}`}>Review & Rating</Link>
+          <Link
+            to={{
+              pathname: `/busschedule/reviews/${busID}`,
+              state: { fromStop, toStop, direction, date },
+            }}
+            onClick={() => {
+              const stateToSave = { fromStop, toStop, direction, date };
+              localStorage.setItem(
+                "busScheduleState",
+                JSON.stringify(stateToSave)
+              );
+            }}
+          >
+            Review & Rating
+          </Link>
         </div>
         <div className="footer-bar" style={footerbarStyle}>
           <div className="cringe" style={{ padding: 5, fontWeight: "bold" }}>

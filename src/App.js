@@ -19,12 +19,11 @@ import NewPassword from "./pages/NewPassword/NewPassword";
 import CRUDtablePackage from "./components/CRUDtablePackage/CRUDtablePackage";
 import RouteManagement from "./pages/Package/Package";
 
-import ReviewRating from "./pages/ReviewRating/ReviewRating";
 import ConductorPage from "./pages/ConductorPage/ConductorPage";
 import MyLayout from "./components/MyLayout";
 import ActivityHistory from "./pages/ActivityHistory/AvtivityHistory";
 import Dummy from "./dummy";
-import EditCommentBox from "./components/ReviewPage/EditCommentBox";
+
 import FormAddAdmin from "./pages/FormAddAdmin/FormAddAdmin.js";
 import FormAdminSignIn from "./pages/FormAdminSignIn/FormAdminSignIn.js";
 import PasswordVerificationPage from "./pages/PasswordVerificationPage/PasswordVerificationPage.js";
@@ -42,9 +41,6 @@ function App() {
           <Route path="/signin-employee" element={<LoginBusEmployee />} />
 
           <Route path="/location" element={<ConductorPage />} />
-
-          <Route path="/reviews/:busID" element={<ReviewRating />} />
-          <Route path="/reviewsedit/:id" element={<EditCommentBox />} />
 
           <Route path="/LoginBusEmployee" element={<LoginBusEmployee />} />
           <Route path="/LoginGeneralUser" element={<LoginGeneralUser />} />

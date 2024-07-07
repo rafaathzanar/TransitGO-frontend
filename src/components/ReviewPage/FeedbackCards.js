@@ -14,19 +14,18 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 
 const labels = {
-  
   1: "Useless",
- 
+
   2: "Poor",
- 
+
   3: "Ok",
- 
+
   4: "Good",
- 
+
   5: "Excellent",
 };
 
-const email = localStorage.getItem('username');
+const email = localStorage.getItem("username");
 
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
@@ -41,7 +40,7 @@ const FeedbackCards = ({
   createdAt,
   currentUser,
   onDelete,
-  onEdit, 
+  onEdit,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -128,20 +127,18 @@ const FeedbackCards = ({
           {createdAt}
         </Typography>
         {username === email && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            width: "100%",
-            mt: 1,
-          }}
-        >
-          
-         
-            <IconButton   onClick={handleEditClick}size="small" color="#0B183C">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+              mt: 1,
+            }}
+          >
+            <IconButton onClick={handleEditClick} size="small" color="#0B183C">
               <EditIcon fontSize="small" color="#0B183C" />
             </IconButton>
-      
+
             <IconButton onClick={handleDeleteClick} size="small">
               <DeleteIcon fontSize="small" />
             </IconButton>
@@ -160,15 +157,14 @@ const FeedbackCards = ({
         fullWidth
         maxWidth="sm"
         PaperProps={{
-    sx: {
-      borderRadius: "10px",
-      padding: "20px",
-    },
-  }}
+          sx: {
+            borderRadius: "10px",
+            padding: "20px",
+          },
+        }}
       >
-      
         <DialogContent>
-          <EditCommentBox id={id} onClose={handleEditClose}  onEdit={onEdit} />
+          <EditCommentBox id={id} onClose={handleEditClose} onEdit={onEdit} />
         </DialogContent>
       </Dialog>
     </Card>
