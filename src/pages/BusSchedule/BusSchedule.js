@@ -19,6 +19,7 @@ function BusSchedule() {
   useEffect(() => {
     const savedState = JSON.parse(localStorage.getItem("busScheduleState"));
     if (savedState) {
+      setShowNoBusesMessage(false); // Resetting message state
       setFrom(savedState.fromStop);
       setTo(savedState.toStop);
       setDirection(savedState.direction);
@@ -53,7 +54,6 @@ function BusSchedule() {
     setDate(date);
     setLoading(true);
     setError(null);
-    setShowNoBusesMessage(false); // Resetting message state
 
     try {
       const response = await axios.get(`http://localhost:8080/bus/search`, {
