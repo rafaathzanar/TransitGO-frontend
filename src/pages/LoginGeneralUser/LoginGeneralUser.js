@@ -23,7 +23,7 @@ const LoginGeneralUser = () => {
           <LoginForm
             userNameTitle="E-mail"
             userNamePlaceholder="Enter Your E-mail"
-            loginAs="Login"
+
           ></LoginForm>
         </div>
         <div className="signup">
