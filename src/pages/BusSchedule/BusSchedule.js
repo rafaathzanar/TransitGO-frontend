@@ -14,6 +14,7 @@ function BusSchedule() {
   const [date, setDate] = useState(location.state?.date || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showNoBusesMessage, setShowNoBusesMessage] = useState(false);
 
   useEffect(() => {
     const savedState = JSON.parse(localStorage.getItem("busScheduleState"));
@@ -35,12 +36,6 @@ function BusSchedule() {
       location.state.direction &&
       location.state.date
     ) {
-      console.log("location : ", location.state);
-      console.log("location Fromstop : ", location.state.fromStop);
-      console.log("location tostop : ", location.state.toStop);
-      console.log("location direction : ", location.state.direction);
-      console.log("location date : ", location.state.date);
-
       handleSearch(
         location.state.fromStop,
         location.state.toStop,
@@ -57,6 +52,8 @@ function BusSchedule() {
     setDate(date);
     setLoading(true);
     setError(null);
+    setShowNoBusesMessage(false); // Resetting message state
+
     try {
       const response = await axios.get(`http://localhost:8080/bus/search`, {
         params: {
@@ -67,10 +64,13 @@ function BusSchedule() {
         },
       });
 
-      console.log("bus schedules on that date ", response.data);
       setBusSchedules(response.data);
+      if (response.data.length === 0) {
+        setShowNoBusesMessage(true); // Show message if no schedules found
+      }
     } catch (error) {
       console.error("Error fetching bus schedules:", error.message);
+      setError("Error fetching bus schedules. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -94,6 +94,12 @@ function BusSchedule() {
       <ScheduleSearchBar onSearch={handleSearch} />
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
+      {!loading && busSchedules.length === 0 && showNoBusesMessage && (
+        <div style={{ textAlign: "center", fontSize: "1.5em", marginTop: 200 }}>
+          <p>No buses available on the route on selected date.</p>
+        </div>
+      )}
+
       {busSchedules.map((bus) => (
         <ScheduleCard
           key={bus.id}
