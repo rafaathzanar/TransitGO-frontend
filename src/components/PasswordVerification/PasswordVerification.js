@@ -41,7 +41,7 @@ function PasswordVerification() {
           });
           Navigate("/");
         } catch (error) {
-          console.error("Error deleting bus:", error);
+          console.error("Error deleting", error);
         }
         handleClose();
       };

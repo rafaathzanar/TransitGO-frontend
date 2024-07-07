@@ -66,6 +66,7 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
          }
 
          try{
+          console.log(formData);
             const response = await axios.post("http://localhost:8080/api/v1/auth/authentication",formData);
 
             //store token, role and mail in the localstorage
@@ -150,14 +151,7 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
 
         </div>
         <div className='other-option'>
-               {loginAs === 'Login as Customer?' ? ( 
-               <div className='option'>
-                 <Link to='/LoginGeneralUser'>{loginAs}</Link>
-               </div>):(
-               <div className='option'>
-                  <Link to='/LoginBusEmployee'>{loginAs}</Link>
-               </div>
-               )}
+              
                <div className='option'>
                   <Link to='/ForgotPassword'>Forgot Password</Link>
                </div>
