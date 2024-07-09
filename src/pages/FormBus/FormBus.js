@@ -1,4 +1,3 @@
-//FormBus.js
 import React, { useEffect, useState } from "react";
 import {
   TextField,
@@ -8,6 +7,8 @@ import {
   Typography,
   Grid,
   Container,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -70,6 +71,7 @@ function FormBus() {
     busroute: {
       routeno: "",
     },
+    noOfJourneysPerDay: 1,
     status: "off",
   });
   const [arrivalTimesUp, setArrivalTimesUp] = useState({});
@@ -103,13 +105,31 @@ function FormBus() {
   }, []);
 
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBus((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    // Validate input to allow only 1 or 2 for 'noOfJourneysPerDay'
+    if (name === "noOfJourneysPerDay" && (value === "1" || value === "2")) {
+      setBus((prevData) => ({
+        ...prevData,
+        [name]: parseInt(value, 10),
+      }));
+    } else {
+      // General handling for other fields
+      setBus((prevData) => {
+        const newBus = { ...prevData };
+        if (name.includes(".")) {
+          const [parent, child] = name.split(".");
+          newBus[parent][child] = value;
+        } else {
+          newBus[name] = value;
+        }
+        return newBus;
+      });
+    }
   };
+
   const handleChangeSelectOption = (e) => {
     const selectedOptionIndex = e.target.value;
     setSelectedValue(selectedOptionIndex);
@@ -293,24 +313,42 @@ function FormBus() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Select
-                  required
-                  fullWidth
-                  label="Select Route"
-                  name="selectedValue"
-                  value={selectedValue}
-                  onChange={handleChangeSelectOption}
-                  displayEmpty
-                >
-                  <MenuItem value="" disabled>
-                    Select Route
-                  </MenuItem>
-                  {menuOptions.map((option, index) => (
-                    <MenuItem key={index} value={index}>
-                      {option.routeno}
+                <FormControl fullWidth>
+                  <InputLabel>Select Route</InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    name="selectedValue"
+                    value={selectedValue}
+                    onChange={handleChangeSelectOption}
+                  >
+                    <MenuItem value="" disabled>
+                      Select Route
                     </MenuItem>
-                  ))}
-                </Select>
+                    {menuOptions.map((option, index) => (
+                      <MenuItem key={index} value={index}>
+                        {option.routeno}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  label="Number of Journeys Per Day"
+                  name="noOfJourneysPerDay"
+                  type="number"
+                  value={bus.noOfJourneysPerDay}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  inputProps={{
+                    min: 1,
+                    max: 2,
+                  }}
+                />
               </Grid>
             </Grid>
 
