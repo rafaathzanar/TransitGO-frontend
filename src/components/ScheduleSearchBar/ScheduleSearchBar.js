@@ -9,8 +9,10 @@ import {
   Paper,
 } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const ScheduleSearchBar = ({ onSearch }) => {
+  const userRole = localStorage.getItem("userRole");
   const [busStops, setBusStops] = useState([]);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
@@ -19,6 +21,8 @@ const ScheduleSearchBar = ({ onSearch }) => {
   const [toError, setToError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [sameStopError, setSameStopError] = useState(false);
+
+  const navigation = useNavigate();
 
   useEffect(() => {
     const loadBusStops = async () => {
@@ -151,6 +155,18 @@ const ScheduleSearchBar = ({ onSearch }) => {
             <Button variant="contained" color="primary" onClick={handleSearch}>
               Search
             </Button>
+            {userRole === "employee" && (
+              <>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginLeft: 20 }}
+                  onClick={() => navigation("/location")}
+                >
+                  Start Bus Journey
+                </Button>
+              </>
+            )}
           </Grid>
         </Grid>
       </Paper>

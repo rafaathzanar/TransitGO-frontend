@@ -2,16 +2,17 @@ import { Grid } from "@mui/material";
 import React from "react";
 import "./Footer.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import Logo from "../../logo/logo.png";
 
 export default function Footer() {
   return (
     <div>
       <div className="Footer">
-        <div className="container">
+        <div className="containerSX">
           <div className="row">
             <div className="col-md-8 col-lg-8 col-12 ft-1">
               <h3>
-                <span>TRANSITGO</span>
+                <span>TRANSIT<span style={{color : "#FFC0CB" }}>GO</span></span>
               </h3>
               <p>
                 Transforming Bus Travel in Srilanka with Real-Time Updates,
@@ -41,7 +42,12 @@ export default function Footer() {
         </div>
       </div>
       <div className="Last-footer">
-        <p> All Rights Reserved @ transitGo.</p>
+      <img
+            src={Logo}
+            width={200}
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
+        <p> All Rights Reserved TransitGO 2024</p>
       </div>
     </div>
   );

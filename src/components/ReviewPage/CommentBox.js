@@ -41,41 +41,41 @@ function CommentBox({ onSubmit, busId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (token != null){
-    if (validate()) {
-      try {
-        const currentDateTime = new Date().toISOString();
-        console.log(comment);
-        const response = await axios.post(
-          "http://localhost:8080/rate/bus",
-          { ...comment, rate: parseFloat(rate) },
-          Authorization
-        );
-        onSubmit({
-          ...comment,
-          rate: parseFloat(rate),
-          createdAt: currentDateTime,
-        });
-        setComment({
-          username: localStorage.getItem("username") || "Anonymous",
-          profile: "",
-          rate: "",
-          review: "",
-          buses: {
-            busId: parseInt(busId, 10),
-          },
-        });
-        console.log("comment: ", comment);
-      } catch (error) {
-        console.error("Error submitting feedback:", error);
-        if (error.response?.data?.message) {
-          alert(error.response.data.message);
+    if (token != null) {
+      if (validate()) {
+        try {
+          const currentDateTime = new Date().toISOString();
+          console.log(comment);
+          const response = await axios.post(
+            "http://localhost:8080/rate/bus",
+            { ...comment, rate: parseFloat(rate) },
+            Authorization
+          );
+          onSubmit({
+            ...comment,
+            rate: parseFloat(rate),
+            createdAt: currentDateTime,
+          });
+          setComment({
+            username: localStorage.getItem("username") || "Anonymous",
+            profile: "",
+            rate: "",
+            review: "",
+            buses: {
+              busId: parseInt(busId, 10),
+            },
+          });
+          console.log("comment: ", comment);
+        } catch (error) {
+          console.error("Error submitting feedback:", error);
+          if (error.response?.data?.message) {
+            alert(error.response.data.message);
+          }
         }
       }
+    } else {
+      navigate("/signin");
     }
-  }else{
-    navigate("/signin");
-  }
     navigate(0);
   };
 

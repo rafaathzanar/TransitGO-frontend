@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import EditIcon from "@mui/icons-material/Edit";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import Button from "../../UI/Button/Button";
 
 import "./DelayItem.css";
@@ -30,16 +30,33 @@ const DelayItem = (props) => {
     props.onEdit(props.id);
   };
 
+  console.log("props.createdBy:", props.createdBy);
+  console.log("props.currentUser:", props.currentUser);
+  console.log("props.userRole:", props.userRole);
+  console.log("props.createdByRole:", props.createdByRole);
+
+  const isAdmin = props.createdByRole === "admin";
+
   return (
     <table className="tab">
-      <td className="goal-item">
+      <td
+        className={`goal-item ${
+          props.createdByRole === "admin" ? "admin-post" : "user-post"
+        }`}
+      >
         {props.children}
         <div className="containerdelay">
           <div className="deleteicon">
             {props.onEdit && <EditIcon onClick={editHandler}></EditIcon>}
-            {props.onDelete && <DeleteIcon onClick={deleteHandler}></DeleteIcon>}
+            {props.onDelete && (
+              <DeleteIcon onClick={deleteHandler}></DeleteIcon>
+            )}
           </div>
-          <div className="authordelay">
+          <div
+            className={`authordelay ${
+              props.createdByRole === "admin" ? "admin-post" : "user-post"
+            }`}
+          >
             <div>Posted by : {props.username} </div>
           </div>
         </div>

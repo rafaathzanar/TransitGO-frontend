@@ -1,4 +1,3 @@
-//FormRoute.js
 import React, { useState } from "react";
 import axios from "axios";
 import {
@@ -25,6 +24,7 @@ const FormRoute = () => {
 
   const [openDialog, setOpenDialog] = useState(false); // State for success dialog
   const [stopsErrorDialog, setStopsErrorDialog] = useState(false); // State for stops validation error dialog
+  const [routeExistsDialog, setRouteExistsDialog] = useState(false); // State for route exists error dialog
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,10 +65,30 @@ const FormRoute = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+
     // Check if at least two stops are added
     if (stops.length < 2) {
       setStopsErrorDialog(true);
       return;
+    }
+
+    // Check if the route number already exists
+    try {
+      const response = await axios.get("http://localhost:8080/busroutes", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const existingRoutes = response.data;
+
+      if (existingRoutes.some((r) => r.routeno === parseInt(routeno, 10))) {
+        setRouteExistsDialog(true);
+        return;
+      }
+      if (existingRoutes.some((r) => r.routename === routename)) {
+        setRouteExistsDialog(true);
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking existing routes:", error);
     }
 
     try {
@@ -113,6 +133,10 @@ const FormRoute = () => {
 
   const handleCloseStopsErrorDialog = () => {
     setStopsErrorDialog(false);
+  };
+
+  const handleCloseRouteExistsDialog = () => {
+    setRouteExistsDialog(false);
   };
 
   return (
@@ -188,6 +212,22 @@ const FormRoute = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseStopsErrorDialog} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Route exists error dialog */}
+        <Dialog open={routeExistsDialog} onClose={handleCloseRouteExistsDialog}>
+          <DialogTitle>Route Number Exists</DialogTitle>
+          <DialogContent>
+            <Typography variant="body1">
+              A route with this route no. / name already exists. Please use a
+              different route details.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseRouteExistsDialog} color="primary">
               OK
             </Button>
           </DialogActions>

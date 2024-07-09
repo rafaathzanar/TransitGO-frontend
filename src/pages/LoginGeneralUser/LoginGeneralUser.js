@@ -9,12 +9,10 @@ import SignUpButton from "../../components/SignUpButton/SignUpButton";
 import { Password } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-const LoginGeneralUser = ()  =>{
-
+const LoginGeneralUser = () => {
   return (
     <div className="App">
       <div className="Left-Form">
-        
         <div className="logo">
           <Logo></Logo>
         </div>
@@ -25,7 +23,7 @@ const LoginGeneralUser = ()  =>{
           <LoginForm
             userNameTitle="E-mail"
             userNamePlaceholder="Enter Your E-mail"
-            loginAs="Login as Bus Employee?"
+
           ></LoginForm>
         </div>
         <div className="signup">
@@ -33,13 +31,12 @@ const LoginGeneralUser = ()  =>{
             <SignUpButton buttonTitle="Sign Up Now"></SignUpButton>
           </Link>
         </div>
-        
       </div>
       <div className="Right-Image">
         <MainImage img={img}></MainImage>
       </div>
     </div>
   );
-}
+};
 
 export default LoginGeneralUser;

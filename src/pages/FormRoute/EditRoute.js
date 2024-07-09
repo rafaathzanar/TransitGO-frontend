@@ -19,9 +19,9 @@ import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 
 const EditRoute = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
+    headers: { Authorization: `Bearer ${token}` },
   };
   const { id } = useParams();
   const navigate = useNavigate();
@@ -41,7 +41,10 @@ const EditRoute = () => {
 
   const fetchRouteData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/busroute/${id}`,Authorization);
+      const response = await axios.get(
+        `http://localhost:8080/busroute/${id}`,
+        Authorization
+      );
       console.log(response);
       // Ensure busStops are sorted by orderIndex
       response.data.busStops.sort((a, b) => a.orderIndex - b.orderIndex);
@@ -72,9 +75,41 @@ const EditRoute = () => {
     }
 
     try {
+      // Filter out new stops (with null stopID) for posting
+      const newStops = route.busStops.filter((stop) => stop.stopID === null);
+
+      // Post new stops to the server
+      const postedStops = await Promise.all(
+        newStops.map((stop) =>
+          axios.post(
+            "http://localhost:8080/busstop",
+            {
+              ...stop,
+              busroute: { routeno: route.routeno },
+            },
+            Authorization
+          )
+        )
+      );
+
+      // Merge the posted stops with the rest of the bus stops
+      const updatedBusStops = route.busStops.map((stop) => {
+        if (stop.stopID === null) {
+          const postedStop = postedStops.shift().data;
+          return { ...postedStop, orderIndex: stop.orderIndex };
+        }
+        return stop;
+      });
+
+      const updatedRoute = { ...route, busStops: updatedBusStops };
+
       // Update the route details
-      console.log("route", route);
-      await axios.put(`http://localhost:8080/busroute/${id}`, route,Authorization);
+      console.log("route", updatedRoute);
+      await axios.put(
+        `http://localhost:8080/busroute/${id}`,
+        updatedRoute,
+        Authorization
+      );
       navigate("/admin/routeschedule/routemanagement");
     } catch (error) {
       console.error("Error updating route:", error);
@@ -90,7 +125,10 @@ const EditRoute = () => {
     console.log("stopID for deletion ", stopId);
     if (name === "") {
       try {
-        await axios.delete(`http://localhost:8080/busstop/${stopId}`,Authorization);
+        await axios.delete(
+          `http://localhost:8080/busstop/${stopId}`,
+          Authorization
+        );
 
         setRoute((prevData) => ({
           ...prevData,
@@ -110,7 +148,10 @@ const EditRoute = () => {
 
   const handleDeleteStopConfirmation = async () => {
     try {
-      await axios.delete(`http://localhost:8080/busstop/${deletingStopID}`,Authorization);
+      await axios.delete(
+        `http://localhost:8080/busstop/${deletingStopID}`,
+        Authorization
+      );
       setRoute((prevData) => ({
         ...prevData,
         busStops: prevData.busStops.filter(
@@ -123,39 +164,18 @@ const EditRoute = () => {
     handleClose();
   };
 
-  const handleAddStop = async (index) => {
-    try {
-      const newStop = { name: "", stopID: null, orderIndex: index };
-      const updatedBusStops = [
-        ...route.busStops.slice(0, index),
-        newStop,
-        ...route.busStops.slice(index),
-      ].map((stop, i) => ({ ...stop, orderIndex: i }));
+  const handleAddStop = (index) => {
+    const newStop = { name: "", stopID: null, orderIndex: index };
+    const updatedBusStops = [
+      ...route.busStops.slice(0, index),
+      newStop,
+      ...route.busStops.slice(index),
+    ].map((stop, i) => ({ ...stop, orderIndex: i }));
 
-      setRoute((prevData) => ({
-        ...prevData,
-        busStops: updatedBusStops,
-      }));
-
-      const response = await axios.post("http://localhost:8080/busstop", {
-        ...newStop,
-        busroute: { routeno: route.routeno },
-      }, Authorization);
-      console.log("Posting new stop", response);
-      const createdStop = response.data;
-      const updatedBusStopsWithId = [
-        ...updatedBusStops.slice(0, index),
-        { ...createdStop, orderIndex: index }, // Ensure the new stop has the correct orderIndex
-        ...updatedBusStops.slice(index + 1),
-      ];
-
-      setRoute((prevData) => ({
-        ...prevData,
-        busStops: updatedBusStopsWithId,
-      }));
-    } catch (error) {
-      console.error("Error adding bus stop:", error);
-    }
+    setRoute((prevData) => ({
+      ...prevData,
+      busStops: updatedBusStops,
+    }));
   };
 
   return (
