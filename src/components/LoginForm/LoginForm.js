@@ -94,9 +94,10 @@ const LoginForm = ({ userNameTitle, userNamePlaceholder, loginAs }) => {
             setNavigateTo(type === "admin" ? "/admin" : "/profile");
             
          }catch(error){
+          console.log(error);
           let errorMessage = "Something went wrong! Please try again later";
           if (error.response && error.response.data){
-              errorMessage = error.response.data.Message || "Invalid Email or Password";
+              errorMessage = error.response.data || "Invalid Email or Password" || "An unexpected error occurred during authentication, User Email not Verified";
              setFormErrors({
               email: errorMessage,
               password: errorMessage

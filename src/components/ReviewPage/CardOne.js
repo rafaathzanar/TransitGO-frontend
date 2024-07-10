@@ -109,6 +109,7 @@ const CardOne = ({ busID }) => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+  
 
   return (
     <div>

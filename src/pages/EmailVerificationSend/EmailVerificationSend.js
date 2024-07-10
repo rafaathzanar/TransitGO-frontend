@@ -3,7 +3,10 @@ import Logo from "../../components/Logo/Logo";
 import SubHeading from "../../components/SubHeading/SubHeading";
 import Tick from "../../components/Tick/Tick";
 
+
 function EmailVerificationSend(){
+
+   
     return(
         <div className='verifyEmail'>
            <div className="logo">
