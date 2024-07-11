@@ -26,6 +26,7 @@ const labels = {
 };
 
 const email = localStorage.getItem("username");
+const uname = localStorage.getItem("uname");
 
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
@@ -66,6 +67,10 @@ const FeedbackCards = ({
     setDialogOpen(false);
   };
 
+  const getUsername = (username) => {
+    return username.substring(0, 5);
+  };
+
   return (
     <Card
       sx={{
@@ -89,7 +94,7 @@ const FeedbackCards = ({
           component="p"
           sx={{ fontSize: "0.8rem", color: "#0B183C", fontWeight: "bold" }}
         >
-          {username}
+          {getUsername(username)}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Rating
@@ -135,6 +140,7 @@ const FeedbackCards = ({
               mt: 1,
             }}
           >
+            
             <IconButton onClick={handleEditClick} size="small" color="#0B183C">
               <EditIcon fontSize="small" color="#0B183C" />
             </IconButton>
@@ -142,6 +148,7 @@ const FeedbackCards = ({
             <IconButton onClick={handleDeleteClick} size="small">
               <DeleteIcon fontSize="small" />
             </IconButton>
+            
           </Box>
         )}
       </CardContent>

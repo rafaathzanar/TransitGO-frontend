@@ -98,7 +98,7 @@ const FormAddPassenger = () => {
        setDialogContent("Registration Success");
        setOpen(true);
 
-       navigate("/verifyEmail");
+       navigate("/verifyEmail",{ state: updatedFormData });
      }
      catch(error){
       if (error.response && error.response.data){

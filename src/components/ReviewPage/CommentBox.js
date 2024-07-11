@@ -11,6 +11,7 @@ function CommentBox({ onSubmit, busId }) {
   const Authorization = {
     headers: { Authorization: `Bearer ${token}` },
   };
+
   const [comment, setComment] = useState({
     username: localStorage.getItem("username") || "Anonymous",
     profile: "",
