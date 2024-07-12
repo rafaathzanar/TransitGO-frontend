@@ -11,7 +11,7 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { usePagination } from "@mui/lab";
 import { Edit, Style, Token } from "@mui/icons-material";
-
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 export default function CRUDtableEmployee({ searchData }) {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -20,6 +20,7 @@ export default function CRUDtableEmployee({ searchData }) {
   const { employeeId } = useParams();
   const [filteredRows, setFilteredRows] = useState(rows); // New state for filtered rows
   const [searchValue, setSearchValue] = useState(""); // New state for search input value
+  const [loading, setLoading] = useState(false);
 
   // const [userData, setUserData] = useState({
   //   fname: '',
@@ -39,6 +40,7 @@ export default function CRUDtableEmployee({ searchData }) {
 
   //to load the infromations
   const loadUsers = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const result = await axios.get("http://localhost:8080/admin/users", {
@@ -60,6 +62,7 @@ export default function CRUDtableEmployee({ searchData }) {
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
+    setLoading(false);
   };
 
   //to delete a user by id
@@ -175,6 +178,7 @@ export default function CRUDtableEmployee({ searchData }) {
         value={searchValue}
         onChange={handleSearchChange}
       />
+      {loading && <LoadingComponent />}
       <DataGrid
         rows={filteredRows}
         columns={columns}

@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router";
 import SearchField from "../../components/SearchField/SearchField";
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 
 export default function CRUDtableStop() {
   const [open, setOpen] = useState(false);
@@ -28,6 +29,7 @@ export default function CRUDtableStop() {
   });
   const [busStops, setBusStops] = useState([]);
   const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function CRUDtableStop() {
   }, []);
 
   const loadStops = async () => {
+    setLoading(true);
     try {
       const result = await axios.get("http://localhost:8080/busstoplocations", {
         headers: { Authorization: `Bearer ${token}` },
@@ -74,6 +77,7 @@ export default function CRUDtableStop() {
     } catch (error) {
       console.error("Error loading bus stops:", error.message);
     }
+    setLoading(false);
   };
 
   const [filteredRows, setFilteredRows] = useState(stops);
@@ -203,6 +207,7 @@ export default function CRUDtableStop() {
         value={searchValue}
         onChange={handleSearchChange}
       />
+      {loading && <LoadingComponent />}
       <DataGrid
         rows={filteredRows}
         columns={columns}
@@ -220,24 +225,7 @@ export default function CRUDtableStop() {
           <DialogContent>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
-                <Autocomplete
-                  options={busStops}
-                  getOptionLabel={(option) => option.label}
-                  value={
-                    busStops.find(
-                      (stop) => stop.label === editFormData.location
-                    ) || null
-                  }
-                  onChange={handleAutocompleteChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Select Bus Stop"
-                      variant="outlined"
-                      required
-                    />
-                  )}
-                />
+                <h2>{editFormData.location}</h2>
               </Grid>
               <Grid item xs={12} sm={12}>
                 <TextField

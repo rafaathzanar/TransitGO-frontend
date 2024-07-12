@@ -4,6 +4,7 @@ import HeaderBar from "../../components/HeaderBar/HeaderBar";
 import ScheduleCard from "../../components/ScheduleCard/ScheduleCard";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 
 function BusSchedule() {
   const location = useLocation();
@@ -92,7 +93,7 @@ function BusSchedule() {
     <div id="bus-schedule-container">
       <HeaderBar />
       <ScheduleSearchBar onSearch={handleSearch} />
-      {loading && <p>Loading...</p>}
+      {loading && <LoadingComponent />}
       {error && <p>{error}</p>}
       {!loading && busSchedules.length === 0 && showNoBusesMessage && (
         <p>No buses available on the route on selected date.</p>

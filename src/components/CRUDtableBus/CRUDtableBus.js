@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import EditIcon from "@mui/icons-material/Edit";
-
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 export default function CRUDtableRoute({}) {
   const token = localStorage.getItem("token");
   const Authorization = {
@@ -25,7 +25,7 @@ export default function CRUDtableRoute({}) {
   const [filteredRows, setFilteredRows] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [routeChangesDetected, setRouteChangesDetected] = useState({});
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +33,7 @@ export default function CRUDtableRoute({}) {
   }, []);
 
   const loadBuses = async () => {
+    setLoading(true);
     try {
       const routesResponse = await axios.get(
         "http://localhost:8080/busroutes",
@@ -95,6 +96,7 @@ export default function CRUDtableRoute({}) {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+    setLoading(false);
   };
 
   // Utility function to compare arrays
@@ -232,6 +234,7 @@ export default function CRUDtableRoute({}) {
         value={searchValue}
         onChange={handleSearchChange}
       />
+      {loading && <LoadingComponent />}
       <DataGrid
         rows={filteredRows.map((row) => ({ ...row, id: row.busId }))}
         columns={columns}
