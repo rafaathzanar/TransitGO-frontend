@@ -11,7 +11,7 @@ import SearchField from "../../components/SearchField/SearchField";
 import { List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router";
 import axios from "axios";
-
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 export default function CRUDtableRoute() {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -19,6 +19,7 @@ export default function CRUDtableRoute() {
   const [openBUSLIST, setOpenBUSLIST] = useState(false);
   const [openBUSSTOPLIST, setOpenBUSSTOPLIST] = useState(false);
   const [routes, setRoutes] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +27,7 @@ export default function CRUDtableRoute() {
   }, []);
 
   const loadRoutes = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const result = await axios.get("http://localhost:8080/busroutes", {
@@ -41,6 +43,7 @@ export default function CRUDtableRoute() {
     } catch (error) {
       console.error("Error loading routes:", error.message);
     }
+    setLoading(false);
   };
 
   const [filteredRows, setFilteredRows] = useState(routes);
@@ -161,6 +164,7 @@ export default function CRUDtableRoute() {
         value={searchValue}
         onChange={handleSearchChange}
       />
+      {loading && <LoadingComponent />}
       <DataGrid
         rows={filteredRows}
         columns={columns}

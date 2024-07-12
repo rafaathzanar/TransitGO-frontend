@@ -4,6 +4,7 @@ import DelayItem from "../Delayitem/DelayItem";
 import { useParams } from "react-router";
 import { Grid } from "@mui/material";
 import Button from "../../UI/Button/Button";
+import LoadingComponent from "../../LoadingComponent/LoadingComponent";
 
 const DelayList = () => {
   const [delayList, setDelayList] = useState([]);
@@ -16,12 +17,14 @@ const DelayList = () => {
   const Authorization = {
     headers: { Authorization: `Bearer ${token}` },
   };
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchDelays();
   }, []);
 
   const fetchDelays = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("http://localhost:8080/announcements");
 
@@ -29,6 +32,7 @@ const DelayList = () => {
     } catch (error) {
       console.error("Error fetching delays:", error);
     }
+    setLoading(false);
   };
 
   const deleteDelayHandler = async (id) => {
@@ -77,7 +81,10 @@ const DelayList = () => {
   };
 
   return (
+    <>
+    {loading && <LoadingComponent />}
     <Grid item xs={10}>
+      
       {editingAnnouncement && (
         <div className="form-control">
           <textarea
@@ -139,6 +146,7 @@ const DelayList = () => {
         ))}
       </ul>
     </Grid>
+    </>
   );
 };
 
