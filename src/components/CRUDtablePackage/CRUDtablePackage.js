@@ -8,19 +8,20 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchField from "../../components/SearchField/SearchField";
 import axios from "axios";
-
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 export default function CRUDtablePackage({}) {
   const token = localStorage.getItem("token");
   const Authorization = {
     headers: { Authorization: `Bearer ${token}` },
   };
   const [packages, setPackages] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     loadPackages();
   }, []);
 
   const loadPackages = async () => {
+    setLoading(true);
     try {
       const result = await axios.get(
         "http://localhost:8080/packages",
@@ -36,6 +37,7 @@ export default function CRUDtablePackage({}) {
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
+    setLoading(false);
   };
 
   const deletePackage = async (packageID) => {
@@ -134,6 +136,7 @@ export default function CRUDtablePackage({}) {
         value={searchValue}
         onChange={handleSearchChange}
       />
+      {loading && <LoadingComponent />}
       <DataGrid
         rows={filteredRows}
         columns={columns}

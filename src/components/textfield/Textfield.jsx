@@ -4,7 +4,7 @@ import LoginButton from "../../components/LoginButton/LoginButton";
 import axios from "axios";
 import './textfield.css';
 import Bill from '../../components/Bill/Bill';
-
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 function Textfield() {
   const token = localStorage.getItem('token');
   const Authorization = {
@@ -38,7 +38,7 @@ function Textfield() {
   const [billDetails, setBillDetails] = useState(null);
   const [billOpen, setBillOpen] = useState(false);
   const { busID, destination, receivedDate, start, receiverName, receiverContact, receiverNIC, employeeName, employeePhone } = pack;
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchBusStops();
   }, []);
@@ -50,6 +50,7 @@ function Textfield() {
   }, [start, destination, receivedDate]);
 
   const fetchBusStops = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("http://localhost:8080/busstops",Authorization);
       // Use a Set to store unique bus stop names
@@ -68,9 +69,11 @@ function Textfield() {
     } catch (error) {
       console.error("Error fetching bus stops:", error);
     }
+    setLoading(false);
   };
 
   const fetchAvailableBuses = async () => {
+    setLoading(true);
     const direction = calculateDirection(start, destination);
     try {
       const response = await axios.get(`http://localhost:8080/bus/search`, {
@@ -120,6 +123,7 @@ function Textfield() {
             return null;
           }
         })
+
       );
       
       const filteredBusesWithSchedules = busesWithSchedules.filter(bus => bus !== null);
@@ -129,6 +133,7 @@ function Textfield() {
     } catch (error) {
       console.error("Error fetching available buses:", error);
     }
+    setLoading(false);
   };
 
   const calculateDirection = (from, to) => {
@@ -185,6 +190,7 @@ function Textfield() {
   };
 
   const onSubmitPack = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     const busId = String(pack.busID);
@@ -249,6 +255,7 @@ function Textfield() {
     } catch (error) {
       console.error("Error in submitting: ", error);
     }
+    setLoading(false);
   };
 
   const todayDate = new Date().toISOString().split('T')[0];
@@ -256,7 +263,7 @@ function Textfield() {
   return (
     <>
       <form onSubmit={onSubmitPack}>
-        <div>
+        <div>{loading && <h4>searching for buses</h4> && <LoadingComponent />}
           <FormControl className='select-from' sx={{ minWidth: 250, mt: 3, mr: 1 }}>
             <InputLabel>From</InputLabel>
             <Select

@@ -1,0 +1,62 @@
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-text {
+  font-size: 3rem;
+  animation: fade 1.5s infinite;
+  position: relative;
+  z-index: 1;
+}
+
+.circle {
+  width: 15px;
+  height: 5px;
+  background-color: rgba(0, 103, 188, 0.664);
+  border-radius: 100%;
+  position: absolute;
+  animation: move 4s linear infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translate(100px, 0px);
+  }
+  25% {
+    transform: translate(-20px, 0);
+  }
+  50% {
+    transform: translate(100px, 0px);
+  }
+  75% {
+    transform: translate(-20px, 0);
+  }
+  100% {
+    transform: translate(100px, 0px);
+  }
+}
+
+@keyframes fade {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}

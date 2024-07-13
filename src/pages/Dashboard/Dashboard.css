@@ -11,7 +11,11 @@
   gap: 20px;
   margin: 15px 0;
 }
-
+.welcomeAdmin{
+  color: black;
+  display: flex;
+  align-items: center;
+}
 .card-hash {
   display: flex;
   flex-direction: column;

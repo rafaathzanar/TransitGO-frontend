@@ -4,7 +4,7 @@ import { Card, CardContent } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ScheduleCard.css";
-
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 function ScheduleCard({
   busID,
   busRegNo,
@@ -47,9 +47,6 @@ function ScheduleCard({
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     return `${hours} Hours and ${minutes} Minutes`;
   };
-
-  if (loading) return <p>loading</p>;
-  if (error) return <p>{error}</p>;
 
   const filteredSchedules = schedules.filter(
     (schedule) => schedule.direction === direction
