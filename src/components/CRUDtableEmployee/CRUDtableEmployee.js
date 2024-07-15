@@ -53,7 +53,7 @@ export default function CRUDtableEmployee({ searchData }) {
         .map((user, index) => ({
           id: index + 1,
           employeeId: user.id,
-          employeeName: user.email,
+          employeeName: user.fname + " " + user.lname,
           currentBusId: user.busid,
         }));
       console.log(transformedRows);

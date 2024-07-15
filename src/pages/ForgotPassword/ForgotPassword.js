@@ -15,7 +15,7 @@ function ForgotPassword() {
       </div>
       <div className="forgotpassword-main">
         <div className="forgotpassword-heading">
-          <SubHeading heading="Forgot Password"></SubHeading>
+          <SubHeading heading="Password Reset"></SubHeading>
         </div>
         <div className="forgotpassword-form">
           <ForgotPasswordEmail></ForgotPasswordEmail>

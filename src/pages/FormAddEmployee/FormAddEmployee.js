@@ -272,6 +272,18 @@ const FormAddEmployee = () => {
         >
           Submit
         </Button>
+
+        <br/>
+        <Link to={`/admin/employees/adminAdd`}> 
+        <Button
+        sx={{ marginTop: "20px" }}
+        variant="contained"
+        color="primary"
+        to="/admin/employees/adminAdd"
+        >
+          Add Admin
+        </Button>
+         </Link>
       </form>
     </Container>
   );

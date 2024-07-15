@@ -13,6 +13,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "../UI/Button/Button";
+import CommonButton from '../CommonButton/CommonButton';
+import { Link } from 'react-router-dom';
 
 
 
@@ -129,6 +131,9 @@ function OTPVerification(){
                 className='form-control'
                 />
                 <OTPButton title="Verify"></OTPButton>
+                <Link to="/LoginGeneralUser">
+                Login
+                </Link>
                </label>
             </form>
           </div>

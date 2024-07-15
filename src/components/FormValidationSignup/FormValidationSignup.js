@@ -7,17 +7,23 @@ const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const phoneRegex = /^\d{10}$/;
 
 export const validateFname = (fname) => {
-    if (!fname.trim()){
-        return{isValid:false, Message:"First Name Required!."};
+    if (!fname.trim()) {
+        return { isValid: false, Message: "First Name Required!." };
     }
-    return{isValid:true, Message:""}
+    if (/\d/.test(fname)) {
+        return { isValid: false, Message: "First Name should not contain numbers!." };
+    }
+    return { isValid: true, Message: "" };
 }
 
 export const validateLname = (lname) => {
-    if (!lname.trim()){
-        return{isValid:false, Message:"Last Name Required!."};
+    if (!lname.trim()) {
+        return { isValid: false, Message: "Last Name Required!." };
     }
-    return{isValid:true, Message:""}
+    if (/\d/.test(lname)) {
+        return { isValid: false, Message: "Last Name should not contain numbers!." };
+    }
+    return { isValid: true, Message: "" };
 }
 
 export const validateUsername = (username) => {
