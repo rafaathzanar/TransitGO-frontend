@@ -250,7 +250,8 @@ function Textfield() {
         receiverContact: '',
         receiverNIC: '',
         employeeName: '',
-        employeePhone: ''
+        employeePhone: '',
+        employeeId: ""
       });
     } catch (error) {
       console.error("Error in submitting: ", error);
