@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Container } from "react-bootstrap";
+import ShareLocationIcon from "@mui/icons-material/ShareLocation";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const FormRoute = () => {
   const [route, setRoute] = useState({
@@ -173,6 +175,7 @@ const FormRoute = () => {
                 <TextField
                   required
                   fullWidth
+                  sx={{ width: "50%" }}
                   label="Route No"
                   name="routeno"
                   type="number"
@@ -184,6 +187,7 @@ const FormRoute = () => {
                 <TextField
                   required
                   fullWidth
+                  sx={{ width: "50%" }}
                   label="Route Name"
                   name="routename"
                   value={routename}
@@ -191,23 +195,37 @@ const FormRoute = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Typography>Stops</Typography>
+                <div
+                  className="div"
+                  style={{ display: "flex", color: "#132968" }}
+                >
+                  <ShareLocationIcon />
+                  <Typography sx={{ marginLeft: "5px" }}>Bus Stops</Typography>
+                </div>
+
                 {stops.map((stop, index) => (
-                  <div key={index}>
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginTop: 20,
+                    }}
+                  >
                     <TextField
                       fullWidth
+                      sx={{ width: "60%" }}
                       label={`Stop ${index + 1}`}
                       value={stop.name}
                       onChange={(e) => handleChangeStop(index, e.target.value)}
-                      sx={{ marginTop: 2 }}
                     />
-                    <Button
+                    <DeleteIcon
                       variant="outlined"
-                      color="secondary"
+                      color="primary"
                       onClick={() => handleRemoveStop(index)}
                     >
                       Delete Stop
-                    </Button>
+                    </DeleteIcon>
                   </div>
                 ))}
                 <Button
