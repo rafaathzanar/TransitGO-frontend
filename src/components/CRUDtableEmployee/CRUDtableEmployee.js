@@ -128,7 +128,7 @@ export default function CRUDtableEmployee({ searchData }) {
     setSearchValue(e.target.value);
     const filtered = rows.filter(
       (row) =>
-        row.employeeId.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        row.employeeId.toString().includes(e.target.value.toString()) ||
         row.employeeName.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.currentBusId.toLowerCase().includes(e.target.value.toLowerCase())
     );

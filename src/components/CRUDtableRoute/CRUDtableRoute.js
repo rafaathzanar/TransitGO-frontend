@@ -79,12 +79,17 @@ export default function CRUDtableRoute() {
   };
 
   const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
-    const filtered = routes.filter(
-      (row) =>
-        row.routeno.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        row.routename.toLowerCase().includes(e.target.value.toLowerCase())
-    );
+    const searchValue = e.target.value.toLowerCase();
+    setSearchValue(searchValue);
+
+    const filtered = routes.filter((row) => {
+      const routeNoString = row.routeno.toString();
+
+      return (
+        routeNoString.includes(searchValue) ||
+        row.routename.toLowerCase().includes(searchValue)
+      );
+    });
     setFilteredRows(filtered);
   };
 
