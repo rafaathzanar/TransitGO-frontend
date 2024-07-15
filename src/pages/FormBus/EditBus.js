@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useNavigate, useParams } from "react-router";
-import { Divider, Typography } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
+
 function EditBus() {
   const token = localStorage.getItem("token");
   const Authorization = {
@@ -119,19 +120,23 @@ function EditBus() {
         console.log("Creating new schedule:", schedule);
 
         promises.push(
-          axios.post(`http://localhost:8080/schedule`, {
-            bus: {
-              regNo: editedRegNo,
-              id: id,
+          axios.post(
+            `http://localhost:8080/schedule`,
+            {
+              bus: {
+                regNo: editedRegNo,
+                id: id,
+              },
+              busStop: {
+                stopID: schedule.busStop.stopID,
+                name: schedule.busStop.name,
+              },
+              direction: schedule.direction,
+              arrivalTime: schedule.arrivalTime || null,
+              departureTime: schedule.departureTime || null,
             },
-            busStop: {
-              stopID: schedule.busStop.stopID,
-              name: schedule.busStop.name,
-            },
-            direction: schedule.direction,
-            arrivalTime: schedule.arrivalTime || null,
-            departureTime: schedule.departureTime || null,
-          })
+            Authorization
+          )
         );
       } else {
         // Update existing schedule
@@ -263,62 +268,102 @@ function EditBus() {
   };
 
   return (
-    <div>
-      {(!busData || !busStops) && <LoadingComponent />}
-      {busData && (
-        <>
-          <form>
-            <TextField
-              label="Route No"
-              defaultValue={busData.routeNo}
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              disabled
-            />
-
-            <TextField
-              label="Reg No"
-              value={editedRegNo}
-              variant="outlined"
-              fullWidth
-              onChange={handleRegNoChange}
-              margin="normal"
-            />
-          </form>
-
-          <>
-            <form>
-              <>
-                <Typography variant="h6">Up</Typography>
-                {busStops
-                  .filter((stop) =>
-                    busData.schedules.some((s) => s.direction === "up")
-                  )
-                  .sort((a, b) => a.orderIndex - b.orderIndex)
-                  .map((stop, index, arr) =>
-                    renderScheduleFields(stop, "up", index, arr)
-                  )}
-                <Divider style={{ margin: "20px 0" }} />
-                <Typography variant="h6">Down</Typography>
-                {busStops
-                  .filter((stop) =>
-                    busData.schedules.some((s) => s.direction === "down")
-                  )
-                  .sort((a, b) => b.orderIndex - a.orderIndex)
-                  .map((stop, index, arr) =>
-                    renderScheduleFields(stop, "down", index, arr)
-                  )}
-              </>
-
-              <Button variant="outlined" onClick={handleSubmitEditBus}>
-                Submit
-              </Button>
-            </form>
-          </>
-        </>
-      )}
-    </div>
+    <Container maxWidth={false} style={{ padding: "0 2rem" }}>
+      <Grid
+        container
+        justifyContent="center"
+        style={{
+          backgroundColor: "#daedf4",
+          padding: 10,
+          borderRadius: 20,
+          maxWidth: "1200px", // Adjust max width as needed
+          margin: "auto",
+        }}
+      >
+        <Grid
+          item
+          xs={12}
+          sm={10}
+          md={8}
+          style={{ backgroundColor: "white", padding: 30, borderRadius: 10 }}
+        >
+          <h3
+            style={{
+              backgroundColor: "#132968",
+              color: "#FFFFFF",
+              padding: "20px",
+              borderRadius: 20,
+            }}
+          >
+            Edit Bus
+          </h3>
+          {(!busData || !busStops) && <LoadingComponent />}
+          {busData && (
+            <>
+              <form>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      label="Route No"
+                      defaultValue={busData.routeNo}
+                      variant="outlined"
+                      fullWidth
+                      sx={{ width: "10%" }}
+                      margin="normal"
+                      disabled
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      label="Reg No"
+                      value={editedRegNo}
+                      variant="outlined"
+                      fullWidth
+                      sx={{ width: "20%" }}
+                      onChange={handleRegNoChange}
+                      margin="normal"
+                    />
+                  </Grid>
+                </Grid>
+              </form>
+              <form>
+                <Grid container spacing={2} style={{ marginTop: "1rem" }}>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="h6">Up</Typography>
+                    {busStops
+                      .filter((stop) =>
+                        busData.schedules.some((s) => s.direction === "up")
+                      )
+                      .sort((a, b) => a.orderIndex - b.orderIndex)
+                      .map((stop, index, arr) =>
+                        renderScheduleFields(stop, "up", index, arr)
+                      )}
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="h6">Down</Typography>
+                    {busStops
+                      .filter((stop) =>
+                        busData.schedules.some((s) => s.direction === "down")
+                      )
+                      .sort((a, b) => b.orderIndex - a.orderIndex)
+                      .map((stop, index, arr) =>
+                        renderScheduleFields(stop, "down", index, arr)
+                      )}
+                  </Grid>
+                </Grid>
+                <Button
+                  variant="contained"
+                  onClick={handleSubmitEditBus}
+                  sx={{ marginTop: "10px", marginBottom: "20px" }}
+                >
+                  Submit
+                </Button>
+              </form>
+            </>
+          )}
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 
