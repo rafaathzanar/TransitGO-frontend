@@ -16,7 +16,7 @@ const getRoute = () => {
       return "/packagetransfer/tracking";
       break;
     default:
-      return "";
+      return "/packagetransfer/tracking";
   }
   
 }
