@@ -17,6 +17,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 
 const EditRoute = () => {
   const token = localStorage.getItem("token");
@@ -28,7 +29,7 @@ const EditRoute = () => {
   const [deleteConfirmationBar, setDeleteConfirmationBar] = useState(false);
   const [deletingStopID, setDeletingStopID] = useState(null);
   const [errors, setErrors] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const [route, setRoute] = useState({
     routeno: "",
     routename: "",
@@ -40,6 +41,7 @@ const EditRoute = () => {
   }, []);
 
   const fetchRouteData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:8080/busroute/${id}`,
@@ -52,6 +54,7 @@ const EditRoute = () => {
     } catch (error) {
       console.error("Error fetching route data:", error);
     }
+    setLoading(false);
   };
 
   const handleChange = (e) => {
@@ -180,6 +183,7 @@ const EditRoute = () => {
 
   return (
     <>
+      {loading && <LoadingComponent />}
       <Grid container item xs={10}>
         <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
           <form onSubmit={handleSubmit}>

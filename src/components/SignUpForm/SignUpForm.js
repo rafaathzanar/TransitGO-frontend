@@ -103,12 +103,11 @@ const FormAddPassenger = () => {
         confirmpassword: "",
       });
 
-
       setDialogTitle("Success");
       setDialogContent("Registration Success");
       setOpen(true);
       setLoading(false);
-       navigate("/verifyEmail",{ state: updatedFormData });
+      navigate("/verifyEmail", { state: updatedFormData });
     } catch (error) {
       if (error.response && error.response.data) {
         setFormErrors({
@@ -119,7 +118,6 @@ const FormAddPassenger = () => {
         setDialogTitle("Error");
         setDialogContent("Something went wrong, please try again later.");
         setOpen(true);
-
       }
     }
   };

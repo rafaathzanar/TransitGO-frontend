@@ -4,11 +4,11 @@ import { useNavigate, useParams } from "react-router";
 import { Divider, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import axios from "axios"; // Import Axios
-
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 function EditBus() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const Authorization = {
-    headers: {Authorization: `Bearer ${token}`}
+    headers: { Authorization: `Bearer ${token}` },
   };
   const navigate = useNavigate();
   const { id } = useParams();
@@ -16,11 +16,12 @@ function EditBus() {
   const [busStops, setBusStops] = useState([]);
   const [editedSchedules, setEditedSchedules] = useState([]);
   const [editedRegNo, setEditedRegNo] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch bus data by ID
     axios
-      .get(`http://localhost:8080/bus/${id}`,Authorization)
+      .get(`http://localhost:8080/bus/${id}`, Authorization)
       .then((response) => {
         const data = response.data;
         setBusData(data);
@@ -90,13 +91,17 @@ function EditBus() {
 
     // Update bus regNo
     axios
-      .put(`http://localhost:8080/bus/${id}`, {
-        regNo: editedRegNo,
-        id: id,
-        busroute: {
-          routeno: busData.routeNo, // Keep the same route number
+      .put(
+        `http://localhost:8080/bus/${id}`,
+        {
+          regNo: editedRegNo,
+          id: id,
+          busroute: {
+            routeno: busData.routeNo, // Keep the same route number
+          },
         },
-      },Authorization)
+        Authorization
+      )
       .then((response) => {
         console.log("Bus updated successfully:", response.data);
       })
@@ -133,10 +138,14 @@ function EditBus() {
         console.log("Updating schedule:", schedule);
 
         promises.push(
-          axios.put(`http://localhost:8080/schedule/${schedule.scheduleId}`, {
-            arrivalTime: schedule.arrivalTime || null,
-            departureTime: schedule.departureTime || null,
-          },Authorization)
+          axios.put(
+            `http://localhost:8080/schedule/${schedule.scheduleId}`,
+            {
+              arrivalTime: schedule.arrivalTime || null,
+              departureTime: schedule.departureTime || null,
+            },
+            Authorization
+          )
         );
       }
     });
@@ -255,6 +264,7 @@ function EditBus() {
 
   return (
     <div>
+      {(!busData || !busStops) && <LoadingComponent />}
       {busData && (
         <>
           <form>
