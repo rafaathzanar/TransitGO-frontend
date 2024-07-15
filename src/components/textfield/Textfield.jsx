@@ -144,7 +144,7 @@ function Textfield() {
 
   const validateReceiverName = (name) => /^[A-Za-z\s]+$/.test(name);
   const validateReceiverNIC = (nic) => /^\d{9,12}[V]?$/.test(nic);
-  const validateReceiverContact = (contact) => /^\d{10}$/.test(contact);
+  const validateReceiverContact = (contact) => /^\d{9,10}$/.test(contact);
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
