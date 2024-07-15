@@ -56,11 +56,11 @@ export default function CRUDtablePackage({}) {
   const [searchValue, setSearchValue] = useState(""); // New state for search input value
 
   // Function to handle search input change
-  const handleSearchChange = (e) => {
+  /*const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
     const filtered = packages.filter(
       (row) =>
-        row.packageID.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        row.packageID.includes(e.target.value) ||
         row.from.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.to.toLowerCase().includes(e.target.value.toLowerCase()) ||
         row.busID.toLowerCase().includes(e.target.value.toLowerCase()) ||
@@ -70,7 +70,29 @@ export default function CRUDtablePackage({}) {
     );
 
     setFilteredRows(filtered);
+  };*/
+
+  const handleSearchChange = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    setSearchValue(searchValue);
+  
+    const filtered = packages.filter((row) => {
+      const packageIDString = row.packageID.toString(); 
+  
+      return (
+        packageIDString.includes(searchValue) ||
+        (row.from && row.from.toLowerCase().includes(searchValue)) ||
+        (row.to && row.to.toLowerCase().includes(searchValue)) ||
+        (row.busID && row.busID.toLowerCase().includes(searchValue)) ||
+        (row.receiverName && row.receiverName.toLowerCase().includes(searchValue)) ||
+        (row.nic && row.nic.toLowerCase().includes(searchValue)) ||
+        (row.deliveryStatus && row.deliveryStatus.toLowerCase().includes(searchValue))
+      );
+    });
+  
+    setFilteredRows(filtered);
   };
+  
 
   const columns = [
     { field: "packageID", headerName: "ID", width: 50 },
