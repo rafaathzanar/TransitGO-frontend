@@ -9,6 +9,7 @@ const LoadingComponent = () => {
         <div className="loading-text">
           <img
             src={Logo}
+            alt="logo"
             width={216}
             sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
           />
