@@ -115,7 +115,9 @@ const FormAddPassenger = () => {
           ...formErrors,
           email: error.response.data,
         });
+        setLoading(false);
       } else {
+        setLoading(false);
         setDialogTitle("Error");
         setDialogContent("Something went wrong, please try again later.");
         setOpen(true);
