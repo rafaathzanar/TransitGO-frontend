@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useNavigate, useParams } from "react-router";
-import { Container, Grid, Typography } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import { Container } from "react-bootstrap";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 
 function EditBus() {
@@ -17,18 +18,34 @@ function EditBus() {
   const [busStops, setBusStops] = useState([]);
   const [editedSchedules, setEditedSchedules] = useState([]);
   const [editedRegNo, setEditedRegNo] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [editednoOfJourney, setEditednoOfJourney] = useState("");
+  const [journeyError, setJourneyError] = useState("");
+  const [originalNoOfJourneys, setOriginalNoOfJourneys] = useState(1);
+
+  const [bus, setBus] = useState({
+    regNo: "",
+    busroute: {
+      routeno: "",
+    },
+    noOfJourneysPerDay: "",
+  });
 
   useEffect(() => {
-    // Fetch bus data by ID
     axios
       .get(`http://localhost:8080/bus/${id}`, Authorization)
       .then((response) => {
         const data = response.data;
         setBusData(data);
-        setEditedRegNo(data.regNo); // Initialize with the current regNo
-
-        // Fetch bus stops from the bus route
+        setEditedRegNo(data.regNo);
+        setEditednoOfJourney(data.noOfJourneysPerDay);
+        setOriginalNoOfJourneys(data.noOfJourneysPerDay); // Set the original number of journeys
+        setBus({
+          regNo: data.regNo,
+          busroute: {
+            routeno: data.routeNo,
+          },
+          noOfJourneysPerDay: data.noOfJourneysPerDay || 1,
+        });
         return axios.get(`http://localhost:8080/route/${data.routeNo}/stops`);
       })
       .then((response) => {
@@ -40,6 +57,16 @@ function EditBus() {
 
   const handleRegNoChange = (e) => {
     setEditedRegNo(e.target.value);
+  };
+
+  const handlenoOfJourneyChange = (e) => {
+    const value = e.target.value;
+    if (value === "" || value === "1" || value === "2") {
+      setEditednoOfJourney(value);
+      setJourneyError("");
+    } else {
+      setJourneyError("Number of journeys per day must be 1 or 2");
+    }
   };
 
   const handleTimeChange = (time, field, stopId, direction) => {
@@ -56,7 +83,7 @@ function EditBus() {
       );
 
       updatedEditedSchedules.push({
-        scheduleId: originalSchedule ? originalSchedule.scheduleId : null, // Preserve the original scheduleId
+        scheduleId: originalSchedule ? originalSchedule.scheduleId : null,
         busStop: {
           stopID: stopId,
         },
@@ -90,7 +117,7 @@ function EditBus() {
   const handleSubmitEditBus = () => {
     console.log("Submitting PUT request");
 
-    // Update bus regNo
+    // Update bus regNo and number of journeys
     axios
       .put(
         `http://localhost:8080/bus/${id}`,
@@ -100,11 +127,33 @@ function EditBus() {
           busroute: {
             routeno: busData.routeNo, // Keep the same route number
           },
+          noOfJourneysPerDay: editednoOfJourney,
         },
         Authorization
       )
       .then((response) => {
         console.log("Bus updated successfully:", response.data);
+
+        // Check if number of journeys is being updated
+        if (bus.noOfJourneysPerDay !== editednoOfJourney) {
+          // Call the update journeys endpoint
+          axios
+            .put(`http://localhost:8080/bus/${id}/journeys`, null, {
+              params: {
+                oldJourneys: bus.noOfJourneysPerDay,
+                newJourneys: editednoOfJourney,
+              },
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((response) => {
+              console.log("Journeys updated successfully:", response.data);
+            })
+            .catch((error) => {
+              console.error("Error updating journeys:", error);
+            });
+        }
       })
       .catch((error) => {
         console.error("Error updating bus:", error);
@@ -267,6 +316,35 @@ function EditBus() {
     );
   };
 
+  const validateTimes = (times) => {
+    const errors = {};
+    for (let i = 0; i < times.length; i++) {
+      const { stopName, arrivalTime, departureTime } = times[i];
+
+      if (arrivalTime && departureTime && arrivalTime > departureTime) {
+        errors[stopName] = {
+          arrivalTime: "Arrival time cannot be later than departure time.",
+        };
+      }
+
+      if (i > 0) {
+        const prevTime = times[i - 1];
+        if (
+          prevTime.departureTime &&
+          arrivalTime &&
+          prevTime.departureTime > arrivalTime
+        ) {
+          errors[stopName] = {
+            ...errors[stopName],
+            arrivalTime:
+              "Arrival time cannot be earlier than previous stop's departure time.",
+          };
+        }
+      }
+    }
+    return Object.keys(errors).length ? errors : null;
+  };
+
   return (
     <Container maxWidth={false} style={{ padding: "0 2rem" }}>
       <Grid
@@ -322,6 +400,18 @@ function EditBus() {
                       sx={{ width: "20%" }}
                       onChange={handleRegNoChange}
                       margin="normal"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      label="Number of Journeys Per Day"
+                      value={editednoOfJourney}
+                      onChange={handlenoOfJourneyChange}
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      error={!!journeyError}
+                      helperText={journeyError}
                     />
                   </Grid>
                 </Grid>
