@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./LostItem.css";
 import HeaderBar from "../../components/HeaderBar/HeaderBar";
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 
 const FoundItem = (props) => {
   const token = localStorage.getItem("token");
@@ -14,6 +15,7 @@ const FoundItem = (props) => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
+  const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,12 +25,16 @@ const FoundItem = (props) => {
   }, []);
 
   const loadItems = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("http://localhost:8080/founds");
       const sortedItems = response.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
       setItems(sortedItems);//sort by date time
     } catch (error) {
       console.error("Error loading items:", error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -65,6 +71,8 @@ const FoundItem = (props) => {
         <h1 className="title">Reported Found Items</h1>
         <SearchFilter onSearch={handleSearch} />
       </div>
+
+      {loading && <LoadingComponent />}
 
       <div style={{ display: "flex", flexDirection: "column" }}>
         {filteredItems.length > 0 ? (
