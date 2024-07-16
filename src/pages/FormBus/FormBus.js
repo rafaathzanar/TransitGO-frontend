@@ -12,7 +12,9 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router";
-
+import ShareLocationIcon from "@mui/icons-material/ShareLocation";
+import NorthIcon from "@mui/icons-material/North";
+import SouthIcon from "@mui/icons-material/South";
 const TwoInputFieldsRow = ({
   label1,
   label2,
@@ -294,18 +296,38 @@ function FormBus() {
   };
 
   return (
-    <Container>
-      <Grid container item xs={10}>
-        <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-          <Typography variant="h4" gutterBottom>
+    <Container maxWidth={false} style={{ padding: "0 2rem" }}>
+      <Grid
+        container
+        justifyContent="center"
+        style={{
+          backgroundColor: "#daedf4",
+          padding: 10,
+          borderRadius: 20,
+          maxWidth: "1440px", // Adjust max width as needed
+          margin: "auto",
+        }}
+      >
+        <Grid item xs={12} sm={10} md={8}>
+          <h3
+            style={{
+              backgroundColor: "#132968",
+              color: "#FFFFFF",
+              padding: "20px",
+              borderRadius: 20,
+            }}
+          >
             Add Bus
-          </Typography>
-          <form onSubmit={handleSubmit}>
+          </h3>
+          <form
+            style={{ backgroundColor: "white", padding: 30, borderRadius: 10 }}
+            onSubmit={handleSubmit}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   required
-                  fullWidth
+                  width="50%"
                   label="Bus Reg. No"
                   name="regNo"
                   value={bus.regNo}
@@ -313,8 +335,8 @@ function FormBus() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Select Route</InputLabel>
+                <FormControl fullWidth sx={{ width: "70%" }}>
+                  <InputLabel id="selectRoute">Select Route</InputLabel>
                   <Select
                     required
                     fullWidth
@@ -327,7 +349,7 @@ function FormBus() {
                     </MenuItem>
                     {menuOptions.map((option, index) => (
                       <MenuItem key={index} value={index}>
-                        {option.routeno}
+                        {option.routeno} - {option.routename}
                       </MenuItem>
                     ))}
                   </Select>
@@ -343,6 +365,7 @@ function FormBus() {
                   onChange={handleChange}
                   variant="outlined"
                   fullWidth
+                  sx={{ width: "50%" }}
                   margin="normal"
                   inputProps={{
                     min: 1,
@@ -353,21 +376,29 @@ function FormBus() {
             </Grid>
 
             {showAdditionalFields && (
-              <>
-                <Typography variant="h6" gutterBottom>
-                  Up Direction
-                </Typography>
-                <div>
-                  <table>
+              <Grid container spacing={2} style={{ marginTop: "1rem" }}>
+                <Grid item xs={12} sm={6}>
+                  <NorthIcon />
+                  <Typography variant="h6" gutterBottom>
+                    Up Direction({additionalFieldsDatasets[selectedValue][0]} -{" "}
+                    {
+                      additionalFieldsDatasets[selectedValue][
+                        additionalFieldsDatasets[selectedValue].length - 1
+                      ]
+                    }
+                    )
+                  </Typography>
+                  <table style={{ width: "100%" }}>
                     <tbody>
                       <tr>
-                        <th>Bus Stops</th>
-                        <th>Arrival & Departure Times</th>
+                        {/* <th>Bus Stops</th>
+                        <th>Arrival & Departure Times</th> */}
                       </tr>
                       {additionalFieldsDatasets[selectedValue].map(
                         (text, index) => (
                           <tr key={index}>
                             <td>
+                              <ShareLocationIcon sx={{ color: "red" }} />
                               <Typography variant="subtitle1">
                                 {text}
                               </Typography>
@@ -394,21 +425,23 @@ function FormBus() {
                       )}
                     </tbody>
                   </table>
-                </div>
-
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  style={{ marginTop: "2rem" }}
-                >
-                  Down Direction
-                </Typography>
-                <div>
-                  <table>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <SouthIcon />
+                  <Typography variant="h6" gutterBottom>
+                    Down Direction(
+                    {
+                      additionalFieldsDatasets[selectedValue][
+                        additionalFieldsDatasets[selectedValue].length - 1
+                      ]
+                    }{" "}
+                    - {additionalFieldsDatasets[selectedValue][0]})
+                  </Typography>
+                  <table style={{ width: "100%" }}>
                     <tbody>
                       <tr>
-                        <th>Bus Stops</th>
-                        <th>Arrival & Departure Times</th>
+                        {/* <th>Bus Stops</th>
+                        <th>Arrival & Departure Times</th> */}
                       </tr>
                       {additionalFieldsDatasets[selectedValue]
                         .slice()
@@ -416,6 +449,7 @@ function FormBus() {
                         .map((text, index) => (
                           <tr key={index}>
                             <td>
+                              <ShareLocationIcon sx={{ color: "blue" }} />
                               <Typography variant="subtitle1">
                                 {text}
                               </Typography>
@@ -442,15 +476,15 @@ function FormBus() {
                         ))}
                     </tbody>
                   </table>
-                </div>
-              </>
+                </Grid>
+              </Grid>
             )}
 
             <Button
-              sx={{ marginTop: "20px" }}
               variant="contained"
               color="primary"
               type="submit"
+              sx={{ marginTop: "20px", marginBottom: "20px" }}
             >
               Submit
             </Button>

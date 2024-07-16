@@ -11,6 +11,9 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useNavigate } from "react-router";
+import { Container } from "react-bootstrap";
+import ShareLocationIcon from "@mui/icons-material/ShareLocation";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const FormRoute = () => {
   const [route, setRoute] = useState({
@@ -140,113 +143,162 @@ const FormRoute = () => {
   };
 
   return (
-    <Grid container item xs={10}>
-      <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                required
-                fullWidth
-                label="Route No"
-                name="routeno"
-                type="number"
-                value={routeno}
-                onChange={(e) => handleChange(e)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                required
-                fullWidth
-                label="Route Name"
-                name="routename"
-                value={routename}
-                onChange={(e) => handleChange(e)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography>Stops</Typography>
-              {stops.map((stop, index) => (
-                <div key={index}>
-                  <TextField
-                    fullWidth
-                    label={`Stop ${index + 1}`}
-                    value={stop.name}
-                    onChange={(e) => handleChangeStop(index, e.target.value)}
-                    sx={{ marginTop: 2 }}
-                  />
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => handleRemoveStop(index)}
-                  >
-                    Delete Stop
-                  </Button>
+    <Container maxWidth={false} style={{ padding: "0 2rem" }}>
+      <Grid
+        container
+        justifyContent="center"
+        style={{
+          backgroundColor: "#daedf4",
+          padding: 10,
+          borderRadius: 20,
+          maxWidth: "1440px", // Adjust max width as needed
+          margin: "auto",
+        }}
+      >
+        <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+          <h3
+            style={{
+              backgroundColor: "#132968",
+              padding: "20px",
+              color: "#FFFFFF",
+              borderRadius: 20,
+            }}
+          >
+            Add A Route
+          </h3>
+          <form
+            style={{ backgroundColor: "white", padding: 30, borderRadius: 10 }}
+            onSubmit={(e) => handleSubmit(e)}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  required
+                  fullWidth
+                  sx={{ width: "50%" }}
+                  label="Route No"
+                  name="routeno"
+                  type="number"
+                  value={routeno}
+                  onChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  required
+                  fullWidth
+                  sx={{ width: "50%" }}
+                  label="Route Name"
+                  name="routename"
+                  value={routename}
+                  onChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <div
+                  className="div"
+                  style={{ display: "flex", color: "#132968" }}
+                >
+                  <ShareLocationIcon />
+                  <Typography sx={{ marginLeft: "5px" }}>Bus Stops</Typography>
                 </div>
-              ))}
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleAddStop}
-                style={{ marginRight: "10px", marginTop: "20px" }}
-              >
-                Add Stop
-              </Button>
+
+                {stops.map((stop, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginTop: 20,
+                    }}
+                  >
+                    <TextField
+                      fullWidth
+                      sx={{ width: "60%" }}
+                      label={`Stop ${index + 1}`}
+                      value={stop.name}
+                      onChange={(e) => handleChangeStop(index, e.target.value)}
+                    />
+                    <DeleteIcon
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => handleRemoveStop(index)}
+                    >
+                      Delete Stop
+                    </DeleteIcon>
+                  </div>
+                ))}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleAddStop}
+                  style={{ marginRight: "10px", marginTop: "20px" }}
+                >
+                  Add Stop
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginTop: "10px", marginBottom: "20px" }}
+                >
+                  Submit
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
-                Submit
+          </form>
+
+          {/* Stops validation error dialog */}
+          <Dialog open={stopsErrorDialog} onClose={handleCloseStopsErrorDialog}>
+            <DialogTitle>Please Add Bus Stops</DialogTitle>
+            <DialogContent>
+              <Typography variant="body1">
+                At least two stops need to be added to submit a route.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseStopsErrorDialog} color="primary">
+                OK
               </Button>
-            </Grid>
-          </Grid>
-        </form>
+            </DialogActions>
+          </Dialog>
 
-        {/* Stops validation error dialog */}
-        <Dialog open={stopsErrorDialog} onClose={handleCloseStopsErrorDialog}>
-          <DialogTitle>Please Add Bus Stops</DialogTitle>
-          <DialogContent>
-            <Typography variant="body1">
-              At least two stops need to be added to submit a route.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseStopsErrorDialog} color="primary">
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
+          {/* Route exists error dialog */}
+          <Dialog
+            open={routeExistsDialog}
+            onClose={handleCloseRouteExistsDialog}
+          >
+            <DialogTitle>Route Number Exists</DialogTitle>
+            <DialogContent>
+              <Typography variant="body1">
+                A route with this route no. / name already exists. Please use a
+                different route details.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseRouteExistsDialog} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-        {/* Route exists error dialog */}
-        <Dialog open={routeExistsDialog} onClose={handleCloseRouteExistsDialog}>
-          <DialogTitle>Route Number Exists</DialogTitle>
-          <DialogContent>
-            <Typography variant="body1">
-              A route with this route no. / name already exists. Please use a
-              different route details.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseRouteExistsDialog} color="primary">
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* Success dialog */}
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Route Added Successfully</DialogTitle>
-          <DialogContent>
-            <Typography>Your route has been added successfully.</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
+          {/* Success dialog */}
+          <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle>Route Added Successfully</DialogTitle>
+            <DialogContent>
+              <Typography>Your route has been added successfully.</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
       </Grid>
-    </Grid>
+    </Container>
   );
 };
 

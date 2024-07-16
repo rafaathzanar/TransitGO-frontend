@@ -64,7 +64,7 @@ function ScheduleCard({
   console.log("toSchedules", toSchedule);
 
   if (!fromSchedule || !toSchedule) {
-    return <p></p>;
+    return <p>NO ROUTES AVAILABLE</p>;
   }
 
   const fromTime = fromSchedule.departureTime;

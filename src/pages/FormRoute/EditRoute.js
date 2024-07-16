@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
+import { Container } from "react-bootstrap";
 
 const EditRoute = () => {
   const token = localStorage.getItem("token");
@@ -184,129 +185,162 @@ const EditRoute = () => {
   return (
     <>
       {loading && <LoadingComponent />}
-      <Grid container item xs={10}>
-        <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="routeno"
-                  type="number"
-                  value={route.routeno}
-                  onChange={handleChange}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Route Name"
-                  name="routename"
-                  value={route.routename}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <Typography>Bus Stops</Typography>
-                {route.busStops &&
-                  route.busStops.map((stop, index) => (
-                    <div
-                      key={stop.stopID ?? `new-${index}`}
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
-                      <TextField
-                        fullWidth
-                        label={`Stop ${index + 1}`}
-                        value={stop.name || ""}
-                        onChange={(e) => {
-                          const updatedBusStops = [...route.busStops];
-                          updatedBusStops[index] = {
-                            ...updatedBusStops[index],
-                            name: e.target.value,
-                          };
-                          setRoute((prevData) => ({
-                            ...prevData,
-                            busStops: updatedBusStops,
-                          }));
-                          setErrors((prevErrors) =>
-                            prevErrors.map((error, i) =>
-                              i === index ? !e.target.value : error
-                            )
-                          );
-                        }}
-                        sx={{ marginTop: 2 }}
-                        error={errors[index]}
-                        helperText={
-                          errors[index] ? "Bus stop name is required" : ""
-                        }
-                      />
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => handleDeleteStop(stop.name, stop.stopID)}
-                        sx={{ marginLeft: 1 }}
+      <Container maxWidth={false} style={{ padding: "0 2rem" }}>
+        <Grid
+          container
+          justifyContent="center"
+          style={{
+            backgroundColor: "#daedf4",
+            padding: 10,
+            borderRadius: 20,
+            maxWidth: "1440px", // Adjust max width as needed
+            margin: "auto",
+          }}
+        >
+          <Grid item xs={12} sm={6} md={6} style={{ marginLeft: "5rem" }}>
+            <h3
+              style={{
+                backgroundColor: "#132968",
+                color: "#FFFFFF",
+                padding: "20px",
+                borderRadius: 20,
+              }}
+            >
+              Edit Route
+            </h3>
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                backgroundColor: "white",
+                padding: 30,
+                borderRadius: 10,
+              }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="routeno"
+                    type="number"
+                    value={route.routeno}
+                    onChange={handleChange}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Route Name"
+                    name="routename"
+                    value={route.routename}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <Typography>Bus Stops</Typography>
+                  {route.busStops &&
+                    route.busStops.map((stop, index) => (
+                      <div
+                        key={stop.stopID ?? `new-${index}`}
+                        style={{ display: "flex", alignItems: "center" }}
                       >
-                        <DeleteIcon />
-                      </IconButton>
-                      {index === 0 && (
+                        <TextField
+                          fullWidth
+                          label={`Stop ${index + 1}`}
+                          value={stop.name || ""}
+                          onChange={(e) => {
+                            const updatedBusStops = [...route.busStops];
+                            updatedBusStops[index] = {
+                              ...updatedBusStops[index],
+                              name: e.target.value,
+                            };
+                            setRoute((prevData) => ({
+                              ...prevData,
+                              busStops: updatedBusStops,
+                            }));
+                            setErrors((prevErrors) =>
+                              prevErrors.map((error, i) =>
+                                i === index ? !e.target.value : error
+                              )
+                            );
+                          }}
+                          sx={{ marginTop: 2 }}
+                          error={errors[index]}
+                          helperText={
+                            errors[index] ? "Bus stop name is required" : ""
+                          }
+                        />
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() =>
+                            handleDeleteStop(stop.name, stop.stopID)
+                          }
+                          sx={{ marginLeft: 1 }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        {index === 0 && (
+                          <IconButton
+                            color="primary"
+                            aria-label="add"
+                            onClick={() => handleAddStop(0)}
+                            sx={{ marginLeft: 1 }}
+                          >
+                            <ArrowCircleUpIcon />
+                          </IconButton>
+                        )}
                         <IconButton
                           color="primary"
                           aria-label="add"
-                          onClick={() => handleAddStop(0)}
+                          onClick={() => handleAddStop(index + 1)}
                           sx={{ marginLeft: 1 }}
                         >
-                          <ArrowCircleUpIcon />
+                          <ArrowCircleDownIcon />
                         </IconButton>
-                      )}
-                      <IconButton
-                        color="primary"
-                        aria-label="add"
-                        onClick={() => handleAddStop(index + 1)}
-                        sx={{ marginLeft: 1 }}
-                      >
-                        <ArrowCircleDownIcon />
-                      </IconButton>
-                    </div>
-                  ))}
+                      </div>
+                    ))}
+                </Grid>
+                <Grid item xs={12}>
+                  <Button type="submit" variant="contained" color="primary">
+                    Update
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Update
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
+            </form>
+          </Grid>
         </Grid>
-      </Grid>
 
-      <Dialog
-        open={deleteConfirmationBar}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this stop? Note: The schedule under
-            this stop will be deleted too.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleDeleteStopConfirmation}
-            color="secondary"
-            autoFocus
-          >
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+        <Dialog
+          open={deleteConfirmationBar}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Confirm Deletion"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this stop? Note: The schedule
+              under this stop will be deleted too.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteStopConfirmation}
+              color="secondary"
+              autoFocus
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Container>
     </>
   );
 };

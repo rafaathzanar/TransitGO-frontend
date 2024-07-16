@@ -1,6 +1,6 @@
 import React from "react";
 import "./Mobile.css";
-import Qr from "../../images/qr.png";
+import Qr from "../../images/TransitGO.png";
 import apple from "../../images/appstore.png";
 import play from "../../images/playstore.png";
 
@@ -15,15 +15,15 @@ export default function Mobile() {
 
           <div className="col-md-6 col-lg-5 col-12 mt-1 mt-md-0 ft-30">
             <div className="col-md-12 col-lg-12 col-12 mt-5 mt-md-0 ft-30">
-              <h5>Our free app</h5>
+              <h5>OUR FREE</h5>
               <p>
                 One app for every step of your journey—Time planning has never
                 been easier!
               </p>
             </div>
             <div>
-              <img src={play} />
-              <img src={apple} />
+             <a href="#"> <img src={play} /></a>
+             <a href="#"><img src={apple} /></a>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import ScheduleCard from "../../components/ScheduleCard/ScheduleCard";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
+import image1 from "../../images/BusNotFound.png";
 
 function BusSchedule() {
   const location = useLocation();
@@ -69,6 +70,8 @@ function BusSchedule() {
       setBusSchedules(response.data);
       if (response.data.length === 0) {
         setShowNoBusesMessage(true); // Show message if no schedules found
+      } else {
+        setShowNoBusesMessage(false);
       }
     } catch (error) {
       console.log("error fetching");
@@ -89,16 +92,44 @@ function BusSchedule() {
     };
   }, [from, to, direction, date]);
 
+  const validSchedules = busSchedules.filter((bus) => {
+    const fromSchedule = bus.schedules.some(
+      (schedule) =>
+        schedule.busStop.name === from && schedule.direction === direction
+    );
+    const toSchedule = bus.schedules.some(
+      (schedule) =>
+        schedule.busStop.name === to && schedule.direction === direction
+    );
+    return fromSchedule && toSchedule;
+  });
+
   return (
     <div id="bus-schedule-container">
       <HeaderBar />
       <ScheduleSearchBar onSearch={handleSearch} />
       {loading && <LoadingComponent />}
       {error && <p>{error}</p>}
-      {!loading && busSchedules.length === 0 && showNoBusesMessage && (
-        <p>No buses available on the route on selected date.</p>
+      {!loading && validSchedules.length === 0 && (
+        <div
+          className="notFound"
+          style={{
+            textAlign: "center",
+          }}
+        >
+          <img alt="notfound" src={image1} width={"600"}></img>
+          <p
+            style={{
+              textAlign: "center",
+              fontFamily: "helvetica",
+              fontSize: "20px",
+            }}
+          >
+            No buses are available on the route on the selected date.Try Again.
+          </p>
+        </div>
       )}
-      {busSchedules.map((bus) => (
+      {validSchedules.map((bus) => (
         <ScheduleCard
           key={bus.id}
           busID={bus.id}

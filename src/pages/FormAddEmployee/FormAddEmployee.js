@@ -157,9 +157,13 @@ const FormAddEmployee = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        Add Employee
-      </Typography>
+      <div className="align" style={{ alignItems: "center ", display: "flex" }}>
+        <Typography variant="h4" gutterBottom>
+          Add Employee
+        </Typography>{" "}
+        <Link to={`/admin/employees/adminAdd`}> (Add Admin) </Link>
+      </div>
+
       <form onSubmit={(e) => handleSubmit(e)}>
         <input type="hidden" name="type" value="employee" />
         <Grid container spacing={2}>
@@ -268,7 +272,18 @@ const FormAddEmployee = () => {
         >
           Submit
         </Button>
-        <Link to={`/admin/employees/adminAdd`}> Add Admin </Link>
+
+        <br/>
+        <Link to={`/admin/employees/adminAdd`}> 
+        <Button
+        sx={{ marginTop: "20px" }}
+        variant="contained"
+        color="primary"
+        to="/admin/employees/adminAdd"
+        >
+          Add Admin
+        </Button>
+         </Link>
       </form>
     </Container>
   );

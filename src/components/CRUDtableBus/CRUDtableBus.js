@@ -152,9 +152,9 @@ export default function CRUDtableRoute({}) {
   };
 
   const columns = [
+    { field: "routeNo", headerName: "Route No", width: 100 },
     { field: "busId", headerName: "Bus Id", width: 100 },
     { field: "busRegNo", headerName: "Reg No", width: 100 },
-    { field: "routeNo", headerName: "Route No", width: 100 },
     {
       field: "status",
       headerName: "Current Status",

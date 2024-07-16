@@ -12,6 +12,8 @@ import { List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
+import ShareLocationIcon from "@mui/icons-material/ShareLocation";
+
 export default function CRUDtableRoute() {
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -218,8 +220,12 @@ export default function CRUDtableRoute() {
                 .find((row) => row.id === selectedRowId)
                 ?.busStops.sort((a, b) => a.orderIndex - b.orderIndex) // Sort busStops by orderIndex
                 .map((stop) => (
-                  <ListItem key={stop.id}>
-                    <ListItemText primary={stop.name} />
+                  <ListItem sx={{ color: "#132968" }} key={stop.id}>
+                    <ShareLocationIcon />
+                    <ListItemText
+                      sx={{ marginLeft: "20px" }}
+                      primary={stop.name}
+                    />
                   </ListItem>
                 ))}
           </List>
