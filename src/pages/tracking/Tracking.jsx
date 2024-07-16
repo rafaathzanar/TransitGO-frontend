@@ -11,6 +11,7 @@ function Tracking() {
   const [lastLeftStop, setLastLeftStop] = useState(null);
   const [nextLocation, setNextLocation] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogNo, setOpenDialogNo] = useState(false);
 
   useEffect(() => {
     if (busID) {
@@ -19,6 +20,10 @@ function Tracking() {
           const response = await axios.get(`http://localhost:8080/bus/${busID}`);
           setLastLeftStop(response.data.lastLeftStop);
           setNextLocation(response.data.nextLocation);
+          if(response.data.lastLeftStop===null &&response.data.nextLocation===null){
+            setOpenDialogNo(true);
+            console.error("no tracked");
+          }
         } catch (error) {
           console.error("Error fetching tracking data:", error.message);
         }
@@ -40,6 +45,7 @@ function Tracking() {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setOpenDialogNo(false)
   };
 
   return (
@@ -79,6 +85,17 @@ function Tracking() {
         <DialogTitle>Invalid Package ID</DialogTitle>
         <DialogContent>
           The package ID you entered is invalid. Please check and try again.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openDialogNo} onClose={handleCloseDialog}>
+        <DialogTitle>Bus is not currently being tracked </DialogTitle>
+        <DialogContent>
+          Please try again later.
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
