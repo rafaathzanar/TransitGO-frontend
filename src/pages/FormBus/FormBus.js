@@ -178,7 +178,7 @@ function FormBus() {
     }
   };
 
-  const validateTimes = (times) => {
+  const validateTimes = (times, oppositeTimes = []) => {
     const errors = {};
     for (let i = 0; i < times.length; i++) {
       const { stopName, arrivalTime, departureTime } = times[i];
@@ -209,7 +209,6 @@ function FormBus() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const upTimes = additionalFieldsDatasets[selectedValue].map((stopName) => ({
       stopName,
       arrivalTime: arrivalTimesUp[stopName],
@@ -225,8 +224,8 @@ function FormBus() {
         departureTime: departureTimesDown[stopName],
       }));
 
-    const errorMsgUp = validateTimes(upTimes);
-    const errorMsgDown = validateTimes(downTimes);
+    const errorMsgUp = validateTimes(upTimes, downTimes);
+    const errorMsgDown = validateTimes(downTimes, upTimes);
 
     if (errorMsgUp || errorMsgDown) {
       setErrorMessagesUp(errorMsgUp || {});
@@ -296,7 +295,7 @@ function FormBus() {
   };
 
   return (
-    <Container maxWidth={false} style={{ padding: "0 2rem" }}>
+    <Container maxWidth={false} style={{ padding: "0 1rem" }}>
       <Grid
         container
         justifyContent="center"
@@ -320,8 +319,14 @@ function FormBus() {
             Add Bus
           </h3>
           <form
-            style={{ backgroundColor: "white", padding: 30, borderRadius: 10 }}
+            style={{
+              backgroundColor: "white",
+              padding: 30,
+              borderRadius: 10,
+              width: "110%",
+            }}
             onSubmit={handleSubmit}
+            sx={{}}
           >
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -379,8 +384,11 @@ function FormBus() {
               <Grid container spacing={2} style={{ marginTop: "1rem" }}>
                 <Grid item xs={12} sm={6}>
                   <NorthIcon />
+                  <Typography variant="h7" gutterBottom>
+                    Up Direction
+                  </Typography>{" "}
                   <Typography variant="h6" gutterBottom>
-                    Up Direction({additionalFieldsDatasets[selectedValue][0]} -{" "}
+                    ({additionalFieldsDatasets[selectedValue][0]} -{" "}
                     {
                       additionalFieldsDatasets[selectedValue][
                         additionalFieldsDatasets[selectedValue].length - 1
@@ -428,8 +436,12 @@ function FormBus() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <SouthIcon />
+                  <Typography variant="h7" gutterBottom>
+                    Down Direction{" "}
+                  </Typography>
                   <Typography variant="h6" gutterBottom>
-                    Down Direction(
+                    {" "}
+                    (
                     {
                       additionalFieldsDatasets[selectedValue][
                         additionalFieldsDatasets[selectedValue].length - 1

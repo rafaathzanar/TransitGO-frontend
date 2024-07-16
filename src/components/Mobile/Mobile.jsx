@@ -15,7 +15,7 @@ export default function Mobile() {
 
           <div className="col-md-6 col-lg-5 col-12 mt-1 mt-md-0 ft-30">
             <div className="col-md-12 col-lg-12 col-12 mt-5 mt-md-0 ft-30">
-              <h5>OUR FREE</h5>
+              <h5>OUR FREE APP</h5>
               <p>
                 One app for every step of your journey—Time planning has never
                 been easier!
